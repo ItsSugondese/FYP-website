@@ -8,12 +8,16 @@ import { LogoutComponent } from './logout/logout.component';
 import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { ManageStaffComponent } from './admin/manage-staff/manage-staff.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    AdminDashboardComponent,
+    ManageStaffComponent
   ],
   imports: [
     BrowserModule,
