@@ -8,8 +8,11 @@ import { LogoutComponent } from './logout/logout.component';
 import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
-import { ManageStaffComponent } from './admin/manage-staff/manage-staff.component';
+import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard.component';
+import { ManageStaffComponent } from './features/admin/manage-staff/manage-staff.component';
+import { SidenavComponent } from './nav/sidenav/sidenav.component';
+import { ManageFoodsComponent } from './features/staff/manage-foods/manage-foods.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,9 @@ import { ManageStaffComponent } from './admin/manage-staff/manage-staff.componen
     LoginComponent,
     LogoutComponent,
     AdminDashboardComponent,
-    ManageStaffComponent
+    ManageStaffComponent,
+    SidenavComponent,
+    ManageFoodsComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +30,8 @@ import { ManageStaffComponent } from './admin/manage-staff/manage-staff.componen
     MaterialModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

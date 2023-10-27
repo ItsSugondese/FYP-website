@@ -1,36 +1,71 @@
 <div class="container">
-    <app-sidenav></app-sidenav>
-    <div class="content">
+  <app-sidenav></app-sidenav>
+  <div class="content">
 
-        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+      aria-controls="offcanvasRight">Toggle right offcanvas</button>
 
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-  <div class="offcanvas-header">
-    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <form>
-        <div class="form-group">
-          <label for="inputFoodName">Food Name</label>
-          <input type="text" class="form-control" id="inputFoodName" aria-describedby="emailHelp" placeholder="Enter Food Name">
-        </div>
-        <div class="form-group">
-          <label for="inputPrice">Price</label>
-          <input type="number" class="form-control" id="inputPrice" placeholder="Price of the food">
-        </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <form>
+          <div class="form-group">
+            <label for="inputFoodName">Food Name</label>
+            <input type="text" class="form-control" id="inputFoodName" aria-describedby="emailHelp"
+              placeholder="Enter Food Name">
+          </div>
+          <div class="form-group">
+            <label for="inputPrice">Price</label>
+            <input type="number" class="form-control" id="inputPrice" placeholder="Price of the food">
+          </div>
 
-        <div class="form-group">
+          <div class="form-group">
             <label for="inputDescription">Description</label>
-            <textarea class="form-control" id="inputDescription" aria-describedby="emailHelp" placeholder="Description of the food"></textarea>
-        </div>
-        
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+            <textarea class="form-control" id="inputDescription" aria-describedby="emailHelp"
+              placeholder="Description of the food"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlFile1">Image upload</label>
+            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+          </div>
+          <div class="row">
+            <div class="col-auto">
+              <label class="form-check-label" for="flexSwitchCheckChecked">Package : </label>
+            </div>
+            
+            <div class="col">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch"
+                  id="flexSwitchCheckChecked" (click)="resetSwitch()" [checked]="isSwitchChecked">
+              </div>
+            </div>
+          </div>
+          <div *ngIf="isSwitchChecked">
+            <form>
+              <div class="form-group mt-3">
+                <label for="foodItems">food Items</label>
+                <div *ngFor="let item of items; let i = index">
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" [id]="'foodItems' + i" placeholder="Price of the food">
+                    <button class="btn btn-outline-secondary" type="button" (click)="removeItem(i)">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+            </form>
+            <button class="btn btn-primary" (click)="addItem()">Add Item</button>
+          </div>
+
+          
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+
   </div>
 </div>
-
-    </div>
-  </div>
-
-
