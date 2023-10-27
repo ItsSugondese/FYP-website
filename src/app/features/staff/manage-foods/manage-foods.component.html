@@ -1,0 +1,36 @@
+<div class="container">
+    <app-sidenav></app-sidenav>
+    <div class="content">
+
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form>
+        <div class="form-group">
+          <label for="inputFoodName">Food Name</label>
+          <input type="text" class="form-control" id="inputFoodName" aria-describedby="emailHelp" placeholder="Enter Food Name">
+        </div>
+        <div class="form-group">
+          <label for="inputPrice">Price</label>
+          <input type="number" class="form-control" id="inputPrice" placeholder="Price of the food">
+        </div>
+
+        <div class="form-group">
+            <label for="inputDescription">Description</label>
+            <textarea class="form-control" id="inputDescription" aria-describedby="emailHelp" placeholder="Description of the food"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+
