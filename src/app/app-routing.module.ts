@@ -10,7 +10,7 @@ const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
-  {path: 'manage_food', component: ManageFoodsComponent},
+  {path: 'manage_food', component: ManageFoodsComponent,  data: {roles:['ADMIN']}},
   {path: 'admin/manage_staff', component : ManageStaffComponent, canActivate: [AuthGuard], data: {roles:['USER']}}
 ];
 

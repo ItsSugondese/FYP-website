@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ManageFoodsService } from './manage-foods-service/manage-foods.service';
+import { ManageFoodsService, foodMenu } from './manage-foods-service/manage-foods.service';
 import { Observable, Subscription } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import 'bootstrap';
 
 @Component({
   selector: 'app-manage-foods',
@@ -13,11 +14,14 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
   items: any[] = [{}];
   imageId$ !: Subscription;
   imageId !: number;
+  // foodMenuFetch$ : Observable<any> = this.foodService.getFoodMenu();
 
-
+  foodMenuFetch$ !: Subscription;
+  foodMenu !: foodMenu[];
   postFoodMenu$ !: Subscription;
+  getFoodPicture$ !: Subscription;
   id !: number;
-
+  imageDataMap: { [key: number]: string } = {};
 
   foodForm = this.formBuilder.group({
     id : new FormControl(),
@@ -40,13 +44,43 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
   
 
   ngOnInit(): void {
+    this.foodMenuFetch$ = this.foodService.getFoodMenu().subscribe(
+      (response) => {
+        this.foodMenu = response.data;
+        this.foodMenu.forEach((foodMenu) => {
+          if(foodMenu.photoId){
+          this.foodService.getFoodPicture(foodMenu.photoId).subscribe((imageBlob: Blob) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              this.imageDataMap[foodMenu.photoId] = reader.result as string;
+            };
+            reader.readAsDataURL(imageBlob);
+          });
+        }
+        });
+        
+      }
+    )
   }
+
+  // createImageFromBlob(image: Blob) {
+  //   const reader = new FileReader();
+  //   reader.addEventListener('load', () => {
+  //     this.imageData = reader.result;
+  //   }, false);
+
+  //   if (image) {
+  //     reader.readAsDataURL(image);
+  //   }
+  // }
+
 
   resetSwitch() {
     this.isSwitchChecked = !this.isSwitchChecked;
     if(this.isSwitchChecked && this.menuFormGroups.length<1){
       this.menuFormGroups.push(new FormControl());
     }
+   
   }
 
   addItem() {
@@ -61,6 +95,26 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
     }
   }
 
+  isOffcanvasOpen = false;
+  
+  toggleOffcanvas() {
+    console.log(this.foodForm.value);
+    this.isOffcanvasOpen = !this.isOffcanvasOpen;
+    while(this.menuFormGroups.length){
+      this.menuFormGroups.removeAt(0);
+    }
+    this.foodForm.reset();
+    if(this.isOffcanvasOpen == true){
+      
+    }else{
+      this.isSwitchChecked = false;
+      
+      
+    }
+
+    console.log(this.isOffcanvasOpen)
+    
+  }
   onFileSelected(event: any) {
     const files : FileList = event.target.files;
     if (files.length > 0) {
@@ -90,13 +144,69 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
     photoIdControl?.setValue(this.imageId);
     }
 
-    this.postFoodMenu$ = this.foodService.postFoodMenu(this.foodForm).subscribe(
+    const filteredForm = this.filterNullValues(this.foodForm.value);
+
+    this.postFoodMenu$ = this.foodService.postFoodMenu(filteredForm).subscribe(
       (results) => {
         console.log(results);
         this.postFoodMenu$.unsubscribe();
       }
     );
+
+    console.log(filteredForm);
   }
+
+  filterNullValues(obj: any) {
+    const filtered: { [key: string]: any } = {};
+  
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (Array.isArray(obj[key])) {
+          const filteredArray = obj[key].filter((item: any) => item !== null);
+          if (filteredArray.length > 0) {
+            filtered[key] = filteredArray;
+          }
+        } else if (obj[key] !== null) {
+          filtered[key] = obj[key];
+        }
+      }
+    }
+  
+    // Check if menuItems is null or empty and set isPackage to false
+    if (!filtered['menuItems'] || filtered['menuItems'].length === 0) {
+      filtered['isPackage'] = false;
+    }
+  
+    return filtered;
+  }
+  
+  
+  toggleFormToEdit(item : foodMenu){
+    this.toggleOffcanvas();
+    console.log(this.menuFormGroups.length)
+    for(let i=this.menuFormGroups.length; i<item.menuItems.length; i++){
+      console.log(i);
+      this.addItem();
+    }
+    this.isSwitchChecked = item.isPackage;
+    
+   
+    this.foodForm.setValue({
+      id : item.id,
+  name: item.name,
+  description: item.description,
+  cost: item.cost,
+  isPackage: item.isPackage,
+  photoId: item.photoId,
+  menuItems : item.menuItems
+    })
+
+    
+
+}
+
+  
+  
 
   get menuFormGroups () {
     return this.foodForm.get('menuItems') as FormArray
@@ -104,9 +214,16 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
 
 
 
+
   ngOnDestroy(): void {
     if(this.imageId$){
       this.imageId$.unsubscribe();
+    }
+    if(this.foodMenuFetch$){
+      this.foodMenuFetch$.unsubscribe();
+    }
+    if(this.getFoodPicture$){
+      this.getFoodPicture$.unsubscribe();
     }
   }
 }

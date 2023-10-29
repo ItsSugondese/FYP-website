@@ -15,9 +15,28 @@ export class ManageFoodsService {
     return this.httpClient.post<any>(this.backendUrl + "temporary-attachments",data);
   }
 
-  postFoodMenu(data : FormGroup){
-    return this.httpClient.post<any>(this.backendUrl + "food-menu",data.value);
+  postFoodMenu(data : { [key: string]: any }){
+    return this.httpClient.post<any>(this.backendUrl + "food-menu",data);
+  }
+
+  getFoodMenu(){
+     return this.httpClient.get<any>(this.backendUrl + "food-menu" + "?type=ALL");
+  }
+
+  getFoodPicture(id: number) {
+    // Replace 'your_api_endpoint_here' with the actual URL of your Spring Boot API
+    return this.httpClient.get(this.backendUrl +'food-menu/photo/' + id, { responseType: 'blob' });
   }
  
 
+}
+export interface foodMenu{
+  id : number,
+  name: string,
+  description: string,
+  cost: number,
+  isPackage: boolean,
+  photoId: number,
+  isAvailableToday : boolean,
+  menuItems : string[]
 }

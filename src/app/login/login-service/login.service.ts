@@ -27,8 +27,10 @@ export class LoginService implements OnInit {
  ) ;
 
  LoginWithGoogle(credentials: string): Observable<any> {
-  const header = new HttpHeaders().set('Content-type', 'application/json');
-  return this.httpClient.post(this.path + "auth/login-with-google", JSON.stringify(credentials), { headers: header, withCredentials: true });
+  // const header = new HttpHeaders().set('Content-type', 'application/json');
+  // return this.httpClient.post(this.path + "auth/login-with-google", JSON.stringify(credentials), { headers: header, withCredentials: true });
+  return this.httpClient.post(this.path + "auth/login-with-google", JSON.stringify(credentials));
+  
 }
 
 

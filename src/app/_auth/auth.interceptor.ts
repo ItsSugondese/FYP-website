@@ -59,14 +59,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
 
     private addToken(req : HttpRequest<any>, token : string | null){
-        console.log("Here in addToken" + token)
          return req.clone(
             {
-                // setHeaders : {
-                //     'Authorization' : `Bearer ${token}`
-                // }
-
-                headers: req.headers.set('Authorization', `Bearer ${token}`)
+                setHeaders : {
+                    'Authorization' : `Bearer ${token}`
+                },
+                withCredentials : true
             }
         );
     }
