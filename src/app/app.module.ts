@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -14,7 +14,14 @@ import { SidenavComponent } from './nav/sidenav/sidenav.component';
 import { ManageFoodsComponent } from './features/staff/manage-foods/manage-foods.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthInterceptor } from './_auth/auth.interceptor';
-import { AuthGuard } from './_auth/auth.guard';
+import { ManageOrdersNavbarComponent } from './features/staff/manage-orders/manage-orders-navbar/manage-orders-navbar.component';
+import { OnlineOrdersComponent } from './features/staff/manage-orders/online-orders/online-orders.component';
+import { OnsiteOrdersComponent } from './features/staff/manage-orders/onsite-orders/onsite-orders.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { HomepageComponent } from './features/everyone/homepage/homepage.component';
+import { NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -24,7 +31,11 @@ import { AuthGuard } from './_auth/auth.guard';
     AdminDashboardComponent,
     ManageStaffComponent,
     SidenavComponent,
-    ManageFoodsComponent
+    ManageFoodsComponent,
+    ManageOrdersNavbarComponent,
+    OnlineOrdersComponent,
+    OnsiteOrdersComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +45,12 @@ import { AuthGuard } from './_auth/auth.guard';
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
+    NgxPaginationModule,
+    NgbModule,
+    NgbTimepicker,
+    DialogModule,
+    ButtonModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {

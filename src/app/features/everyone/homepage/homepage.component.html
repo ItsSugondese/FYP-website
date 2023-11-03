@@ -1,0 +1,76 @@
+<div class="container">
+    <app-sidenav></app-sidenav>
+    <div class="content">
+      
+
+      
+        <div class="card-deck" *ngFor="let item of foodMenuList" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">
+            <div class="card" (click) = "orderPopUp(item)">
+              <img [src]="imageDataMap[item.photoId]" width="50" height="50" alt="Food Picture">
+              <div class="card-body">
+                <h5 class="card-title">{{item.name}}</h5>
+                <p class="card-text hidden" >{{item.id}}</p>
+                
+                <p class="card-text">Rs. {{item.cost}}</p>
+              </div>
+            </div>
+          </div>
+
+
+
+          
+
+
+
+<div class="modal fade" id="exampleModal"  data-backdrop="static" data-keyboard="false"
+[ngClass]="{'show': showPopUp}" *ngIf="selectedFoodMenu">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{selectedFoodMenu.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="togglePopUp()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+        <img [src]="selectedImageDataMap" width="50" height="50" alt="Food Picture" class="text-center">
+        <p>Rs. {{selectedFoodMenu.cost}}</p>
+      </div>
+        <form>
+          <div class="form-data">
+              <label for="recipient-name" class="col-form-label" >Quantity:</label>
+            <input type="text" class="form-control" id="quantity" [(ngModel)]="quantity" name="quantity">
+          </div>
+        </form>
+        <div class="text-center" *ngIf="quantity">
+          Rs. {{selectedFoodMenu.cost * quantity}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="togglePopUp()">Close</button>
+        <button type="button" class="btn btn-primary"  data-dismiss="modal"  [ngClass]="{'disabled-button': quantity < 1}" (click)="selectedOrder(selectedFoodMenu, quantity)">Send message</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Header" [(visible)]="visible" [position]="position"  [closable]="false" *ngIf="foodOrderList.length > 0">
+  <ol>
+    <li *ngFor="let item of foodOrderList; let i= index">
+      <div>
+        {{item.foodName}} - {{item.quantity}}
+        <button class="btn btn-outline-secondary" type="button" (click)="removeOrderItem(i)">
+          <i class="bi bi-trash-fill"></i>  
+        </button> 
+      </div>
+    </li>
+  </ol>
+  <button class="btn-danger" type="text">Order</button>
+ 
+</p-dialog>
+
+    </div>
+</div>
+

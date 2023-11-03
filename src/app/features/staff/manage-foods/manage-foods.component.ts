@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ManageFoodsService, foodMenu } from './manage-foods-service/manage-foods.service';
 import { Observable, Subscription } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import 'bootstrap';
+import { createImageFromBlob } from 'src/app/helper/attachment-helper/attachment.handler';
 
 @Component({
   selector: 'app-manage-foods',
@@ -14,7 +14,6 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
   items: any[] = [{}];
   imageId$ !: Subscription;
   imageId !: number;
-  // foodMenuFetch$ : Observable<any> = this.foodService.getFoodMenu();
 
   foodMenuFetch$ !: Subscription;
   foodMenu !: foodMenu[];
@@ -45,34 +44,45 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.foodMenuFetch$ = this.foodService.getFoodMenu().subscribe(
+      // (response) => {
+      //   this.foodMenu = response.data;
+      //   this.foodMenu.forEach((foodMenu) => {
+      //     if(foodMenu.photoId){
+      //     this.foodService.getFoodPicture(foodMenu.photoId).subscribe((imageBlob: Blob) => {
+      //       const reader = new FileReader();
+      //       reader.onload = () => {
+      //         this.imageDataMap[foodMenu.photoId] = reader.result as string;
+      //       };
+      //       reader.readAsDataURL(imageBlob);
+      //     });
+      //   }
+      //   }); 
+      // }
+
       (response) => {
         this.foodMenu = response.data;
         this.foodMenu.forEach((foodMenu) => {
           if(foodMenu.photoId){
-          this.foodService.getFoodPicture(foodMenu.photoId).subscribe((imageBlob: Blob) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-              this.imageDataMap[foodMenu.photoId] = reader.result as string;
-            };
-            reader.readAsDataURL(imageBlob);
+            this.getFoodPicture$ = this.foodService.getFoodPicture(foodMenu.photoId).subscribe((imageBlob: Blob) => {
+
+
+            createImageFromBlob(imageBlob, foodMenu.photoId)
+             .then((imageData) => {
+              this.imageDataMap[foodMenu.photoId] = imageData;
+          })
+          .catch((error) => {
+              console.log("error when trying to access")
+          });
+
+
+            
           });
         }
-        });
-        
+        }); 
       }
     )
   }
 
-  // createImageFromBlob(image: Blob) {
-  //   const reader = new FileReader();
-  //   reader.addEventListener('load', () => {
-  //     this.imageData = reader.result;
-  //   }, false);
-
-  //   if (image) {
-  //     reader.readAsDataURL(image);
-  //   }
-  // }
 
 
   resetSwitch() {

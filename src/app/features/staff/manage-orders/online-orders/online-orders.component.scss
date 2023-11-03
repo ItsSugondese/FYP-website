@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    align-items: flex-start; /* Align content to the top */
+  }
+  
+  app-sidenav {
+    width: 250px;  /* Example text color for the sidebar */
+    /* Add other styles as needed */
+  }
+ 
+  .hidden {
+    display: none;
+  }

@@ -1,0 +1,27 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+.container {
+    display: flex;
+    align-items: flex-start; /* Align content to the top */
+  }
+  
+  app-sidenav {
+    width: 250px;  /* Example text color for the sidebar */
+    /* Add other styles as needed */
+  }
+ 
+  .hidden {
+    display: none;
+  }
+
+
+/* Add this to your component's CSS file */
+.disabled-button {
+  opacity: 0.6; /* You can adjust the opacity as needed */
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+
+  
