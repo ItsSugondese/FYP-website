@@ -82,7 +82,7 @@
 <!-- For ordering at the end with arrival time -->
 <div class="modal " id="finalPopUpModal"  data-backdrop="static" data-keyboard="false"
 [ngClass]="{'show': finalPopUp}" *ngIf="foodOrderList.length > 0">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog hidden" role="document" [ngClass]="{'hidden' : isOrderSuccessful}">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Order foods</h5>
@@ -119,12 +119,26 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="toggleFinalPopUp()">Close</button>
-        <button type="button" class="btn btn-primary"  data-dismiss="modal" 
-        [ngClass]="{'disabled-button': foodOrderList.length < 1 || arrivalTime == ''}" >Send message</button>
+        <button type="button" class="btn btn-primary" 
+        [ngClass]="{'disabled-button': foodOrderList.length < 1 || arrivalTime == '' || !isPostButtonActive}" (click)="postOrder(foodOrderList, arrivalTime)">Send message</button>
 
-        {{arrivalTime}}
         
       </div>
+    </div>
+  </div>
+
+  <div class="modal-dialog " role="document"  [ngClass]="{'hidden' : !isOrderSuccessful}">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Order Successful</h5>
+      </div>
+      <div class="modal-body">
+        
+        Your order code is <b>{{orderCode}}</b>
+        <br>
+        <button (click)="reloadPage()">Ok</button>
+      </div>
+      
     </div>
   </div>
 </div>

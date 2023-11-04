@@ -5,6 +5,7 @@ import { HomepageService } from './homepage-service/homepage.service';
 import { ManageFoodsService } from '../../staff/manage-foods/manage-foods-service/manage-foods.service';
 import { createImageFromBlob } from 'src/app/helper/attachment-helper/attachment.handler';
 import { FormControl, Validators } from '@angular/forms';
+import { foodOrderPayload, onlineOrderPayload } from 'src/app/payload.interface';
 
 
 
@@ -25,8 +26,13 @@ export class HomepageComponent implements OnInit, OnDestroy {
   finalPopUp = false;
   quantity = 0;
 
+  isPostButtonActive = true;
+  isOrderSuccessful = false;
+
   quantityControl = new FormControl(1, Validators.min(1));
   foodOrderList: foodOrdering[] = []
+
+  orderCode !: number;
 
   arrivalTime : string = '';
   @ViewChild('quantityInput') quantityInput !: ElementRef;
@@ -143,8 +149,38 @@ export class HomepageComponent implements OnInit, OnDestroy {
     return this.foodOrderList[i].quantity = 1;
   }
 
-  //others
+  //hitting backend
+  postOrder(order : foodOrdering[], time : string){
+    this.isPostButtonActive = false;
 
+
+    let foodList : foodOrderPayload[] = [] 
+    order.forEach(e => foodList.push({
+      foodId : e.selectedFoodMenu.id,
+      quantity : e.quantity,
+    })
+    )
+    let orderPayload : onlineOrderPayload = {
+      arrivalTime : time,
+      foodOrderList : foodList,
+    }
+    this.homepageService.postOnlineOrder(orderPayload).subscribe(
+      (response) => {
+        if(response.status == 1){
+          this.orderCode = response.data
+          this.isOrderSuccessful = true
+        }
+      }
+    )
+  }
+
+
+
+  reloadPage(){
+    window.location.reload()
+  }
+
+  //others
   loadFoodMenusAndImage() {
     return this.homepageService.getFoodMenu().subscribe(
       (response) => {
