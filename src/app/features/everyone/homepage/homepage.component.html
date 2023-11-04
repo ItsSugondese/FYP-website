@@ -2,8 +2,8 @@
     <app-sidenav></app-sidenav>
     <div class="content">
       
-
-      
+      <button type="text" >Toggle</button>
+      <!-- shows food list -->
         <div class="card-deck" *ngFor="let item of foodMenuList" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">
             <div class="card" (click) = "orderPopUp(item)">
               <img [src]="imageDataMap[item.photoId]" width="50" height="50" alt="Food Picture">
@@ -21,7 +21,7 @@
           
 
 
-
+<!-- For editing how much of the item we want -->
 <div class="modal fade" id="exampleModal"  data-backdrop="static" data-keyboard="false"
 [ngClass]="{'show': showPopUp}" *ngIf="selectedFoodMenu">
   <div class="modal-dialog" role="document">
@@ -56,20 +56,84 @@
   </div>
 </div>
 
+
+
+<!-- For showing selected items to order -->
 <p-dialog header="Header" [(visible)]="visible" [position]="position"  [closable]="false" *ngIf="foodOrderList.length > 0">
   <ol>
     <li *ngFor="let item of foodOrderList; let i= index">
       <div>
-        {{item.foodName}} - {{item.quantity}}
-        <button class="btn btn-outline-secondary" type="button" (click)="removeOrderItem(i)">
+       <span data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" (click)="orderPopUp(item.selectedFoodMenu)"> {{item.selectedFoodMenu.name}} - {{item.quantity}} </span>
+        <button class="btn btn-outline-secondary" type="button" (click)="removeOrderItem(i, 'dialog')">
           <i class="bi bi-trash-fill"></i>  
         </button> 
       </div>
     </li>
   </ol>
-  <button class="btn-danger" type="text">Order</button>
- 
+  <button class="btn-danger" type="text" data-toggle="modal" data-target="#finalPopUpModal" data-whatever="@mdo"
+  (click)="orderItemScreen(foodOrderList)">  Order</button>
 </p-dialog>
+
+
+
+
+
+
+<!-- For ordering at the end with arrival time -->
+<div class="modal " id="finalPopUpModal"  data-backdrop="static" data-keyboard="false"
+[ngClass]="{'show': finalPopUp}" *ngIf="foodOrderList.length > 0">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Order foods</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="toggleFinalPopUp()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                  <th></th>
+                    <th>FoodName</th>
+                    <th>Quanity Ordered</th>
+                    <th>Total Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of foodOrderList; let i = index">
+                  <td><img [src]="data.imageSrc" width="50" height="50" alt="Food Picture"></td>
+                    <td>{{data.selectedFoodMenu.name}}</td>
+                    <td><input type="number" [(ngModel)]="data.quantity"  [ngClass]="{ 'is-invalid': data.quantity<1}"
+                       (keyup.enter)="onEnterPress($event, i)" (blur)="onInputBlur(i)"  #quantityInput></td>
+                    <td>{{data.selectedFoodMenu.cost * data.quantity}} ({{data.selectedFoodMenu.cost}} each)</td>
+                    <td><button class="btn btn-outline-secondary" type="button"  data-dismiss="modal" (click)="removeOrderItem(i, 'finalOrder')">
+                      <i class="bi bi-trash-fill"></i>  
+                    </button>   </td>  
+                </tr>
+            </tbody>
+        </table>
+
+        <input type="time" [(ngModel)]="arrivalTime" >
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="toggleFinalPopUp()">Close</button>
+        <button type="button" class="btn btn-primary"  data-dismiss="modal" 
+        [ngClass]="{'disabled-button': foodOrderList.length < 1 || arrivalTime == ''}" >Send message</button>
+
+        {{arrivalTime}}
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
 
     </div>
 </div>

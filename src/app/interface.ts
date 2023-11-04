@@ -33,9 +33,9 @@ export interface foodMenu {
 
 export interface foodOrdering {
     id ?: number,
-    foodName :string,
-    foodId : number,
-    quantity : number
+    quantity : number,
+    imageSrc : string,
+    selectedFoodMenu : foodMenu
 }
 
 
