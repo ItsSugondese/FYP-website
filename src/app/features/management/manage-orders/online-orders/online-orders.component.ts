@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { onlineOrder } from './online-order-interface';
+import { onlineOrder } from './online-orders-service/model/online-order-interface';
 import { Subscription } from 'rxjs';
 import { OnlineOrdersService } from './online-orders-service/online-orders.service';
 import { defaultPaginationNavigator } from 'src/app/shared/model/pagination/pagination.model';
-import { orderPagination } from '../order.model';
 import { onlineOrderPagination } from './online-orders-service/model/online-orders-payload.model';
 declare var $: any;
 

@@ -1,31 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { defaultPaginationNavigator } from 'src/app/shared/model/pagination/pagination.model';
+import { manageUserPagination } from './manage-users-service/model/maange-users-payload.model';
 import { Subscription } from 'rxjs';
-import { manageStaffPagination } from './manage-staff-service/model/manage-staff-payload.model';
-import { Staff } from './manage-staff-service/model/staff.model';
-import { ManageStaffService } from './manage-staff-service/manage-staff.service';
+import { ManageUsersService } from './manage-users-service/manage-users.service';
+import { User } from './manage-users-service/model/user.model';
 import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-manage-staff',
-  templateUrl: './manage-staff.component.html',
-  styleUrls: ['./manage-staff.component.scss']
+  selector: 'app-manage-users',
+  templateUrl: './manage-users.component.html',
+  styleUrls: ['./manage-users.component.scss']
 })
-export class ManageStaffComponent {
-  
-  staffList !: Staff[]
+export class ManageUsersComponent implements OnInit{
+
+  userList !: User[]
   paginationNavigator: defaultPaginationNavigator = {
     currentPage: 1,
     row: 10,
   }
-  paginationJson !: manageStaffPagination
+  paginationJson !: manageUserPagination
   fromTime = new Date();
   getOrderSubscriable$ !: Subscription
 
   tableSizes = [5, 10, 15, 20]
 
-  constructor(private manageStaffService : ManageStaffService, private router: Router) {
+  constructor(private manageUserService : ManageUsersService, private router: Router) {
 
   }
   ngOnInit(): void {
@@ -33,14 +33,14 @@ export class ManageStaffComponent {
   }
 
   navigateToSingle(id : Number){
-    this.router.navigate(['/admin/manage_staff/', id])
+    this.router.navigate(['/manage_users/', id])
   }
 
   getPaginatedData(page: number, row: number) {
-    this.getOrderSubscriable$ = this.manageStaffService.getData(
+    this.getOrderSubscriable$ = this.manageUserService.getData(
       this.setAndGetPaginationJson(page, row)).subscribe(
         (response) => {
-          this.staffList = response.data.content
+          this.userList = response.data.content
           this.paginationNavigator.totalNoOfElements = response.data.totalElements
           this.paginationNavigator.totalNoOfpage = response.data.totalPages
           this.paginationNavigator.noOfElements = response.data.numberOfElements
@@ -68,4 +68,5 @@ export class ManageStaffComponent {
     }
     console.log(this.paginationNavigator.row)
   }
+  
 }

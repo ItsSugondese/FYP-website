@@ -8,49 +8,47 @@
         <table id="example" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th>Order Code</th>
+                    <th>Order Type</th>
                     <th>Order By</th>
                     <th>Email</th>
-                    <th>Arrival Time</th>
                     <th>Ordered Items</th>
-                    <th>Approval Status</th>
+                    <th>Ordered Time</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr *ngFor="let data of onlineOrderList | paginate: {
+                <tr *ngFor="let data of onsiteOrderList | paginate: {
                     itemsPerPage : paginationNavigator.row,
                     currentPage : paginationNavigator.currentPage,
                     totalItems : paginationNavigator.totalNoOfElements
                 }">
                     <td class="hidden">{{data.id}}</td>
-                    <td>{{data.order_code}}</td>
-                    <td>{{data.full_name}}</td>
+                    <td>{{data.orderType}}</td>
+                    <td>{{data.fullName}}</td>
                     <td>{{data.email}}</td>
-                    <td>{{data.time_range}}</td>
                     <td>
                         <ul *ngFor="let items of data.orderFoodDetails">
                             <li>{{items.quantity}} x {{items.foodName}} 
                                 (Rs. {{items.cost}} each - Rs. {{items.totalPrice}})</li>
                             </ul>
                     </td>
-                    <td>{{data.approval_status}}</td>
+                    <td>{{data.orderedTime}}</td>
                     <td class=" align-middle">
                         <div class="btn-group">
                         <button type="button" class="btn btn-success mr-2">Approve</button>
                         <button type="button" class="btn btn-danger">Reject</button>
                     </div>
                     </td>
-                </tr> -->
+                </tr> 
             </tbody>
             <tfoot>
-                <!-- <p>{{paginationNavigator.noOfElements}} of {{paginationNavigator.totalNoOfElements}} items</p>
+              <p>{{paginationNavigator.noOfElements}} of {{paginationNavigator.totalNoOfElements}} items</p>
                 <pagination-controls
                 previousLabel="Prev" 
                 nextLabel="Next"
                 (pageChange)="onTableDataChange($event)"
                 >
-                </pagination-controls> -->
+                </pagination-controls>
 
             </tfoot>
         </table>

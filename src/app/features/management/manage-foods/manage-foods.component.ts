@@ -44,20 +44,6 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.foodMenuFetch$ = this.foodService.getFoodMenu().subscribe(
-      // (response) => {
-      //   this.foodMenu = response.data;
-      //   this.foodMenu.forEach((foodMenu) => {
-      //     if(foodMenu.photoId){
-      //     this.foodService.getFoodPicture(foodMenu.photoId).subscribe((imageBlob: Blob) => {
-      //       const reader = new FileReader();
-      //       reader.onload = () => {
-      //         this.imageDataMap[foodMenu.photoId] = reader.result as string;
-      //       };
-      //       reader.readAsDataURL(imageBlob);
-      //     });
-      //   }
-      //   }); 
-      // }
 
       (response) => {
         this.foodMenu = response.data;

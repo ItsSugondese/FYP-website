@@ -9,14 +9,13 @@
                 <tr>
                     <th>Username</th>
                     <th>Email</th>
-                    <th>Contact Number</th>
                     <th>Account Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                
-                <tr *ngFor="let data of staffList | paginate: {
+                <tr *ngFor="let data of userList | paginate: {
                     itemsPerPage : paginationNavigator.row,
                     currentPage : paginationNavigator.currentPage,
                     totalItems : paginationNavigator.totalNoOfElements
@@ -24,7 +23,6 @@
                     <td class="hidden">{{data.id}}</td>
                     <td>{{data.fullName}}</td>
                     <td>{{data.email}}</td>
-                    <td>{{data.contactNumber}}</td>
                     <td>{{data.accountNonLocked? "Running" : "Disabled"}}</td>
                     <td class=" align-middle">
                         <button type="button" class="btn btn-success mr-2" (click)="navigateToSingle(data.id)">Inspect</button>

@@ -1,4 +1,4 @@
-import { Time } from "@angular/common";
+import { orderedFood } from "../../../order.model";
 
 
 
@@ -14,12 +14,4 @@ export interface onlineOrder {
     email: string;
     time_range : string,
     orderFoodDetails : orderedFood[]
-}
-
-export interface orderedFood {
-    id: number;
-  quantity: number;
-  foodName: string;
-  cost: number;
-  totalPrice: number;
 }
