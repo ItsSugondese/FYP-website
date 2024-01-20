@@ -14,7 +14,5 @@ export class ManageUsersService {
   getData(paginationRequest : manageUserPagination){
      return this.httpClient.post<any>(this.backendUrl + this.moduleName + "/paginated", paginationRequest);
   }
-  getSingleUser(id : Number){
-     return this.httpClient.get<any>(this.backendUrl + this.moduleName + "/" + id);
-  }
+  
 }

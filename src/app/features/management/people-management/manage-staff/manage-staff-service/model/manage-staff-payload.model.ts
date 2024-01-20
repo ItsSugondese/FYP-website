@@ -3,3 +3,4 @@ import { paginationPayload } from "src/app/shared/model/pagination/pagination.mo
 export interface manageStaffPagination extends paginationPayload{
 
 }
+

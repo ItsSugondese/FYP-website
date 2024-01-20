@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { manageStaffPagination } from './model/manage-staff-payload.model';
+import {manageStaffPagination } from './model/manage-staff-payload.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ import { manageStaffPagination } from './model/manage-staff-payload.model';
 export class ManageStaffService {
 
   backendUrl = environment.apiUrl;
+  moduleName :string = "staff";
   constructor(private httpClient : HttpClient) { }
 
   postImage(data : FormData){
@@ -16,18 +17,19 @@ export class ManageStaffService {
   }
 
   postStaffData(data : { [key: string]: any }){
-    return this.httpClient.post<any>(this.backendUrl + "staff", data);
+    return this.httpClient.post<any>(this.backendUrl + this.moduleName, data);
   }
 
   getData(paginationRequest : manageStaffPagination){
-    return this.httpClient.post<any>(this.backendUrl + "staff/paginated", paginationRequest);
+    return this.httpClient.post<any>(this.backendUrl + this.moduleName + "/paginated", paginationRequest);
  }
   getSingleStaff(id : number){
-    return this.httpClient.get<any>(this.backendUrl + "staff/" + id);
+    return this.httpClient.get<any>(this.backendUrl +  "user/" + id);
  }
 
  getStaffPicture(id: number) {
   // Replace 'your_api_endpoint_here' with the actual URL of your Spring Boot API
-  return this.httpClient.get(this.backendUrl +'staff/photo/' + id, { responseType: 'blob' });
+  return this.httpClient.get(this.backendUrl + this.moduleName +'/photo/' + id, { responseType: 'blob' });
 }
+ 
 }

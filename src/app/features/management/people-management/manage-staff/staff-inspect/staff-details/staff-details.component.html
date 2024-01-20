@@ -1,0 +1,55 @@
+<div class="container">
+  <app-sidenav></app-sidenav>
+  <div class="content">
+    <button type="button" class="btn btn-success mr-2 ml-5" (click)="visible = !visible">
+      {{staff.accountNonLocked? "Disable" : "Enable"}}
+      </button>
+    <div class="card">
+      <img [src]="imageData" width="50" height="50" alt="Food Picture">
+      <div class="card-body">
+        <p class="card-text hidden">{{staff.id}}</p>
+        <h5 class="card-title">{{staff.fullName}}</h5>
+        <p class="card-text">{{staff.contactNumber}}</p>
+        <p class="card-text">{{staff.email}}</p>
+        <p class="card-text">{{staff.startedWorkingOn}}</p>
+        <p class="card-text">{{staff.accountNonLocked}}</p>
+      </div>
+    </div>
+
+    <!-- Your component template -->
+    <!-- Your component template with Bootstrap styles -->
+<!-- Your component template with Bootstrap styles -->
+<p-dialog header="Header" [(visible)]="visible" [closable]="false" [style]="{'width': '500px'}">
+  <!-- Header Row -->
+  <ng-template pTemplate="header">
+    <div class="d-flex  justify-content-between align-items-center">
+      <div class="h4">{{staff.accountNonLocked? "Disable" : "Enable"}} Staff</div>
+      <div>
+        <span class="mr-3">{{ remarks }}</span>
+        <span class="cursor-pointer justify-content-end" (click)="visible = false"> &#10006;</span>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Content Row -->
+  <ng-template pTemplate="content">
+    <div class="form-group">
+      <label for="remarks">Remarks</label>
+      <textarea id="remarks" class="form-control" [(ngModel)]="remarks" placeholder="Enter your remarks"></textarea>
+    </div>
+  </ng-template>
+
+  <!-- Footer Row -->
+  <ng-template pTemplate="footer">
+    <div class="d-flex justify-content-end align-items-center">
+      <button type="button" class="btn btn-secondary " (click)="visible = false">Cancel</button>
+      <button type="button" class="btn btn-danger ml-2" (click)="disableStaff()">{{staff.accountNonLocked? "Disable" : "Enable"}}</button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+
+
+
+  </div>
+</div>

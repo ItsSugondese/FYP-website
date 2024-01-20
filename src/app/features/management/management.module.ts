@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ManageFoodsComponent } from './manage-foods/manage-foods.component';
-import { ManageOrdersNavbarComponent } from './manage-orders/manage-orders-navbar/manage-orders-navbar.component';
-import { OnsiteOrdersComponent } from './manage-orders/onsite-orders/onsite-orders.component';
-import { OnlineOrdersComponent } from './manage-orders/online-orders/online-orders.component';
+
 import { OrderModule } from './manage-orders/order.module';
-import { ManageStaffComponent } from './manage-staff/manage-staff.component';
 import { RouterModule } from '@angular/router';
 import { UiModule } from 'src/app/shared/ui/ui.module';
 import { FormModule } from 'src/app/shared/module/form.module';
-import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { NgxModule } from 'src/app/shared/module/ngx.module';
-import { AddStaffComponent } from './manage-staff/add-staff/add-staff.component';
-import { StaffDetailsComponent } from './manage-staff/staff-details/staff-details.component';
-import { UserDetailsComponent } from './manage-users/user-details/user-details.component';
+import { NgprimeModule } from 'src/app/shared/module/ngprime.module';
+import { StaffDisableHistoryComponent } from './people-management/manage-staff/staff-inspect/staff-disable-history/staff-disable-history.component';
+import { UserDisableHistoryComponent } from './people-management/manage-users/user-inspect/user-disable-history/user-disable-history.component';
+import { ManageStaffComponent } from './people-management/manage-staff/manage-staff.component';
+import { ManageUsersComponent } from './people-management/manage-users/manage-users.component';
+import { AddStaffComponent } from './people-management/manage-staff/add-staff/add-staff.component';
+import { StaffDetailsComponent } from './people-management/manage-staff/staff-inspect/staff-details/staff-details.component';
+import { UserDetailsComponent } from './people-management/manage-users/user-inspect/user-details/user-details.component';
 
 
 
@@ -24,7 +25,9 @@ import { UserDetailsComponent } from './manage-users/user-details/user-details.c
     ManageUsersComponent,
     AddStaffComponent,
     StaffDetailsComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    StaffDisableHistoryComponent,
+    UserDisableHistoryComponent
 
   ],
   imports: [
@@ -32,7 +35,8 @@ import { UserDetailsComponent } from './manage-users/user-details/user-details.c
     OrderModule,
     UiModule,
     FormModule,
-    NgxModule
+    NgxModule,
+    NgprimeModule
   ]
 })
 export class ManagementModule { }

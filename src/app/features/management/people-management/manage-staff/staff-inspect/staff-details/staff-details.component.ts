@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Staff } from '../manage-staff-service/model/staff.model';
 import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/attachment.handler';
-import { ManageStaffService } from '../manage-staff-service/manage-staff.service';
+import { Staff } from '../../manage-staff-service/model/staff.model';
+import { ManageStaffService } from '../../manage-staff-service/manage-staff.service';
+import { PeopleService } from '../../../people-service/people.service';
+import { disableUser } from '../../../people-service/model/people-payload.model';
 
 @Component({
   selector: 'app-staff-details',
@@ -18,9 +20,14 @@ export class StaffDetailsComponent implements OnInit, OnDestroy{
   staffFetch$ !: Subscription;
   staffPicture$ !: Subscription;
   imageData !: string;
+  remarks !: string
 
+  visible: boolean = false;
 
-  constructor(private router: ActivatedRoute, private staffService: ManageStaffService){}
+  disableSend$ !: Subscription
+
+  constructor(private router: ActivatedRoute, private staffService: ManageStaffService,
+    private peopleService : PeopleService){}
 
 
   ngOnInit(): void {
@@ -50,6 +57,15 @@ export class StaffDetailsComponent implements OnInit, OnDestroy{
     );
   }
 
+  disableStaff(){
+    const disablePayload : disableUser = {
+      isDisabled : this.staff.accountNonLocked ? true : false,
+      userId : this.staff.id,
+      remarks :  this.remarks
+    }
+    this.disableSend$ =  this.peopleService.disableUser(disablePayload).subscribe();
+  }
+
 
   ngOnDestroy(): void {
     if(this.imageId$){
@@ -60,6 +76,10 @@ export class StaffDetailsComponent implements OnInit, OnDestroy{
     }
     if(this.staffPicture$){
       this.staffPicture$.unsubscribe();
+    }
+
+    if(this.disableSend$){
+      this.disableSend$.unsubscribe();
     }
   }
 

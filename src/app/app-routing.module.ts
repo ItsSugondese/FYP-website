@@ -4,14 +4,14 @@ import { AuthGuard } from './_auth/auth.guard';
 import { LoginComponent } from './_auth/registration/login/login.component';
 import { LogoutComponent } from './_auth/registration/logout/logout.component';
 import { ManageFoodsComponent } from './features/management/manage-foods/manage-foods.component';
-import { ManageStaffComponent } from './features/management/manage-staff/manage-staff.component';
 import { OnlineOrdersComponent } from './features/management/manage-orders/online-orders/online-orders.component';
 import { OnsiteOrdersComponent } from './features/management/manage-orders/onsite-orders/onsite-orders.component';
 import { HomepageComponent } from './features/homepage/homepage.component';
-import { ManageUsersComponent } from './features/management/manage-users/manage-users.component';
-import { AddStaffComponent } from './features/management/manage-staff/add-staff/add-staff.component';
-import { StaffDetailsComponent } from './features/management/manage-staff/staff-details/staff-details.component';
-import { UserDetailsComponent } from './features/management/manage-users/user-details/user-details.component';
+import { StaffDetailsComponent } from './features/management/people-management/manage-staff/staff-inspect/staff-details/staff-details.component';
+import { ManageStaffComponent } from './features/management/people-management/manage-staff/manage-staff.component';
+import { AddStaffComponent } from './features/management/people-management/manage-staff/add-staff/add-staff.component';
+import { ManageUsersComponent } from './features/management/people-management/manage-users/manage-users.component';
+import { UserDetailsComponent } from './features/management/people-management/manage-users/user-inspect/user-details/user-details.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
