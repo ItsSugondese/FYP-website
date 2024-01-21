@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { defaultPaginationNavigator } from 'src/app/shared/model/pagination/pagination.model';
 import { Subscription } from 'rxjs';
 import { manageStaffPagination } from './manage-staff-service/model/manage-staff-payload.model';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './manage-staff.component.html',
   styleUrls: ['./manage-staff.component.scss']
 })
-export class ManageStaffComponent {
+export class ManageStaffComponent implements OnInit, OnDestroy {
   
   staffList !: Staff[]
   paginationNavigator: defaultPaginationNavigator = {
@@ -21,13 +21,14 @@ export class ManageStaffComponent {
   }
   paginationJson !: manageStaffPagination
   fromTime = new Date();
-  getOrderSubscriable$ !: Subscription
+  getStaffSubscriable$ !: Subscription
 
   tableSizes = [5, 10, 15, 20]
 
   constructor(private manageStaffService : ManageStaffService, private router: Router) {
 
   }
+  
   ngOnInit(): void {
     this.getPaginatedData(this.paginationNavigator.currentPage, this.paginationNavigator.row);
   }
@@ -37,7 +38,7 @@ export class ManageStaffComponent {
   }
 
   getPaginatedData(page: number, row: number) {
-    this.getOrderSubscriable$ = this.manageStaffService.getData(
+    this.getStaffSubscriable$ = this.manageStaffService.getData(
       this.setAndGetPaginationJson(page, row)).subscribe(
         (response) => {
           this.staffList = response.data.content
@@ -67,5 +68,11 @@ export class ManageStaffComponent {
       this.getPaginatedData(this.paginationNavigator.currentPage, this.paginationNavigator.row);
     }
     console.log(this.paginationNavigator.row)
+  }
+
+  ngOnDestroy(): void {
+    if(this.getStaffSubscriable$){
+      this.getStaffSubscriable$.unsubscribe();
+    }
   }
 }

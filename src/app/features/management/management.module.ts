@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ManageFoodsComponent } from './manage-foods/manage-foods.component';
 
 import { OrderModule } from './manage-orders/order.module';
-import { RouterModule } from '@angular/router';
 import { UiModule } from 'src/app/shared/ui/ui.module';
 import { FormModule } from 'src/app/shared/module/form.module';
 import { NgxModule } from 'src/app/shared/module/ngx.module';

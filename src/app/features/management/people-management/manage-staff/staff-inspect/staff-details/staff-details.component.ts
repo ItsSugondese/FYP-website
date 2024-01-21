@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/attachment.handler';
 import { Staff } from '../../manage-staff-service/model/staff.model';
@@ -27,7 +27,7 @@ export class StaffDetailsComponent implements OnInit, OnDestroy{
   disableSend$ !: Subscription
 
   constructor(private router: ActivatedRoute, private staffService: ManageStaffService,
-    private peopleService : PeopleService){}
+    private peopleService : PeopleService, private navigateRouter: Router){}
 
 
   ngOnInit(): void {
@@ -64,6 +64,10 @@ export class StaffDetailsComponent implements OnInit, OnDestroy{
       remarks :  this.remarks
     }
     this.disableSend$ =  this.peopleService.disableUser(disablePayload).subscribe();
+  }
+
+  navigateToHistory(){
+    this.navigateRouter.navigate(['/manage_users/' + this.id + '/history'])
   }
 
 

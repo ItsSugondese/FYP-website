@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { defaultPaginationNavigator } from 'src/app/shared/model/pagination/pagination.model';
 import { manageUserPagination } from './manage-users-service/model/maange-users-payload.model';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './manage-users.component.html',
   styleUrls: ['./manage-users.component.scss']
 })
-export class ManageUsersComponent implements OnInit{
+export class ManageUsersComponent implements OnInit, OnDestroy{
 
   userList !: User[]
   paginationNavigator: defaultPaginationNavigator = {
@@ -28,6 +28,7 @@ export class ManageUsersComponent implements OnInit{
   constructor(private manageUserService : ManageUsersService, private router: Router) {
 
   }
+  
   ngOnInit(): void {
     this.getPaginatedData(this.paginationNavigator.currentPage, this.paginationNavigator.row);
   }
@@ -67,6 +68,12 @@ export class ManageUsersComponent implements OnInit{
       this.getPaginatedData(this.paginationNavigator.currentPage, this.paginationNavigator.row);
     }
     console.log(this.paginationNavigator.row)
+  }
+
+  ngOnDestroy(): void {
+    if(this.getOrderSubscriable$){
+      this.getOrderSubscriable$.unsubscribe();
+    }
   }
   
 }

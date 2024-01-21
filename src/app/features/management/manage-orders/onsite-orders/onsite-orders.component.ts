@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { defaultPaginationNavigator } from 'src/app/shared/model/pagination/pagination.model';
 import { OnsiteOrdersService } from './onsite-orders-service/onsite-orders.service';
@@ -10,7 +10,7 @@ import { onsiteOrder } from './onsite-orders-service/model/onsite-order-interfac
   templateUrl: './onsite-orders.component.html',
   styleUrls: ['./onsite-orders.component.scss']
 })
-export class OnsiteOrdersComponent implements OnInit {
+export class OnsiteOrdersComponent implements OnInit, OnDestroy {
 
   paginationNavigator: defaultPaginationNavigator = {
     currentPage: 1,
@@ -22,6 +22,7 @@ export class OnsiteOrdersComponent implements OnInit {
   constructor(private onsiteOrdersService : OnsiteOrdersService) {
     
   }
+  
   ngOnInit(): void {
     this.getPaginatedData(this.paginationNavigator.currentPage, this.paginationNavigator.row);
   }
@@ -57,6 +58,11 @@ export class OnsiteOrdersComponent implements OnInit {
   onTableDataChange(event: any) {
     this.paginationNavigator.currentPage = event
     this.getPaginatedData(this.paginationNavigator.currentPage, this.paginationNavigator.row);
+  }
 
+  ngOnDestroy(): void {
+    if(this.getOrderSubscriable$){
+      this.getOrderSubscriable$.unsubscribe();
+    }
   }
 }

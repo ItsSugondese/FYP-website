@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ManageUsersService } from '../../manage-users-service/manage-users.service';
 import { User } from '../../manage-users-service/model/user.model';
 import { PeopleService } from '../../../people-service/people.service';
@@ -26,7 +26,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 
 
   constructor(private router: ActivatedRoute, private userService: ManageUsersService, 
-    private peopleService: PeopleService){}
+    private peopleService: PeopleService, private navigateRouter: Router){}
 
 
   ngOnInit(): void {
@@ -42,6 +42,10 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
         this.user = response.data;
         }
     );
+  }
+
+  navigateToHistory(){
+    this.navigateRouter.navigate(['/manage_users/' + this.id + '/history'])
   }
 
   disableUser(){

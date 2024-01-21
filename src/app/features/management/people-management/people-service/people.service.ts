@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { disableUser } from './model/people-payload.model';
+import { disableUser, disableUserHistoryPagination } from './model/people-payload.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,10 @@ export class PeopleService {
  }
 
  disableUser(payload : disableUser) {
-  // Replace 'your_api_endpoint_here' with the actual URL of your Spring Boot API
-  return this.httpClient.post<any>(this.backendUrl  +"user/disable", payload);
+  return this.httpClient.post<any>(this.backendUrl + this.moduleName +"/disable", payload);
+}
+
+getDisableHistory(paginationRequest : disableUserHistoryPagination){
+  return this.httpClient.post<any>(this.backendUrl + this.moduleName + "/disable/pageable", paginationRequest);
 }
 }

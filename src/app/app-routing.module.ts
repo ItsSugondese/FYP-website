@@ -12,6 +12,8 @@ import { ManageStaffComponent } from './features/management/people-management/ma
 import { AddStaffComponent } from './features/management/people-management/manage-staff/add-staff/add-staff.component';
 import { ManageUsersComponent } from './features/management/people-management/manage-users/manage-users.component';
 import { UserDetailsComponent } from './features/management/people-management/manage-users/user-inspect/user-details/user-details.component';
+import { StaffDisableHistoryComponent } from './features/management/people-management/manage-staff/staff-inspect/staff-disable-history/staff-disable-history.component';
+import { UserDisableHistoryComponent } from './features/management/people-management/manage-users/user-inspect/user-disable-history/user-disable-history.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -20,11 +22,13 @@ const routes: Routes = [
   {path: 'manage_foods', component: ManageFoodsComponent,  data: {roles:['ADMIN']}},
   {path: 'admin/manage_staff', component : ManageStaffComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
+  {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/add_staff', component : AddStaffComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'manage_online_orders', component: OnlineOrdersComponent},
   {path: 'manage_onsite_orders', component: OnsiteOrdersComponent},
   {path: 'manage_users', component: ManageUsersComponent},
   {path: 'manage_users/:id', component: UserDetailsComponent},
+  {path: 'manage_users/:id/history', component: UserDisableHistoryComponent},
   {path: 'homepage', component: HomepageComponent}
 ];
 
