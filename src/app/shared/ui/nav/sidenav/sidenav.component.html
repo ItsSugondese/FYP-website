@@ -1,5 +1,122 @@
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <div class="sidebar">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+<div class="side-nav-main bg-[#A62A22] h-screen x-0">
+<div class="px-3">
+  <!-- Header -->
+  <div class="nav-header flex py-3 pb-5 justify-between items-center text-white ">
+    <div class="logo w-10 flex items-center last:pl-2">
+      <img src="assets/logo/back iic logo.png" />
+      <span class="align-middle ml-2 font-semibold">IIC</span>
+    </div>
+    <div class="icon-drawer">
+      <svg width="24" height="24" viewBox="0 0 1024 1024" class="fill-current">
+        <path
+          d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 000 13.8z">
+        </path>
+      </svg>
+    </div>
+  </div>
+  
+  <!-- Contents -->
+  <div class="nav-content">
+    <ul>
+      <li *ngFor="let data of labelData">
+      <div [routerLink]="'/' + data.routeLink"   class="dashboard text-white flex  items-center"  routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact:true}">
+        <svg width="18"  viewBox="0 0 1024 1024" class="fill-current">
+          <path d="M120.1 770.6L443 823.2V543.8H120.1v226.8zm63.4-163.5h196.2v141.6l-196.2-31.9V607.1zm340.3 226.5l382 62.2v-352h-382v289.8zm63.4-226.5h255.3v214.4l-255.3-41.6V607.1zm-63.4-415.7v288.8h382V128.1l-382 63.3zm318.7 225.5H587.3V245l255.3-42.3v214.2zm-722.4 63.3H443V201.9l-322.9 53.5v224.8zM183.5 309l196.2-32.5v140.4H183.5V309z"></path>
+        </svg>
+        <span class="text-lg ml-1">{{data.label}}</span>
+      </div>
+    </li>
+      <!-- <li [ngClass]="{ 'active': currentRoute === '/' || '/login'}" [routerLink]="['/']" routerLinkActive="active-nav-option">
+      <div class="dashboard text-white flex  items-center">
+        <svg width="18"  viewBox="0 0 1024 1024" class="fill-current">
+          <path d="M120.1 770.6L443 823.2V543.8H120.1v226.8zm63.4-163.5h196.2v141.6l-196.2-31.9V607.1zm340.3 226.5l382 62.2v-352h-382v289.8zm63.4-226.5h255.3v214.4l-255.3-41.6V607.1zm-63.4-415.7v288.8h382V128.1l-382 63.3zm318.7 225.5H587.3V245l255.3-42.3v214.2zm-722.4 63.3H443V201.9l-322.9 53.5v224.8zM183.5 309l196.2-32.5v140.4H183.5V309z"></path>
+        </svg>
+        <span class="text-lg ml-1">Login</span>
+      </div>
+    </li> -->
+
+
+    <li>
+      <i class="bx bx-search"></i>
+      <input type="text" placeholder="Search...">
+       <span class="tooltip">Search</span>
+    </li>
+    <li>
+      <a [routerLink]="['/']">
+        <i class="bx bx-grid-alt"></i>
+        <span class="link_name">Home</span>
+      </a>
+      <span class="tooltip">Home</span>
+    </li>
+    <li>
+      <a [routerLink]="['/manage_foods']">
+        <i class="bx bx-user"></i>
+        <span class="link_name">Manage Foods</span>
+      </a>
+      <span class="tooltip">Manage Foods</span>
+    </li>
+    <li>
+      <a [routerLink]="['/homepage']">
+        <i class="bx bx-chat"></i>
+        <span class="link_name">Make Order</span>
+      </a>
+      <span class="tooltip">Make Order</span>
+    </li>
+    <li>
+      <a [routerLink]="['/manage_online_orders']">
+        <i class="bx bx-pie-chart-alt-2"></i>
+        <span class="link_name">Manage Orders</span>
+      </a>
+      <span class="tooltip">Manage Orders</span>
+    </li>
+    <li>
+      <a [routerLink]="['/manage_users']">
+        <i class="bx bx-folder"></i>
+        <span class="link_name">Manage Users</span>
+      </a>
+      <span class="tooltip">Manage Users</span>
+    </li>
+    <li>
+      <a [routerLink]="['/admin/manage_staff']">
+        <i class="bx bx-cart-alt"></i>
+        <span class="link_name">Manage Staff</span>
+      </a>
+      <span class="tooltip">Manage Staff</span>
+    </li>
+    <li>
+      <a [routerLink]="['/feedback']">
+        <i class="bx bx-cart-alt"></i>
+        <span class="link_name">Feedback</span>
+      </a>
+      <span class="tooltip">Feedback</span>
+    </li>
+    <li>
+      <a href="#">
+        <i class="bx bx-cog"></i>
+        <span class="link_name">Settings</span>
+      </a>
+      <span class="tooltip">Settings</span>
+    </li>
+    
+    </ul>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="sidebar">
     <div class="logo_details">
       <i class="bx bxl-audible icon"></i>
       <div class="logo_name">Code Effect</div>
@@ -47,12 +164,26 @@
         <span class="tooltip">Manage Users</span>
       </li>
       <li>
-        <!-- <a [routerLink]="['/admin/manage_staff/add_staff']"> -->
+        -->
+
+
+
+<!-- <a [routerLink]="['/admin/manage_staff/add_staff']"> -->
+
+
+<!--
         <a [routerLink]="['/admin/manage_staff']">
           <i class="bx bx-cart-alt"></i>
           <span class="link_name">Manage Staff</span>
         </a>
         <span class="tooltip">Manage Staff</span>
+      </li>
+      <li>
+        <a [routerLink]="['/feedback']">
+          <i class="bx bx-cart-alt"></i>
+          <span class="link_name">Feedback</span>
+        </a>
+        <span class="tooltip">Feedback</span>
       </li>
       <li>
         <a href="#">
@@ -74,7 +205,4 @@
     </ul>
   </div>
 
-
-
-
-
+ -->

@@ -3,6 +3,7 @@ import { ManageFoodsService, foodMenu } from './manage-foods-service/manage-food
 import { Observable, Subscription } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/attachment.handler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-foods',
@@ -37,7 +38,7 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
   
 
   constructor(private foodService : ManageFoodsService,
-    private formBuilder : FormBuilder) {
+    private formBuilder : FormBuilder, private router: Router) {
     
   }
   
@@ -176,28 +177,29 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
   }
   
   
-  toggleFormToEdit(item : foodMenu){
-    this.toggleOffcanvas();
-    console.log(this.menuFormGroups.length)
-    for(let i=this.menuFormGroups.length; i<item.menuItems.length; i++){
-      console.log(i);
-      this.addItem();
-    }
-    this.isSwitchChecked = item.isPackage;
+// toggleFormToEdit(item : foodMenu){
+//     this.toggleOffcanvas();
+//     console.log(this.menuFormGroups.length)
+//     for(let i=this.menuFormGroups.length; i<item.menuItems.length; i++){
+//       console.log(i);
+//       this.addItem();
+//     }
+//     this.isSwitchChecked = item.isPackage;
     
    
-    this.foodForm.setValue({
-      id : item.id,
-  name: item.name,
-  description: item.description,
-  cost: item.cost,
-  isPackage: item.isPackage,
-  photoId: item.photoId,
-  menuItems : item.menuItems
-    })
+//     this.foodForm.setValue({
+//       id : item.id,
+//   name: item.name,
+//   description: item.description,
+//   cost: item.cost,
+//   isPackage: item.isPackage,
+//   photoId: item.photoId,
+//   menuItems : item.menuItems
+//     })
+// }
 
-    
-
+  toggleFormToEdit(item : foodMenu){
+    this.router.navigate(['/feedback/', item.id])
 }
 
   

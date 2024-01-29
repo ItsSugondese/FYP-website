@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ManageStaffService } from '../manage-staff-service/manage-staff.service';
 import { Subscription } from 'rxjs';
@@ -8,14 +8,14 @@ import { Subscription } from 'rxjs';
   templateUrl: './add-staff.component.html',
   styleUrls: ['./add-staff.component.scss']
 })
-export class AddStaffComponent {
+export class AddStaffComponent implements OnInit, OnDestroy {
   staffForm !: FormGroup
   imageId$ !: Subscription;
   postStaffDetails$ !: Subscription
   imageId !: number;
   fileControl = new FormControl(null, Validators.required);
   constructor(private fb: FormBuilder, private staffService : ManageStaffService) {}
-
+  
   ngOnInit() {
     this.staffForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -35,25 +35,33 @@ export class AddStaffComponent {
       const file = files[0];
       this.fileControl.setValue(file);
       formData.append('attachments', file);
-
+      
       this.imageId$ = this.staffService.postImage(formData).subscribe(
         (response) => {
           this.staffForm.get("profileId")?.setValue(response.data[0]);
           this.imageId$.unsubscribe();
         }
-      )
-
-    }
-  }
-  
-
-  onSubmit() {
-   
-    this.postStaffDetails$ = this.staffService.postStaffData(this.staffForm.value).subscribe(
-      (results) => {
-        console.log(results);
-        this.postStaffDetails$.unsubscribe();
+        )
+        
       }
-    );
-  }
-}
+    }
+    
+    
+    onSubmit() {
+      
+      this.postStaffDetails$ = this.staffService.postStaffData(this.staffForm.value).subscribe(
+        (results) => {
+          console.log(results);
+          this.postStaffDetails$.unsubscribe();
+        }
+        );
+      }
+
+
+      ngOnDestroy(): void {
+        if(this.postStaffDetails$){
+          this.postStaffDetails$.unsubscribe();
+        }
+      }
+    }
+    

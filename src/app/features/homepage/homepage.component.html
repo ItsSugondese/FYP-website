@@ -2,7 +2,6 @@
     <app-sidenav></app-sidenav>
     <div class="content">
       
-      <button type="text" >Toggle</button>
       <!-- shows food list -->
         <div class="card-deck" *ngFor="let item of foodMenuList" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">
             <div class="card" (click) = "orderPopUp(item)">

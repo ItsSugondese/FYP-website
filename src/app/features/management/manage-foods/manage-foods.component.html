@@ -1,35 +1,80 @@
+<!-- 
 <style>
   .hidden {
     display: none;
   }
-  </style>
+</style> -->
 <div class="container">
   <app-sidenav></app-sidenav>
   <div class="content">
 
-    <button class="btn btn-primary" type="button" (click)="toggleOffcanvas()">Toggle right offcanvas</button>
-    <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-      aria-controls="offcanvasRight">Toggle right offcanvas</button> -->
-
-  
 
 
-      <div class="card-deck" *ngFor="let item of foodMenu">
-        <div class="card" (click) = "toggleFormToEdit(item)">
-          <img [src]="imageDataMap[item.photoId]" width="50" height="50" alt="Food Picture">
-          <div class="card-body">
-            <h5 class="card-title">{{item.name}}</h5>
-            <p class="card-text hidden" >{{item.id}}</p>
-            <p class="card-text">{{item.description}}</p>
-            <p class="card-text">Rs. {{item.cost}}</p>
-            <ul *ngFor="let list of item.menuItems">
-              <li>{{list}}</li>
-            </ul>
-            
-            
-          </div>
+
+
+
+    <div>
+      <div class="search-menu">
+        <div>
+          HEre
         </div>
       </div>
+    </div>
+
+
+    <button class="btn btn-primary" type="button" (click)="toggleOffcanvas()">Toggle right offcanvas</button>
+
+
+
+
+    <div>
+      <div class="w-auto inline-block rounded-lg text-[#1565C0] p-1 px-2 bg-blue-200">
+        Individual
+      </div>
+    </div>
+
+
+    <div class="card-deck inline-block ml-8 mb-8 first:ml-0 last:ml-0" *ngFor="let item of foodMenu">
+      <div class="rounded inline-block  bg-white " >
+        <div class="w-full ">
+          <div class="flex w-full px-3 pt-2 justify-end">
+            <span> Available Today </span>
+            <div class="form-check form-switch flex justify-end">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck{{item.id}}"
+                (click)="resetSwitch()" [checked]="item.isAvailableToday" formControlName="isPackage">
+            </div>
+          </div>
+          <div (click)="toggleFormToEdit(item)">
+          <div class="image-container w-64 h-40 p-3 pt-1 object-cover overflow-hidden rounded flex justify-center ">
+            <img [src]="imageDataMap[item.photoId]" class="rounded w-full object-cover">
+          </div>
+          <div class="header flex justify-between px-3 pb-2 font-bold text-lg">
+            <h1 class="">{{item.name}}</h1>
+            <h1 class="">{{item.cost}}</h1>
+          </div>
+          <div class="description px-3 pb-2 text-sm">
+            {{item.description}}
+          </div>
+          <div class="w-full flex justify-between text-sm font-semibold">
+
+            <div *ngIf="item.isPackage">
+              {{item.menuItems.length}} items
+            </div>
+            <!-- <div class="menuItems" *ngIf="item.isPackage">
+            <ul *ngFor="let menuItems of item.menuItems">
+              <li>{{menuItems}}</li>
+            </ul>
+          </div> -->
+            <div class="flex justify-end px-3 pb-3" [style.order]="item.isPackage ? 1 : 0">
+              <div class=" inline-block rounded-lg text-[#1565C0] p-1 px-2 bg-blue-200">
+                {{item.isPackage ? 'Package' : 'Individual'}}
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -39,10 +84,14 @@
 
 
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" [ngClass]="{'show': isOffcanvasOpen}" tabindex="-1" id="myOffcanvas" data-bs-backdrop="false">
+
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+      [ngClass]="{'show': isOffcanvasOpen}" tabindex="-1" id="myOffcanvas" data-bs-backdrop="false">
       <div class="offcanvas-header">
         <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" (click)="toggleOffcanvas()"></button>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
+          (click)="toggleOffcanvas()"></button>
       </div>
       <div class="offcanvas-body">
         <form [formGroup]="foodForm" (ngSubmit)="submitDetails()">
@@ -54,7 +103,8 @@
           </div>
           <div class="form-group">
             <label for="inputPrice">Price</label>
-            <input type="number" class="form-control" id="inputPrice" placeholder="Price of the food" formControlName="cost">
+            <input type="number" class="form-control" id="inputPrice" placeholder="Price of the food"
+              formControlName="cost">
           </div>
 
           <div class="form-group">
@@ -64,43 +114,43 @@
           </div>
           <div class="form-group">
             <label for="exampleFormControlFile1">Image upload</label>
-            <input type="file" class="form-control-file" id="exampleFormControlFile1" (change) = "onFileSelected($event)">
+            <input type="file" class="form-control-file" id="exampleFormControlFile1" (change)="onFileSelected($event)">
           </div>
           <div class="row">
             <div class="col-auto">
               <label class="form-check-label" for="flexSwitchCheckChecked">Package : </label>
             </div>
-            
+
             <div class="col">
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch"
-                  id="flexSwitchCheckChecked" (click)="resetSwitch()" [checked]="isSwitchChecked" formControlName="isPackage">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                  (click)="resetSwitch()" [checked]="isSwitchChecked" formControlName="isPackage">
               </div>
             </div>
           </div>
           <div *ngIf="isSwitchChecked">
-          
-              <div class="form-group mt-3">
-                <label for="foodItems">food Items</label>
-                <div  formArrayName="menuItems">
-                  <div class="input-group mb-3" *ngFor="let item of menuFormGroups.controls; let i = index">
-                    <input type="text" class="form-control" [id]="'foodItems' + i" placeholder="Price of the food" formControlName="{{i}}">
-                    <button class="btn btn-outline-secondary" type="button" (click)="removeItem(i)">
-                      <i class="bi bi-trash-fill"></i>
-                    </button>
-                  </div>
+
+            <div class="form-group mt-3">
+              <label for="foodItems">food Items</label>
+              <div formArrayName="menuItems">
+                <div class="input-group mb-3" *ngFor="let item of menuFormGroups.controls; let i = index">
+                  <input type="text" class="form-control" [id]="'foodItems' + i" placeholder="Price of the food"
+                    formControlName="{{i}}">
+                  <button class="btn btn-outline-secondary" type="button" (click)="removeItem(i)">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
                 </div>
-                
               </div>
-    
+
+            </div>
+
             <button class="btn btn-primary" type="button" (click)="addItem()">Add Item</button>
           </div>
 
-          
+
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
     </div>
   </div>
 </div>
-

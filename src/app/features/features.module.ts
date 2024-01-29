@@ -7,12 +7,17 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { UiModule } from '../shared/ui/ui.module';
 import { NgprimeModule } from '../shared/module/ngprime.module';
 import { FormModule } from '../shared/module/form.module';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { FeedbackInspectComponent } from './feedback/feedback-inspect/feedback-inspect.component';
+import { NgxModule } from '../shared/module/ngx.module';
 
 
 
 @NgModule({
   declarations: [
-    HomepageComponent
+    HomepageComponent,
+    FeedbackComponent,
+    FeedbackInspectComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +26,8 @@ import { FormModule } from '../shared/module/form.module';
     ManagementModule,
     UiModule,
     NgprimeModule,
-    FormModule
+    FormModule,
+    NgxModule
   ]
 })
 export class FeaturesModule { }

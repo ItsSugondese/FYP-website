@@ -14,12 +14,16 @@ import { ManageUsersComponent } from './features/management/people-management/ma
 import { UserDetailsComponent } from './features/management/people-management/manage-users/user-inspect/user-details/user-details.component';
 import { StaffDisableHistoryComponent } from './features/management/people-management/manage-staff/staff-inspect/staff-disable-history/staff-disable-history.component';
 import { UserDisableHistoryComponent } from './features/management/people-management/manage-users/user-inspect/user-disable-history/user-disable-history.component';
+import { FeedbackComponent } from './features/feedback/feedback.component';
+import { RouteConstant } from './constant/routing/routing-constant.model';
+import { FeedbackInspectComponent } from './features/feedback/feedback-inspect/feedback-inspect.component';
+import { AdminDashboardComponent } from './features/dashboard/admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
-  {path: 'login', component: LoginComponent},
+  {path: RouteConstant.login, component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
-  {path: 'manage_foods', component: ManageFoodsComponent,  data: {roles:['ADMIN']}},
+  {path: RouteConstant.foodManagement, component: ManageFoodsComponent,  data: {roles:['ADMIN']}},
   {path: 'admin/manage_staff', component : ManageStaffComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
@@ -29,7 +33,10 @@ const routes: Routes = [
   {path: 'manage_users', component: ManageUsersComponent},
   {path: 'manage_users/:id', component: UserDetailsComponent},
   {path: 'manage_users/:id/history', component: UserDisableHistoryComponent},
-  {path: 'homepage', component: HomepageComponent}
+  {path: 'homepage', component: HomepageComponent},
+  {path: RouteConstant.adminDashboard, component: AdminDashboardComponent},
+  // {path: 'feedback/:id', component: FeedbackComponent}
+  {path: 'feedback/:id', component: FeedbackInspectComponent}
 ];
 
 @NgModule({

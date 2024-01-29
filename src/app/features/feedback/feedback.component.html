@@ -1,0 +1,41 @@
+<div class="container">
+    <app-sidenav></app-sidenav>
+    <div class="content" *ngIf="statusList">
+
+        
+        
+        
+        
+        <div>
+          <div>Form Valid: {{ feedbackForm.valid }}</div>
+            <h2>My Form</h2>
+            <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+              <div>
+                <div class="space-y-4" *ngFor="let status of statusList">
+                    <label class="inline-flex items-center">
+                      <input type="radio" class="form-radio text-indigo-600" name="feedbackStatus" value="{{status}}" formControlName="feedbackStatus">
+                      <span class="ml-2">{{status}}</span>
+                    </label>
+                  </div>
+                  <span *ngIf="formValue('feedbackStatus')?.invalid">Selecting your review status is must</span>
+                </div>
+              <div>
+                <label for="feedback">Full Name:</label>
+                <input type="text" id="feedback" class="form-control" formControlName='feedbacks'>
+                <span *ngIf="formValue('feedbacks') && formValue('feedbacks')?.invalid && formValue('feedbacks')?.touched">Providing feedback is must</span>
+              </div>
+
+              <div class="form-check form-switch flex justify-end">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck"
+                   formControlName="isAnonymous">
+              </div>
+              
+              <div>
+                <!-- <button type="submit" [disabled]="staffForm.invalid">Submit</button> -->
+                <button type="submit" [disabled]="feedbackForm.invalid">Submit</button>
+              </div>
+            </form>
+          </div>
+          
+  </div>
+  </div>

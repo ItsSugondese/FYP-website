@@ -1,0 +1,45 @@
+<div class="container">
+    <app-sidenav></app-sidenav>
+    <div class="content">
+        
+        <input type="text" [ngModel]="this.paginationNavigator.row" (keyup.enter)="onEnterPress($event)">
+    
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Contact Number</th>
+                    <th>Account Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+                <tr *ngFor="let data of paginatedData.data.content | paginate: {
+                    itemsPerPage : paginationNavigator.row,
+                    currentPage : paginationNavigator.currentPage,
+                    totalItems : paginationNavigator.totalNoOfElements
+                }">
+                    <td class="hidden">{{data.id}}</td>
+                    <td>{{data.date}}</td>
+                    <td>{{data.feedbackStatus}}</td>
+                    <td>{{data.isAnonymous}}</td>
+                    <td>{{data.username}}</td>
+                    <td><img src="{{ data.userProfileUrl }}" width="50" height="50" alt="Food Picture"></td>
+                    
+                </tr>
+            </tbody>
+            <tfoot>
+                <p>{{paginationNavigator.noOfElements}} of {{paginationNavigator.totalNoOfElements}} items</p>
+                <pagination-controls
+                previousLabel="Prev" 
+                nextLabel="Next"
+                (pageChange)="onTableDataChange($event)"
+                >
+                </pagination-controls>
+
+            </tfoot>
+        </table>
+    </div>
+</div>
