@@ -15,15 +15,17 @@ import { UserDetailsComponent } from './features/management/people-management/ma
 import { StaffDisableHistoryComponent } from './features/management/people-management/manage-staff/staff-inspect/staff-disable-history/staff-disable-history.component';
 import { UserDisableHistoryComponent } from './features/management/people-management/manage-users/user-inspect/user-disable-history/user-disable-history.component';
 import { FeedbackComponent } from './features/feedback/feedback.component';
-import { RouteConstant } from './constant/routing/routing-constant.model';
+import { ManagementRouteConstant } from './constant/routing/management-routing-constant.model';
 import { FeedbackInspectComponent } from './features/feedback/feedback-inspect/feedback-inspect.component';
 import { AdminDashboardComponent } from './features/dashboard/admin-dashboard/admin-dashboard.component';
+import { UserRouteConstant } from './constant/routing/user-routing-constant.model';
+import { UserOrderComponent } from './features/user-order/user-order.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
-  {path: RouteConstant.login, component: LoginComponent},
+  {path: ManagementRouteConstant.login, component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
-  {path: RouteConstant.foodManagement, component: ManageFoodsComponent,  data: {roles:['ADMIN']}},
+  {path: ManagementRouteConstant.foodManagement, component: ManageFoodsComponent,  data: {roles:['ADMIN']}},
   {path: 'admin/manage_staff', component : ManageStaffComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
@@ -34,7 +36,8 @@ const routes: Routes = [
   {path: 'manage_users/:id', component: UserDetailsComponent},
   {path: 'manage_users/:id/history', component: UserDisableHistoryComponent},
   {path: 'homepage', component: HomepageComponent},
-  {path: RouteConstant.adminDashboard, component: AdminDashboardComponent},
+  {path: ManagementRouteConstant.adminDashboard, component: AdminDashboardComponent},
+  {path: UserRouteConstant.userOrder, component: UserOrderComponent},
   // {path: 'feedback/:id', component: FeedbackComponent}
   {path: 'feedback/:id', component: FeedbackInspectComponent}
 ];

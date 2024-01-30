@@ -1,5 +1,5 @@
-export const RouteConstant = {
-    login: "login",
+export const UserRouteConstant = {
+    userOrder: "user_order",
     foodManagement: "manage_foods",
     adminDashboard: 'admin/dashboard',
 

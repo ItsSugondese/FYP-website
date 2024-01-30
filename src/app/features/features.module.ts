@@ -10,6 +10,7 @@ import { FormModule } from '../shared/module/form.module';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { FeedbackInspectComponent } from './feedback/feedback-inspect/feedback-inspect.component';
 import { NgxModule } from '../shared/module/ngx.module';
+import { UserOrderComponent } from './user-order/user-order.component';
 
 
 
@@ -17,7 +18,8 @@ import { NgxModule } from '../shared/module/ngx.module';
   declarations: [
     HomepageComponent,
     FeedbackComponent,
-    FeedbackInspectComponent
+    FeedbackInspectComponent,
+    UserOrderComponent,
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,7 @@ import { NgxModule } from '../shared/module/ngx.module';
     UiModule,
     NgprimeModule,
     FormModule,
-    NgxModule
+    NgxModule,
   ]
 })
 export class FeaturesModule { }

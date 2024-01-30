@@ -19,26 +19,21 @@
   
   <!-- Contents -->
   <div class="nav-content">
-    <ul>
-      <li *ngFor="let data of labelData">
-      <div [routerLink]="'/' + data.routeLink"   class="dashboard text-white flex  items-center"  routerLinkActive="active"
+    <ul class="first:my-0 last:my-0">
+      <li class="" *ngFor="let data of labelData; let firstItem = first; let lastItem = last" 
+      [ngClass]="{'my-0': firstItem || lastItem, 'my-1': !firstItem && !lastItem}" >
+
+      <div [routerLink]="'/' + data.routeLink"   class="group hover:bg-white hover:cursor-pointer text-white flex  items-center"  routerLinkActive="active"
       [routerLinkActiveOptions]="{exact:true}">
-        <svg width="18"  viewBox="0 0 1024 1024" class="fill-current">
-          <path d="M120.1 770.6L443 823.2V543.8H120.1v226.8zm63.4-163.5h196.2v141.6l-196.2-31.9V607.1zm340.3 226.5l382 62.2v-352h-382v289.8zm63.4-226.5h255.3v214.4l-255.3-41.6V607.1zm-63.4-415.7v288.8h382V128.1l-382 63.3zm318.7 225.5H587.3V245l255.3-42.3v214.2zm-722.4 63.3H443V201.9l-322.9 53.5v224.8zM183.5 309l196.2-32.5v140.4H183.5V309z"></path>
-        </svg>
-        <span class="text-lg ml-1">{{data.label}}</span>
+      <ng-container  *ngIf="data.iconLibrary === 'angular'">
+        <mat-icon class="group-hover:text-black">{{ data.icon }}</mat-icon>
+      </ng-container>
+      <ng-container *ngIf="data.iconLibrary === 'fontawesome'">
+        <i class="fas fa-{{ data.icon }}"></i>
+      </ng-container>
+        <span class="text-lg ml-1 group-hover:text-black">{{data.label}}</span>
       </div>
     </li>
-      <!-- <li [ngClass]="{ 'active': currentRoute === '/' || '/login'}" [routerLink]="['/']" routerLinkActive="active-nav-option">
-      <div class="dashboard text-white flex  items-center">
-        <svg width="18"  viewBox="0 0 1024 1024" class="fill-current">
-          <path d="M120.1 770.6L443 823.2V543.8H120.1v226.8zm63.4-163.5h196.2v141.6l-196.2-31.9V607.1zm340.3 226.5l382 62.2v-352h-382v289.8zm63.4-226.5h255.3v214.4l-255.3-41.6V607.1zm-63.4-415.7v288.8h382V128.1l-382 63.3zm318.7 225.5H587.3V245l255.3-42.3v214.2zm-722.4 63.3H443V201.9l-322.9 53.5v224.8zM183.5 309l196.2-32.5v140.4H183.5V309z"></path>
-        </svg>
-        <span class="text-lg ml-1">Login</span>
-      </div>
-    </li> -->
-
-
     <li>
       <i class="bx bx-search"></i>
       <input type="text" placeholder="Search...">

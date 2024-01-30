@@ -1,12 +1,19 @@
 // @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-nav ul li.active {
-  background-color: red; /* Apply your styling for the active route */
-}
+
 .active {
-  color: red; /* or any other styling you want */
+   /* or any other styling you want */
   font-weight: bold;
+  background-color: white;
+  color: #A62A22 !important;
 }
+
+.active  mat-icon, .active span {
+  font-weight: bold !important;
+  background-color: white !important;
+  color: #A62A22 !important;
+}
+
 
 // :root{
 //   --color-default:#004f83;

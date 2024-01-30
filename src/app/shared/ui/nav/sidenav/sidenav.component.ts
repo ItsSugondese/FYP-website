@@ -11,8 +11,10 @@ import { NavbarConstant } from 'src/app/constant/navbar/navbar-data.model';
 export class SidenavComponent implements OnInit{
   labelData = NavbarConstant
   currentRoute: string = '';
+  isHovered = false;
 
   constructor(private router: Router) {}
+
 
   ngOnInit(): void {
     // this.router.events
