@@ -4,8 +4,8 @@
     display: none;
   }
 </style> -->
-<div class="container">
-  <app-sidenav></app-sidenav>
+<div class="container h-screen">
+  
   <div class="content">
 
 
@@ -34,6 +34,47 @@
     </div>
 
 
+    <div class="card-deck inline-block ml-8 mb-8 first:ml-0 last:ml-0" *ngFor="let item of foodMenu">
+      <div class="rounded inline-block  bg-white " >
+        <div class="w-full ">
+          <div class="flex w-full px-3 pt-2 justify-end">
+            <span> Available Today </span>
+            <div class="form-check form-switch flex justify-end">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck{{item.id}}"
+                (click)="resetSwitch()" [checked]="item.isAvailableToday" formControlName="isPackage">
+            </div>
+          </div>
+          <div (click)="toggleFormToEdit(item)">
+          <div class="image-container w-64 h-40 p-3 pt-1 object-cover overflow-hidden rounded flex justify-center ">
+            <img [src]="imageDataMap[item.photoId]" class="rounded w-full object-cover">
+          </div>
+          <div class="header flex justify-between px-3 pb-2 font-bold text-lg">
+            <h1 class="">{{item.name}}</h1>
+            <h1 class="">{{item.cost}}</h1>
+          </div>
+          <div class="description px-3 pb-2 text-sm">
+            {{item.description}}
+          </div>
+          <div class="w-full flex justify-between text-sm font-semibold">
+
+            <div *ngIf="item.isPackage">
+              {{item.menuItems.length}} items
+            </div>
+            <!-- <div class="menuItems" *ngIf="item.isPackage">
+            <ul *ngFor="let menuItems of item.menuItems">
+              <li>{{menuItems}}</li>
+            </ul>
+          </div> -->
+            <div class="flex justify-end px-3 pb-3" [style.order]="item.isPackage ? 1 : 0">
+              <div class=" inline-block rounded-lg text-[#1565C0] p-1 px-2 bg-blue-200">
+                {{item.isPackage ? 'Package' : 'Individual'}}
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
     <div class="card-deck inline-block ml-8 mb-8 first:ml-0 last:ml-0" *ngFor="let item of foodMenu">
       <div class="rounded inline-block  bg-white " >
         <div class="w-full ">

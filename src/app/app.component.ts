@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SideNavToggle } from './shared/ui/nav/sidenav/sidenav.component';
 
 
 @Component({
@@ -8,4 +9,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'FYP';
+
+  isSideNavCollapsed = false;
+  screenWidth = 0;
+
+
+  onToggleSideNav(data: SideNavToggle){
+    
+  }
 }

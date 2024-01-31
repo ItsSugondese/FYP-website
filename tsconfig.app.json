@@ -11,6 +11,8 @@
     "src/main.ts"
   ],
   "include": [
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "src/typing/typing.d.ts"
+
   ]
 }

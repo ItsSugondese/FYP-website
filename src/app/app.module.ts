@@ -13,10 +13,12 @@ import { AppComponent } from './app.component';
 import { FeaturesModule } from './features/features.module';
 import { UiModule } from './shared/ui/ui.module';
 import { MatIconModule } from '@angular/material/icon';
+import { BodyComponent } from './body/body.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BodyComponent
   ],
   imports: [
     FeaturesModule,
