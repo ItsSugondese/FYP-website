@@ -14,6 +14,9 @@ import { ManageUsersComponent } from './people-management/manage-users/manage-us
 import { AddStaffComponent } from './people-management/manage-staff/add-staff/add-staff.component';
 import { StaffDetailsComponent } from './people-management/manage-staff/staff-inspect/staff-details/staff-details.component';
 import { UserDetailsComponent } from './people-management/manage-users/user-inspect/user-details/user-details.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MaterialModule } from 'src/app/shared/module/material.module';
+import { FoodFilterComponent } from 'src/app/templates/food-menu/food-filter.component';
 
 
 
@@ -26,8 +29,8 @@ import { UserDetailsComponent } from './people-management/manage-users/user-insp
     StaffDetailsComponent,
     UserDetailsComponent,
     StaffDisableHistoryComponent,
-    UserDisableHistoryComponent
-
+    UserDisableHistoryComponent,
+    FoodFilterComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,10 @@ import { UserDetailsComponent } from './people-management/manage-users/user-insp
     UiModule,
     FormModule,
     NgxModule,
-    NgprimeModule
+    NgprimeModule,
+    FlexLayoutModule,
+    MaterialModule,
+    
   ]
 })
 export class ManagementModule { }

@@ -31,5 +31,11 @@ export const  NavbarConstant = [
         icon: 'lunch_dining',
         iconLibrary: "angular"
     },
+    {
+        routeLink: UserRouteConstant.homepage,
+        label: "Homepage",
+        icon: 'lunch_dining',
+        iconLibrary: "angular"
+    },
     
 ];

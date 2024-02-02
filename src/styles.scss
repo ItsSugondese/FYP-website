@@ -5,23 +5,13 @@
 body {
     background-color: #EBEBEB;
 }
-html, body {
-  height: 100%;
-  margin: 0; /* Remove default margin */
-  // overflow: hidden; /* Prevent default body scroll */
-}
+// html, body {
+//   height: 100%;
+//   margin: 0; /* Remove default margin */
+//   // overflow: hidden; /* Prevent default body scroll */
+// }
 
-.container {
-  display: flex;
-  align-items: flex-start;
-  padding: 0; 
-  height: 100%;/* Align content to the top */
-}
 
-app-sidenav {
-  width: 250px;  
-  height: 100%
-}
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';

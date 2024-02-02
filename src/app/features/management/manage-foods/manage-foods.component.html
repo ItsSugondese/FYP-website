@@ -4,194 +4,180 @@
     display: none;
   }
 </style> -->
-<div class="container h-screen">
+
+<!-- <div *ngIf="screenWidth">
+  {{screenWidth}}
+</div> -->
+
+<ng-container *ngIf="foodMenu.length > 0" >
+
+
+
+  <!-- your-other-component.component.html -->
+  <!-- <app-food-filter [options]="foodFilter" (optionSelected)="selectOption($event)"></app-food-filter> -->
+
   
-  <div class="content">
+  
+  <div class="">
+    
+    <div id="filter-header" class="flex w-full justify-between items-center mb-3 bg-white p-2 rounded-lg">
+
+      <div class="left-filter-header">
+    <div *ngFor="let option of foodFilter" 
+    class="radio-container  inline-block rounded-2xl ml-2 p-1 px-3 first:ml-0  text-customPrimary bg-nonSelectedFoodFilterBg"
+    [ngClass]="{
+      'bg-red-700': selectedNum === option.id,
+      'text-white': selectedNum === option.id
+    }"
+    
+    (click)="selectOption(option.id)">
+   
+      <label for="{{ option.label }}">{{ option.label }}</label>
+    </div>
+  </div>
 
 
-
-
-
-
-    <div>
-      <div class="search-menu">
-        <div>
-          HEre
-        </div>
-      </div>
+  <div class="filter-header-right flex  items-center">
+    <div
+      class="p-1 px-2 w-64 bg-white mt-1 relative rounded-md shadow-sm flex border-2 border-[#CED4DA] focus-within:border-customPrimary ">
+      <input type="text" id="search" name="search" class="block w-full sm:text-sm  focus:outline-none"
+        placeholder="Search" [(ngModel)]="searchData">
+      <mat-icon class="">search</mat-icon>
     </div>
 
 
-    <button class="btn btn-primary" type="button" (click)="toggleOffcanvas()">Toggle right offcanvas</button>
-
-
-
-
-    <div>
-      <div class="w-auto inline-block rounded-lg text-[#1565C0] p-1 px-2 bg-blue-200">
-        Individual
-      </div>
-    </div>
-
-
-    <div class="card-deck inline-block ml-8 mb-8 first:ml-0 last:ml-0" *ngFor="let item of foodMenu">
-      <div class="rounded inline-block  bg-white " >
-        <div class="w-full ">
-          <div class="flex w-full px-3 pt-2 justify-end">
-            <span> Available Today </span>
-            <div class="form-check form-switch flex justify-end">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck{{item.id}}"
-                (click)="resetSwitch()" [checked]="item.isAvailableToday" formControlName="isPackage">
-            </div>
-          </div>
-          <div (click)="toggleFormToEdit(item)">
-          <div class="image-container w-64 h-40 p-3 pt-1 object-cover overflow-hidden rounded flex justify-center ">
-            <img [src]="imageDataMap[item.photoId]" class="rounded w-full object-cover">
-          </div>
-          <div class="header flex justify-between px-3 pb-2 font-bold text-lg">
-            <h1 class="">{{item.name}}</h1>
-            <h1 class="">{{item.cost}}</h1>
-          </div>
-          <div class="description px-3 pb-2 text-sm">
-            {{item.description}}
-          </div>
-          <div class="w-full flex justify-between text-sm font-semibold">
-
-            <div *ngIf="item.isPackage">
-              {{item.menuItems.length}} items
-            </div>
-            <!-- <div class="menuItems" *ngIf="item.isPackage">
-            <ul *ngFor="let menuItems of item.menuItems">
-              <li>{{menuItems}}</li>
-            </ul>
-          </div> -->
-            <div class="flex justify-end px-3 pb-3" [style.order]="item.isPackage ? 1 : 0">
-              <div class=" inline-block rounded-lg text-[#1565C0] p-1 px-2 bg-blue-200">
-                {{item.isPackage ? 'Package' : 'Individual'}}
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
-    </div>
-    <div class="card-deck inline-block ml-8 mb-8 first:ml-0 last:ml-0" *ngFor="let item of foodMenu">
-      <div class="rounded inline-block  bg-white " >
-        <div class="w-full ">
-          <div class="flex w-full px-3 pt-2 justify-end">
-            <span> Available Today </span>
-            <div class="form-check form-switch flex justify-end">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck{{item.id}}"
-                (click)="resetSwitch()" [checked]="item.isAvailableToday" formControlName="isPackage">
-            </div>
-          </div>
-          <div (click)="toggleFormToEdit(item)">
-          <div class="image-container w-64 h-40 p-3 pt-1 object-cover overflow-hidden rounded flex justify-center ">
-            <img [src]="imageDataMap[item.photoId]" class="rounded w-full object-cover">
-          </div>
-          <div class="header flex justify-between px-3 pb-2 font-bold text-lg">
-            <h1 class="">{{item.name}}</h1>
-            <h1 class="">{{item.cost}}</h1>
-          </div>
-          <div class="description px-3 pb-2 text-sm">
-            {{item.description}}
-          </div>
-          <div class="w-full flex justify-between text-sm font-semibold">
-
-            <div *ngIf="item.isPackage">
-              {{item.menuItems.length}} items
-            </div>
-            <!-- <div class="menuItems" *ngIf="item.isPackage">
-            <ul *ngFor="let menuItems of item.menuItems">
-              <li>{{menuItems}}</li>
-            </ul>
-          </div> -->
-            <div class="flex justify-end px-3 pb-3" [style.order]="item.isPackage ? 1 : 0">
-              <div class=" inline-block rounded-lg text-[#1565C0] p-1 px-2 bg-blue-200">
-                {{item.isPackage ? 'Package' : 'Individual'}}
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
-      [ngClass]="{'show': isOffcanvasOpen}" tabindex="-1" id="myOffcanvas" data-bs-backdrop="false">
-      <div class="offcanvas-header">
-        <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
-          (click)="toggleOffcanvas()"></button>
-      </div>
-      <div class="offcanvas-body">
-        <form [formGroup]="foodForm" (ngSubmit)="submitDetails()">
-          <input type="hidden" name="hiddenField" value="{{id}}" formControlName="id">
-          <div class="form-group">
-            <label for="inputFoodName">Food Name</label>
-            <input type="text" class="form-control" id="inputFoodName" aria-describedby="emailHelp"
-              placeholder="Enter Food Name" formControlName="name">
-          </div>
-          <div class="form-group">
-            <label for="inputPrice">Price</label>
-            <input type="number" class="form-control" id="inputPrice" placeholder="Price of the food"
-              formControlName="cost">
-          </div>
-
-          <div class="form-group">
-            <label for="inputDescription">Description</label>
-            <textarea class="form-control" id="inputDescription" aria-describedby="emailHelp"
-              placeholder="Description of the food" formControlName="description"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="exampleFormControlFile1">Image upload</label>
-            <input type="file" class="form-control-file" id="exampleFormControlFile1" (change)="onFileSelected($event)">
-          </div>
-          <div class="row">
-            <div class="col-auto">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Package : </label>
-            </div>
-
-            <div class="col">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                  (click)="resetSwitch()" [checked]="isSwitchChecked" formControlName="isPackage">
-              </div>
-            </div>
-          </div>
-          <div *ngIf="isSwitchChecked">
-
-            <div class="form-group mt-3">
-              <label for="foodItems">food Items</label>
-              <div formArrayName="menuItems">
-                <div class="input-group mb-3" *ngFor="let item of menuFormGroups.controls; let i = index">
-                  <input type="text" class="form-control" [id]="'foodItems' + i" placeholder="Price of the food"
-                    formControlName="{{i}}">
-                  <button class="btn btn-outline-secondary" type="button" (click)="removeItem(i)">
-                    <i class="bi bi-trash-fill"></i>
-                  </button>
-                </div>
-              </div>
-
-            </div>
-
-            <button class="btn btn-primary" type="button" (click)="addItem()">Add Item</button>
-          </div>
-
-
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-      </div>
+    <div class="flex ml-5 hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg pr-2 pl-1 py-1.5 text-base"
+      (click)="toggleOffcanvas()">
+      <mat-icon class="mr-1">add</mat-icon>
+      <button class="">Add New Menu</button>
     </div>
   </div>
 </div>
+
+
+
+
+  <div id="content" class="overflow-x-hidden overflow-y-hidden w-full">
+    <span class="text-xl font-bold">Meal Packages</span>
+    <div  fxLayout="row wrap" [fxLayoutGap]="collapsed? '20px grid' : '32px grid'"  fxLayoutAlign="start">
+      <div [fxFlex]="collapsed? '20%' : '25%'" [fxFlex.xs]="'100%' " fxFlex.sm="33%"  *ngFor="let item of foodMenu; let firstItem = first; let lastItem = last">
+
+
+        <div class="rounded  w-full  bg-white">
+          <div class="w-full ">
+            <div class="flex w-full px-3 pt-2 justify-end items-center ">
+              <span class="h-full"> Available Today: </span>
+              <div class="form-check  form-switch flex items-center justify-end">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck{{item.id}}"
+                  (click)="resetSwitch()" [checked]="item.isAvailableToday">
+              </div>
+            </div>
+            <div class="px-3" (click)="toggleFormToEdit(item)">
+              <div class="image-container w-full h-40 p-3 px-0 pt-1 object-cover overflow-hidden rounded-sm flex justify-center ">
+                <img [src]="imageDataMap[item.photoId]" class="rounded-sm w-full object-cover">
+              </div>
+              <div class="header flex justify-between  pb-2 font-bold text-lg">
+                <h1 class="">{{item.name}}</h1>
+                <h1 class="">{{item.cost}}</h1>
+              </div>
+              <div class="description pb-2 text-sm">
+                {{item.description}}
+              </div>
+              <div class="w-full flex items-center text-sm font-semibold ">
+
+                <div *ngIf="item.isPackage">
+                  {{item.menuItems.length}} items
+                </div>
+                <!-- <div class="menuItems" *ngIf="item.isPackage">
+                  <ul *ngFor="let menuItems of item.menuItems">
+                    <li>{{menuItems}}</li>
+                  </ul>
+                </div> -->
+                <div class="flex w-full  justify-end  pb-3" [style.order]="item.isPackage ? 1 : 0">
+                  <div class=" inline-block rounded-lg text-[#1565C0] p-1 px-2 bg-blue-200">
+                    {{item.isPackage ? 'Package' : 'Individual'}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+    [ngClass]="{'show': isOffcanvasOpen}" tabindex="-1" id="myOffcanvas" data-bs-backdrop="false">
+    <div class="offcanvas-header">
+      <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
+        (click)="toggleOffcanvas()"></button>
+    </div>
+    <div class="offcanvas-body">
+      <form [formGroup]="foodForm" (ngSubmit)="submitDetails()">
+        <input type="hidden" name="hiddenField" value="{{id}}" formControlName="id">
+        <div class="form-group">
+          <label for="inputFoodName">Food Name</label>
+          <input type="text" class="form-control" id="inputFoodName" aria-describedby="emailHelp"
+            placeholder="Enter Food Name" formControlName="name">
+        </div>
+        <div class="form-group">
+          <label for="inputPrice">Price</label>
+          <input type="number" class="form-control" id="inputPrice" placeholder="Price of the food"
+            formControlName="cost">
+        </div>
+
+        <div class="form-group">
+          <label for="inputDescription">Description</label>
+          <textarea class="form-control" id="inputDescription" aria-describedby="emailHelp"
+            placeholder="Description of the food" formControlName="description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlFile1">Image upload</label>
+          <input type="file" class="form-control-file" id="exampleFormControlFile1" (change)="onFileSelected($event)">
+        </div>
+        <div class="row">
+          <div class="col-auto">
+            <label class="form-check-label" for="flexSwitchCheckChecked">Package : </label>
+          </div>
+
+          <div class="col">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                (click)="resetSwitch()" [checked]="isSwitchChecked" formControlName="isPackage">
+            </div>
+          </div>
+        </div>
+        <div *ngIf="isSwitchChecked">
+
+          <div class="form-group mt-3">
+            <label for="foodItems">food Items</label>
+            <div formArrayName="menuItems">
+              <div class="input-group mb-3" *ngFor="let item of menuFormGroups.controls; let i = index">
+                <input type="text" class="form-control" [id]="'foodItems' + i" placeholder="Price of the food"
+                  formControlName="{{i}}">
+                <button class="btn btn-outline-secondary" type="button" (click)="removeItem(i)">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <button class="btn btn-primary" type="button" (click)="addItem()">Add Item</button>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+</ng-container>

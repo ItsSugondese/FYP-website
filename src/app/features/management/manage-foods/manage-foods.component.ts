@@ -1,29 +1,42 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { ManageFoodsService, foodMenu } from './manage-foods-service/manage-foods.service';
 import { Observable, Subscription } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/attachment.handler';
 import { Router } from '@angular/router';
+import { SidenavService } from 'src/app/shared/ui/nav/sidenav/sidenav-service/sidenav.service';
+import { FoodFilter } from 'src/app/constant/filter/food-filter.model';
 
 @Component({
   selector: 'app-manage-foods',
   templateUrl: './manage-foods.component.html',
   styleUrls: ['./manage-foods.component.scss']
 })
-export class ManageFoodsComponent implements OnInit, OnDestroy {
+export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  foodFilter = FoodFilter
+  searchData!: string;
+  // screenWidth!: number;
+  // screenWidth$ !: Subscription;
+  navbarCollapse$ !: Subscription;
+  collapsed !: boolean;
+  numberOfItemsPerRow = 3;
+
   isSwitchChecked: boolean = false;
   items: any[] = [{}];
   imageId$ !: Subscription;
   imageId !: number;
 
   foodMenuFetch$ !: Subscription;
-  foodMenu !: foodMenu[];
+  foodMenu : foodMenu[] = [];
   postFoodMenu$ !: Subscription;
   getFoodPicture$ !: Subscription;
   id !: number;
   imageDataMap: { [key: number]: string } = {};
 
-  foodForm = this.formBuilder.group({
+  
+
+  foodForm : FormGroup =this.formBuilder.group({
     id : new FormControl(),
   name: new FormControl(),
   description: new FormControl(),
@@ -31,44 +44,119 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
   isPackage: new FormControl(),
   photoId: new FormControl(),
   menuItems : new FormArray([
-    new FormControl()
+    this.formBuilder.control('')
+    // new FormControl()
   ])
-  })
+  });
 
   
+  
+
 
   constructor(private foodService : ManageFoodsService,
-    private formBuilder : FormBuilder, private router: Router) {
-    
+    private formBuilder : FormBuilder, private router: Router,
+    private sideNavService: SidenavService
+    ) {}
+
+    selectedNum !: number
+  selectOption(id: number) {
+    this.selectedNum = id
+    console.log(this.selectedNum)
   }
+
+  // getNumberNonCollpase() : number{
+  //   if(this.screenWidth > 1400){
+  //     console.log(4)
+  //     return 4
+  //   }else if(this.screenWidth < 1393 && this.screenWidth >= 1105){
+  //     console.log(this.screenWidth)
+  //     console.log(3)
+  //     return 3
+  //   }else if(this.screenWidth < 1105 && this.screenWidth >= 817){
+  //     console.log(2)
+  //     return 2;
+  //   }else if(this.screenWidth < 817){
+  //     console.log(1)
+  //     return 1;
+  //   }else{
+  //     return 1;
+  //   }
+  // }
+  // getNumberCollpase() : number{
+  //   if(this.screenWidth > 1520){
+  //     return 5
+  //   }else if(this.screenWidth < 1473 && this.screenWidth >= 1217){
+  //     return 4
+  //   }else if(this.screenWidth < 1217 && this.screenWidth >= 897){
+  //     return 3;
+  //   }else if(this.screenWidth < 897 && this.screenWidth >= 641){
+  //     return 2;
+  //   }else if(this.screenWidth < 641){
+  //     return 1;
+  //   }else{
+  //     return 1;
+  //   }
+  // }
   
 
-  ngOnInit(): void {
-    this.foodMenuFetch$ = this.foodService.getFoodMenu().subscribe(
+  // checkAndReturnIfFit(isCollapse: boolean, colSpan: number) :boolean{
+  //   if(this.collapsed == isCollapse && (this.collapsed == true? this.getNumberCollpase() == colSpan :  this.getNumberNonCollpase() == colSpan)){
+  //     console.log(colSpan + ": " + true + ", " + isCollapse + ", " + this.getNumberCollpase())
+  //     return true;
+  //   }else{
+  //     // console.log(false)
+  //     return false;
+  //   }
+  // }
 
+  ngAfterViewInit() {
+    // Now containers is a QueryList of all the elements with the 'container' reference
+   
+  }
+
+  ngOnInit(): void {
+    this.selectedNum = 1;
+    this.navbarCollapse$ =  this.sideNavService.getCollapsed().subscribe((collapsed) => {
+      this.collapsed = collapsed;
+    });
+
+    // this.screenWidth$ =  this.sideNavService.getScreenResize().subscribe((resize) => {
+    //   this.screenWidth = resize;
+    //   if(this.collapsed){
+    //     this.getNumberCollpase()
+    //   }else{
+    //     this.getNumberNonCollpase()
+    //   }
+    //   console.log(this.screenWidth)
+    // });
+    
+    this.foodMenuFetch$ = this.foodService.getFoodMenu().subscribe(
       (response) => {
         this.foodMenu = response.data;
-        this.foodMenu.forEach((foodMenu) => {
-          if(foodMenu.photoId){
-            this.getFoodPicture$ = this.foodService.getFoodPicture(foodMenu.photoId).subscribe((imageBlob: Blob) => {
+        this.foodMenu.forEach((menu) => {
+          if(menu.photoId){
+            this.getFoodPicture$ = this.foodService.getFoodPicture(menu.photoId).subscribe((imageBlob: Blob) => {
 
 
-            createImageFromBlob(imageBlob, foodMenu.photoId)
+            createImageFromBlob(imageBlob, menu.photoId)
              .then((imageData) => {
-              this.imageDataMap[foodMenu.photoId] = imageData;
+              this.imageDataMap[menu.photoId] = imageData;
           })
           .catch((error) => {
               console.log("error when trying to access")
           });
-
-
-            
           });
         }
         }); 
       }
     )
+
+    
   }
+
+ 
+
+
 
 
 
@@ -222,5 +310,11 @@ export class ManageFoodsComponent implements OnInit, OnDestroy {
     if(this.getFoodPicture$){
       this.getFoodPicture$.unsubscribe();
     }
+    if(this.navbarCollapse$){
+      this.navbarCollapse$.unsubscribe();
+    }
+    // if(this.screenWidth$){
+    //   this.screenWidth$.unsubscribe();
+    // }
   }
 }

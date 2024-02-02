@@ -4,7 +4,13 @@ module.exports = {
     "./src/**/*.{html,ts}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        customPrimary: '#A62A22',
+        customTypeBg: 'bg-blue-200',
+        nonSelectedFoodFilterBg: '#FAE7E6'
+      }
+    },
   },
   plugins: [],
 }

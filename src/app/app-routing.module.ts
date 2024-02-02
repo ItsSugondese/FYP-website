@@ -35,7 +35,7 @@ const routes: Routes = [
   {path: 'manage_users', component: ManageUsersComponent},
   {path: 'manage_users/:id', component: UserDetailsComponent},
   {path: 'manage_users/:id/history', component: UserDisableHistoryComponent},
-  {path: 'homepage', component: HomepageComponent},
+  {path: UserRouteConstant.homepage, component: HomepageComponent},
   {path: ManagementRouteConstant.adminDashboard, component: AdminDashboardComponent},
   {path: UserRouteConstant.userOrder, component: UserOrderComponent},
   // {path: 'feedback/:id', component: FeedbackComponent}

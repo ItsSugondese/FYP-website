@@ -22,26 +22,20 @@ export class AuthInterceptor implements HttpInterceptor {
 
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log("Its fucking interrceptor")
         if(req.headers.get("No-Auth") === 'true') {
             return next.handle(req.clone());
         }
 
         
 
-        console.log(this.token)
+      
         req = this.addToken(req, this.token);
-
-        console.log(req.headers)
         return next.handle(req).pipe(
             catchError(
                 
                 (err : HttpErrorResponse) => {
-                    console.log(err.message);
-                    console.log(req.headers.get('Authorization'));
                     
                     if(err.status == 401){
-                        console.log(this.userService.getToken())
                         if(this.userService.getToken() != null){
                         this.loginService.setFormHeader("Session Expired", "Red")
                         }else{
