@@ -1,13 +1,4 @@
-<!-- 
-<style>
-  .hidden {
-    display: none;
-  }
-</style> -->
 
-<!-- <div *ngIf="screenWidth">
-  {{screenWidth}}
-</div> -->
 
 <ng-container *ngIf="foodMenu.length > 0" >
 
@@ -32,7 +23,7 @@
     
     (click)="selectOption(option.id)">
    
-      <label for="{{ option.label }}">{{ option.label }}</label>
+      <label class="hover:cursor-pointer" for="{{ option.label }}">{{ option.label }}</label>
     </div>
   </div>
 
@@ -116,9 +107,9 @@
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
     [ngClass]="{'show': isOffcanvasOpen}" tabindex="-1" id="myOffcanvas" data-bs-backdrop="false">
     <div class="offcanvas-header">
-      <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
-        (click)="toggleOffcanvas()"></button>
+      <h5 id="offcanvasRightLabel"> {{foodForm.get("id")?.value == null? 'Add' : 'Update'}} Food</h5>
+      <button type="button" class="" data-bs-dismiss="offcanvas" aria-label="Close"
+        (click)="toggleOffcanvas()"><mat-icon>close</mat-icon></button>
     </div>
     <div class="offcanvas-body">
       <form [formGroup]="foodForm" (ngSubmit)="submitDetails()">
@@ -171,11 +162,11 @@
 
           </div>
 
-          <button class="btn btn-primary" type="button" (click)="addItem()">Add Item</button>
+          <button class="bg-blue text-white" type="button" (click)="addItem()">Add Item</button>
         </div>
 
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="text-white bg-customPrimary hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg pr-2 pl-1 py-1.5 text-base">Submit</button>
       </form>
     </div>
   </div>

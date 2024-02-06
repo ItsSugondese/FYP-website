@@ -20,6 +20,7 @@ import { FeedbackInspectComponent } from './features/feedback/feedback-inspect/f
 import { AdminDashboardComponent } from './features/dashboard/admin-dashboard/admin-dashboard.component';
 import { UserRouteConstant } from './constant/routing/user-routing-constant.model';
 import { UserOrderComponent } from './features/user-order/user-order.component';
+import { TestComponent } from './features/test/test.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -39,7 +40,8 @@ const routes: Routes = [
   {path: ManagementRouteConstant.adminDashboard, component: AdminDashboardComponent},
   {path: UserRouteConstant.userOrder, component: UserOrderComponent},
   // {path: 'feedback/:id', component: FeedbackComponent}
-  {path: 'feedback/:id', component: FeedbackInspectComponent}
+  {path: 'feedback/:id', component: FeedbackInspectComponent},
+  {path: 'test', component: TestComponent}
 ];
 
 @NgModule({

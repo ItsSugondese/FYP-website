@@ -8,7 +8,9 @@ module.exports = {
       colors: {
         customPrimary: '#A62A22',
         customTypeBg: 'bg-blue-200',
-        nonSelectedFoodFilterBg: '#FAE7E6'
+        nonSelectedFoodFilterBg: '#FAE7E6',
+        priceColor: '#15803D',
+        typeColor: '#BBDEFB'
       }
     },
   },

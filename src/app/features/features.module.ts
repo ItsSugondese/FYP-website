@@ -11,6 +11,9 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { FeedbackInspectComponent } from './feedback/feedback-inspect/feedback-inspect.component';
 import { NgxModule } from '../shared/module/ngx.module';
 import { UserOrderComponent } from './user-order/user-order.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MaterialModule } from '../shared/module/material.module';
+import { TestComponent } from './test/test.component';
 
 
 
@@ -20,6 +23,7 @@ import { UserOrderComponent } from './user-order/user-order.component';
     FeedbackComponent,
     FeedbackInspectComponent,
     UserOrderComponent,
+    TestComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +34,8 @@ import { UserOrderComponent } from './user-order/user-order.component';
     NgprimeModule,
     FormModule,
     NgxModule,
+    FlexLayoutModule,
+    MaterialModule
   ]
 })
 export class FeaturesModule { }

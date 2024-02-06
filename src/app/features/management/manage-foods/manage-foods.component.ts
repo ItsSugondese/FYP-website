@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { ManageFoodsService, foodMenu } from './manage-foods-service/manage-foods.service';
+import { ManageFoodsService } from './manage-foods-service/manage-foods.service';
 import { Observable, Subscription } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/attachment.handler';
 import { Router } from '@angular/router';
 import { SidenavService } from 'src/app/shared/ui/nav/sidenav/sidenav-service/sidenav.service';
 import { FoodFilter } from 'src/app/constant/filter/food-filter.model';
+import { foodMenu } from './manage-foods-service/model/food-menu.model';
 
 @Component({
   selector: 'app-manage-foods',
@@ -180,9 +181,12 @@ export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  isOffcanvasOpen = false;
+  isOffcanvasOpen = true;
+  // isOffcanvasOpen = false;
   
   toggleOffcanvas() {
+    console.log(this.foodForm.get("id")?.value)
+    console.log(this.foodForm.get("id") === null)
     console.log(this.foodForm.value);
     this.isOffcanvasOpen = !this.isOffcanvasOpen;
     while(this.menuFormGroups.length){
@@ -197,7 +201,7 @@ export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
       
     }
 
-    console.log(this.isOffcanvasOpen)
+ 
     
   }
   onFileSelected(event: any) {
@@ -265,30 +269,30 @@ export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
   
-// toggleFormToEdit(item : foodMenu){
-//     this.toggleOffcanvas();
-//     console.log(this.menuFormGroups.length)
-//     for(let i=this.menuFormGroups.length; i<item.menuItems.length; i++){
-//       console.log(i);
-//       this.addItem();
-//     }
-//     this.isSwitchChecked = item.isPackage;
+toggleFormToEdit(item : foodMenu){
+    this.toggleOffcanvas();
+    console.log(this.menuFormGroups.length)
+    for(let i=this.menuFormGroups.length; i<item.menuItems.length; i++){
+      console.log(i);
+      this.addItem();
+    }
+    this.isSwitchChecked = item.isPackage;
     
    
-//     this.foodForm.setValue({
-//       id : item.id,
-//   name: item.name,
-//   description: item.description,
-//   cost: item.cost,
-//   isPackage: item.isPackage,
-//   photoId: item.photoId,
-//   menuItems : item.menuItems
-//     })
-// }
-
-  toggleFormToEdit(item : foodMenu){
-    this.router.navigate(['/feedback/', item.id])
+    this.foodForm.setValue({
+      id : item.id,
+  name: item.name,
+  description: item.description,
+  cost: item.cost,
+  isPackage: item.isPackage,
+  photoId: item.photoId,
+  menuItems : item.menuItems
+    })
 }
+
+//   toggleFormToEdit(item : foodMenu){
+//     this.router.navigate(['/feedback/', item.id])
+// }
 
   
   

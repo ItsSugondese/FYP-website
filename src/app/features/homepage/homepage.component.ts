@@ -7,6 +7,11 @@ import { ManageFoodsService } from '../management/manage-foods/manage-foods-serv
 import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/attachment.handler';
 import { foodMenu } from 'src/app/shared/model/food/food.model';
 import { foodOrdering } from 'src/app/shared/model/order/food-order.model';
+import { UserOrderService } from '../user-order/user-order-service/user-order.service';
+import { FoodFilter } from 'src/app/constant/filter/food-filter.model';
+import { Router } from '@angular/router';
+import { UserRouteConstant } from 'src/app/constant/routing/user-routing-constant.model';
+import { UserOrderHistory } from '../user-order/user-order-service/model/user-order.model';
 
 
 
@@ -25,32 +30,67 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
   showPopUp = false;
   finalPopUp = false;
-  quantity = 0;
+  quantity ?:number;
 
   isPostButtonActive = true;
   isOrderSuccessful = false;
 
   quantityControl = new FormControl(1, Validators.min(1));
   foodOrderList: foodOrdering[] = []
+  removeFoodOrderList: number[] = []
 
   orderCode !: number;
-
+  orderHistory ?: UserOrderHistory
   arrivalTime : string = '';
   @ViewChild('quantityInput') quantityInput !: ElementRef;
 
   constructor(private homepageService: HomepageService,
-    private foodService: ManageFoodsService
+    private foodService: ManageFoodsService, private userOrderService: UserOrderService,
+    private router: Router
   ) {
 
   }
 
   ngOnInit(): void {
+    this.orderHistory = this.userOrderService.getOrderedMade();
+    if(this.orderHistory != null){
+      this.arrivalTime = this.orderHistory.arrivalTime
+      this.orderHistory.orderFoodDetails.map(
+        e => {
+          this.foodOrderList.push({
+            id :  e.id,
+      quantity : e.quantity,
+      imageSrc : this.imageDataMap[e.id],
+      selectedFoodMenu : e.foodMenu
+          })
+      })
+    }
+
+
+    if(this.foodOrderList.length > 0){
+      this.comingToEdit = true;
+      this.visible= true;
+    }
+
     this.getFoodItems$ = this.loadFoodMenusAndImage();
+  }
+
+  cancelEdit(){
+    this.comingToEdit = false;
+    this.router.navigate(['/' + UserRouteConstant.userOrder])
+  }
+
+  selectedNum = 1;
+  foodFilter  = FoodFilter
+  selectOption(id: number) {
+    this.selectedNum = id
+    console.log(this.selectedNum)
   }
 
   visible: boolean = false;
   position: any = 'top-right';
 
+  comingToEdit: boolean = false;
   
   
   
@@ -80,12 +120,20 @@ export class HomepageComponent implements OnInit, OnDestroy {
   }
 
   removeOrderItem(i : number, location : string){
+    if(this.comingToEdit){
+      const id = this.foodMenuList[i].id
+      if(id != null){
+      this.removeFoodOrderList.push(this.orderHistory?.orderFoodDetails[i].id!)
+      }
+    }
     this.foodOrderList.splice(i,1);
     if(location.toUpperCase() === 'finalOrder'.toUpperCase()){
       if(this.foodOrderList.length < 1){
         this.finalPopUp = !this.finalPopUp
       }
     }
+
+    
   }
   
   
@@ -157,13 +205,17 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
     let foodList : foodOrderPayload[] = [] 
     order.forEach(e => foodList.push({
+      id:  e.id!,
       foodId : e.selectedFoodMenu.id,
       quantity : e.quantity,
+      
     })
     )
     let orderPayload : onlineOrderPayload = {
+      id: this.orderHistory != null ? this.orderHistory.id : null,
       arrivalTime : time,
       foodOrderList : foodList,
+      removeFoodId : this.removeFoodOrderList
     }
     this.homepageService.postOnlineOrder(orderPayload).subscribe(
       (response) => {
@@ -209,6 +261,10 @@ export class HomepageComponent implements OnInit, OnDestroy {
     if (this.getFoodItems$) {
       this.getFoodItems$.unsubscribe();
     }
+
+    this.reloadPage()
+    
+    
   }
 
 }

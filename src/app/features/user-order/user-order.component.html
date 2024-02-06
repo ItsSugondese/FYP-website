@@ -1,6 +1,115 @@
-<div class="container">
-    <app-sidenav></app-sidenav>
-    <div class="content">
+<button data-toggle="modal" data-target="#exampleModal">CLick me</button>
+{{foodSearch}}
+<input [(ngModel)] = "foodSearch" (keypress)="searchFood(foodSearch)"/>
+<div class="modal fade" id="exampleModal"  data-backdrop="static" data-keyboard="false"
+[ngClass]="{'show': finalPopUp}" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+        <!-- <img [src]="selectedImageDataMap" width="50" height="50" alt="Food Picture" class="text-center">
+        <p>Rs. {{selectedFoodMenu.cost}}</p> -->
+      </div>
+        <form>
+          <div class="form-data">
+              <label for="recipient-name" class="col-form-label" >Quantity:</label>
+            <!-- <input type="text" class="form-control" id="quantity" [(ngModel)]="quantity" name="quantity"> -->
+          </div>
+        </form>
+        <!-- <div class="text-center" *ngIf="quantity">
+          Rs. {{selectedFoodMenu.cost * quantity}}
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="togglePopUp()">Close</button> -->
+        <!-- <button type="button" class="btn btn-primary"  data-dismiss="modal"  [ngClass]="{'disabled-button': quantity < 1}" (click)="selectedOrder(selectedFoodMenu, quantity)">Send message</button> -->
         
+      </div>
     </div>
+  </div>
 </div>
+
+
+
+<div class="mb-4">
+    <div class="filter-calender flex bg-white text-customPrimary w-fit p-2 px-3 items-center justify-between rounded-xl h-auto flex-row">
+    <mat-icon>calendar_today</mat-icon>
+    <span class="font-semibold text-lg">Today</span>
+    <mat-icon>expand_more</mat-icon>
+</div>
+</div>
+<ng-container>
+    <div class="overflow-x-hidden overflow-y-hidden">
+    <div  fxLayout="row wrap overflow-x-hidden" [fxLayoutGap]="collapsed? '20px grid' : '32px grid'"  fxLayoutAlign="start">
+    <div [fxFlex]="collapsed? '25%' : '33%'" [fxFlex.xs]="'100%' " fxFlex.sm="50%" class="order-card" *ngFor="let content of paginatedData.data.content" >
+        <div class=" bg-white rounded-xl drop-shadow-xl" (click)="toggleOrderDetailsPopUp(content)" >
+            <div class="header flex  justify-between p-4 text-xl">
+                <div class="left-header flex flex-col">
+                    <span class="font-bold">
+                        <!-- Order #251 -->
+                        {{content.orderType}}
+                    </span>
+                    <span>
+                       {{content.date}}
+                    </span>
+                </div>
+                <div class="right-header">
+                    <div class="image-container">
+                        <div class="w-16 h-16 rounded-full overflow-hidden">
+                            <img src={{content.profileUrl}} alt="Your Image"
+                                class="w-full h-full object-cover" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-content-with-line-break flex flex-col mt-10 first:mt-0" *ngFor="let item of content.orderFoodDetails.slice(0,1); let first= first; let last = last; let i=index" 
+            [class.mt-0]="first">
+
+                <div [class.mt-0]="first" class="order-content-details flex px-4">
+                    <div class="image-container">
+                        <div class="w-20 h-20   rounded-full overflow-hidden">
+                            <!-- <img src="/assets/logo/samosa.jpg" /> -->
+                            <img [src]="imageDataMap[item.photoId]" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="order-content-details w-full flex flex-col text-lg justify-between mb-4 ">
+                        <span class="font-semibold">{{item.foodName}}</span>
+                        <span class="text-[#58ABFF]">{{item.foodMenu.foodType}}</span>
+                        <div class="price-details justify-between flex w-ful  font-semibold">
+                            <span class="text-priceColor">Rs. {{item.totalPrice}}</span>
+                            <span>Qty: {{item.quantity}}</span>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="flex items-center mx-4 ">
+                    <div class="border-t border-gray-500 flex-grow"></div>
+                    <div class="mx-1 text-sm text-[#5261E5]" *ngIf="content.orderFoodDetails.length > 1">View more</div>
+                    <div class="border-t border-gray-500 flex-grow"></div>
+                </div>
+            </div>
+            
+            
+
+
+                <div class="content-footer p-4  ">
+                    <div class="items-price-details flex flex-col items-end font-semibold">
+                        <span class="text-[#58ABFF] ">x2 Items</span>
+                        <span class="text-priceColor text-xl">$3.66</span>
+                    </div>
+                </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    
+</ng-container>
+

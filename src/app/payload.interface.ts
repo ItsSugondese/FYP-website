@@ -1,12 +1,12 @@
 export interface onlineOrderPayload{
-    id ?: number,
+    id : number | null,
     foodOrderList : foodOrderPayload[],
     removeFoodId ?: number[],
     arrivalTime : string
 }
 
 export interface foodOrderPayload{
-    id ?:number,
+    id : number | null,
     foodId : number,
     quantity : number
 }
