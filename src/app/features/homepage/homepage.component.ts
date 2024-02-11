@@ -204,18 +204,22 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
 
     let foodList : foodOrderPayload[] = [] 
-    order.forEach(e => foodList.push({
+    let totalPrice = 0
+    order.forEach(e => { 
+      totalPrice += e.selectedFoodMenu.cost;
+       foodList.push({
       id:  e.id!,
       foodId : e.selectedFoodMenu.id,
-      quantity : e.quantity,
-      
+      quantity : e.quantity 
     })
+  }
     )
     let orderPayload : onlineOrderPayload = {
       id: this.orderHistory != null ? this.orderHistory.id : null,
       arrivalTime : time,
       foodOrderList : foodList,
-      removeFoodId : this.removeFoodOrderList
+      removeFoodId : this.removeFoodOrderList,
+      totalPrice : totalPrice
     }
     this.homepageService.postOnlineOrder(orderPayload).subscribe(
       (response) => {

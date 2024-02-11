@@ -1,15 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light ">
-      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <div class=" justify-content-center" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link"  [routerLink]="['/manage_online_orders']" routerLinkActive="active"
+          <li class="hover:cursor-pointer">
+            <a [class.active]="!isOnsite"
+             (click)="isClicked(false)" 
             >Online</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/manage_onsite_orders']"   routerLinkActive="active"
+          <li class="hover:cursor-pointer">
+            <a [class.active]="isOnsite"  (click)="isClicked(true)"   
         >Onsite</a>
           </li>
          
         </ul>
       </div> 
   </nav>
+

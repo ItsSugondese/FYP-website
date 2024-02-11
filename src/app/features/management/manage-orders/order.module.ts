@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { FormModule } from 'src/app/shared/module/form.module';
 import { UiModule } from 'src/app/shared/ui/ui.module';
 import { NgxModule } from 'src/app/shared/module/ngx.module';
+import { MaterialModule } from 'src/app/shared/module/material.module';
+import { OrderManagementBodyComponent } from './order-management-body/order-management-body.component';
 
 
 
@@ -16,14 +18,15 @@ import { NgxModule } from 'src/app/shared/module/ngx.module';
     ManageOrdersNavbarComponent,
     OnsiteOrdersComponent,
     OnlineOrdersComponent,
+    OrderManagementBodyComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
     FormModule,
     UiModule,
-    NgxModule
-    
+    NgxModule,
+    MaterialModule
   ]
 })
 export class OrderModule { }

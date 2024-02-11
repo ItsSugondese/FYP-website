@@ -1,0 +1,4 @@
+<app-manage-orders-navbar (onToggleOrderSection)="onToggleOrder($event)"></app-manage-orders-navbar>
+
+<app-online-orders *ngIf="!isOnsite"></app-online-orders>
+<app-onsite-orders *ngIf="isOnsite"></app-onsite-orders>

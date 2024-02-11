@@ -7,13 +7,14 @@ import { Router } from '@angular/router';
 import { SidenavService } from 'src/app/shared/ui/nav/sidenav/sidenav-service/sidenav.service';
 import { FoodFilter } from 'src/app/constant/filter/food-filter.model';
 import { foodMenu } from './manage-foods-service/model/food-menu.model';
+import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
 
 @Component({
   selector: 'app-manage-foods',
   templateUrl: './manage-foods.component.html',
   styleUrls: ['./manage-foods.component.scss']
 })
-export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ManageFoodsComponent implements OnInit, OnDestroy{
 
   foodFilter = FoodFilter
   searchData!: string;
@@ -34,7 +35,8 @@ export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
   getFoodPicture$ !: Subscription;
   id !: number;
   imageDataMap: { [key: number]: string } = {};
-
+  foodTypeSubscribable$ !: Subscription
+  menuList !: string[]
   
 
   foodForm : FormGroup =this.formBuilder.group({
@@ -44,76 +46,27 @@ export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
   cost: new FormControl(),
   isPackage: new FormControl(),
   photoId: new FormControl(),
-  menuItems : new FormArray([
-    this.formBuilder.control('')
-    // new FormControl()
-  ])
   });
 
+  selectedOption !: string
   
-  
-
-
+  selectedDropdownOption(option: string) {
+    this.selectedOption = option;
+  }
   constructor(private foodService : ManageFoodsService,
     private formBuilder : FormBuilder, private router: Router,
-    private sideNavService: SidenavService
+    private sideNavService: SidenavService, private enumService: EnumService
     ) {}
 
     selectedNum !: number
+
   selectOption(id: number) {
     this.selectedNum = id
     console.log(this.selectedNum)
   }
 
-  // getNumberNonCollpase() : number{
-  //   if(this.screenWidth > 1400){
-  //     console.log(4)
-  //     return 4
-  //   }else if(this.screenWidth < 1393 && this.screenWidth >= 1105){
-  //     console.log(this.screenWidth)
-  //     console.log(3)
-  //     return 3
-  //   }else if(this.screenWidth < 1105 && this.screenWidth >= 817){
-  //     console.log(2)
-  //     return 2;
-  //   }else if(this.screenWidth < 817){
-  //     console.log(1)
-  //     return 1;
-  //   }else{
-  //     return 1;
-  //   }
-  // }
-  // getNumberCollpase() : number{
-  //   if(this.screenWidth > 1520){
-  //     return 5
-  //   }else if(this.screenWidth < 1473 && this.screenWidth >= 1217){
-  //     return 4
-  //   }else if(this.screenWidth < 1217 && this.screenWidth >= 897){
-  //     return 3;
-  //   }else if(this.screenWidth < 897 && this.screenWidth >= 641){
-  //     return 2;
-  //   }else if(this.screenWidth < 641){
-  //     return 1;
-  //   }else{
-  //     return 1;
-  //   }
-  // }
-  
 
-  // checkAndReturnIfFit(isCollapse: boolean, colSpan: number) :boolean{
-  //   if(this.collapsed == isCollapse && (this.collapsed == true? this.getNumberCollpase() == colSpan :  this.getNumberNonCollpase() == colSpan)){
-  //     console.log(colSpan + ": " + true + ", " + isCollapse + ", " + this.getNumberCollpase())
-  //     return true;
-  //   }else{
-  //     // console.log(false)
-  //     return false;
-  //   }
-  // }
-
-  ngAfterViewInit() {
-    // Now containers is a QueryList of all the elements with the 'container' reference
-   
-  }
+ 
 
   ngOnInit(): void {
     this.selectedNum = 1;
@@ -121,16 +74,7 @@ export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.collapsed = collapsed;
     });
 
-    // this.screenWidth$ =  this.sideNavService.getScreenResize().subscribe((resize) => {
-    //   this.screenWidth = resize;
-    //   if(this.collapsed){
-    //     this.getNumberCollpase()
-    //   }else{
-    //     this.getNumberNonCollpase()
-    //   }
-    //   console.log(this.screenWidth)
-    // });
-    
+ 
     this.foodMenuFetch$ = this.foodService.getFoodMenu().subscribe(
       (response) => {
         this.foodMenu = response.data;
@@ -152,6 +96,11 @@ export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     )
 
+    this.foodTypeSubscribable$ = this.enumService.getFoodMenuData().subscribe(
+      (response) => {
+        this.menuList = response.data
+      }
+    )
     
   }
 
@@ -161,25 +110,11 @@ export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  resetSwitch() {
-    this.isSwitchChecked = !this.isSwitchChecked;
-    if(this.isSwitchChecked && this.menuFormGroups.length<1){
-      this.menuFormGroups.push(new FormControl());
-    }
-   
-  }
+ 
 
-  addItem() {
-    // Add a new item to the array
-    this.menuFormGroups.push(new FormControl());
-  }
+ 
 
-  removeItem(index: number) {
-    this.menuFormGroups.removeAt(index)
-    if(this.menuFormGroups.length < 1){
-      this.isSwitchChecked = false;
-    }
-  }
+
 
   isOffcanvasOpen = true;
   // isOffcanvasOpen = false;
@@ -226,56 +161,30 @@ export class ManageFoodsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   submitDetails(){
     
-    (this.foodForm.get('isPackage'))?.setValue(this.isSwitchChecked)
+    
     if(this.imageId){
     const photoIdControl = this.foodForm.get('photoId');
     photoIdControl?.setValue(this.imageId);
     }
 
-    const filteredForm = this.filterNullValues(this.foodForm.value);
 
-    this.postFoodMenu$ = this.foodService.postFoodMenu(filteredForm).subscribe(
+    this.postFoodMenu$ = this.foodService.postFoodMenu(this.foodForm.value).subscribe(
       (results) => {
         console.log(results);
         this.postFoodMenu$.unsubscribe();
       }
     );
 
-    console.log(filteredForm);
   }
 
-  filterNullValues(obj: any) {
-    const filtered: { [key: string]: any } = {};
   
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        if (Array.isArray(obj[key])) {
-          const filteredArray = obj[key].filter((item: any) => item !== null);
-          if (filteredArray.length > 0) {
-            filtered[key] = filteredArray;
-          }
-        } else if (obj[key] !== null) {
-          filtered[key] = obj[key];
-        }
-      }
-    }
   
-    // Check if menuItems is null or empty and set isPackage to false
-    if (!filtered['menuItems'] || filtered['menuItems'].length === 0) {
-      filtered['isPackage'] = false;
-    }
-  
-    return filtered;
-  }
   
   
 toggleFormToEdit(item : foodMenu){
     this.toggleOffcanvas();
     console.log(this.menuFormGroups.length)
-    for(let i=this.menuFormGroups.length; i<item.menuItems.length; i++){
-      console.log(i);
-      this.addItem();
-    }
+    
     this.isSwitchChecked = item.isPackage;
     
    
@@ -286,13 +195,9 @@ toggleFormToEdit(item : foodMenu){
   cost: item.cost,
   isPackage: item.isPackage,
   photoId: item.photoId,
-  menuItems : item.menuItems
     })
 }
 
-//   toggleFormToEdit(item : foodMenu){
-//     this.router.navigate(['/feedback/', item.id])
-// }
 
   
   

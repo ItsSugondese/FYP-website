@@ -14,6 +14,7 @@ import { FeaturesModule } from './features/features.module';
 import { UiModule } from './shared/ui/ui.module';
 import { MatIconModule } from '@angular/material/icon';
 import { BodyComponent } from './body/body.component';
+import { TemplatesModule } from './templates/templates.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { BodyComponent } from './body/body.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatIconModule
+    MatIconModule,
+    TemplatesModule
   ],
   providers: [
     {

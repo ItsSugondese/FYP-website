@@ -1,58 +1,50 @@
-<app-manage-orders-navbar></app-manage-orders-navbar>
-<div class="container">
-    <app-sidenav></app-sidenav>
-    <div class="content">
-        
-        <input type="text" [ngModel]="this.paginationNavigator.row" (keyup.enter)="onEnterPress($event)">
-    
-        <table id="example" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Order Code</th>
-                    <th>Order By</th>
-                    <th>Email</th>
-                    <th>Arrival Time</th>
-                    <th>Ordered Items</th>
-                    <th>Approval Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let data of onlineOrderList | paginate: {
+<div class="content">
+
+    <input type="text" [ngModel]="this.paginationNavigator.row" (keyup.enter)="onEnterPress($event)">
+
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Order Code</th>
+                <th>Order By</th>
+                <th>Email</th>
+                <th>Arrival Time</th>
+                <th>Ordered Items</th>
+                <th>Approval Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of onlineOrderList | paginate: {
                     itemsPerPage : paginationNavigator.row,
                     currentPage : paginationNavigator.currentPage,
                     totalItems : paginationNavigator.totalNoOfElements
                 }">
-                    <td class="hidden">{{data.id}}</td>
-                    <td>{{data.order_code}}</td>
-                    <td>{{data.full_name}}</td>
-                    <td>{{data.email}}</td>
-                    <td>{{data.time_range}}</td>
-                    <td>
-                        <ul *ngFor="let items of data.orderFoodDetails">
-                            <li>{{items.quantity}} x {{items.foodName}} 
-                                (Rs. {{items.cost}} each - Rs. {{items.totalPrice}})</li>
-                            </ul>
-                    </td>
-                    <td>{{data.approval_status}}</td>
-                    <td class=" align-middle">
-                        <div class="btn-group">
+                <td class="hidden">{{data.id}}</td>
+                <td>{{data.order_code}}</td>
+                <td>{{data.full_name}}</td>
+                <td>{{data.email}}</td>
+                <td>{{data.time_range}}</td>
+                <td>
+                    <ul *ngFor="let items of data.orderFoodDetails">
+                        <li>{{items.quantity}} x {{items.foodName}}
+                            (Rs. {{items.cost}} each - Rs. {{items.totalPrice}})</li>
+                    </ul>
+                </td>
+                <td>{{data.approval_status}}</td>
+                <td class=" align-middle">
+                    <div class="btn-group">
                         <button type="button" class="btn btn-success mr-2">Approve</button>
                         <button type="button" class="btn btn-danger">Reject</button>
                     </div>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <p>{{paginationNavigator.noOfElements}} of {{paginationNavigator.totalNoOfElements}} items</p>
-                <pagination-controls
-                previousLabel="Prev" 
-                nextLabel="Next"
-                (pageChange)="onTableDataChange($event)"
-                >
-                </pagination-controls>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <p>{{paginationNavigator.noOfElements}} of {{paginationNavigator.totalNoOfElements}} items</p>
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
 
-            </tfoot>
-        </table>
-    </div>
+        </tfoot>
+    </table>
 </div>

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { ManageOrdersNavbarService } from './manage-orders-navbar-service/manage-orders-navbar.service';
+import { ManagementRouteConstant } from 'src/app/constant/routing/management-routing-constant.model';
 
 @Component({
   selector: 'app-manage-orders-navbar',
@@ -7,11 +9,17 @@ import { Component } from '@angular/core';
 })
 export class ManageOrdersNavbarComponent {
 
+  @Output() onToggleOrderSection: EventEmitter<boolean> = new EventEmitter();
 
+  routes = ManagementRouteConstant
+  isOnsite = true;
+  constructor(public manageOrderNavbarService: ManageOrdersNavbarService) {}
 
-  constructor() {
+  isClicked(isOnsite : boolean){
+    // this.manageOrderNavbarService.setIsOnsiteOrder(isOnsite)
+    this.onToggleOrderSection.emit(isOnsite)
+    this.isOnsite = isOnsite;
   }
-
  
   
 }

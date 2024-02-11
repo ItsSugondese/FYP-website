@@ -1,16 +1,6 @@
-.container {
-    display: flex;
-    align-items: flex-start; /* Align content to the top */
-  }
-  
-  nav {
-    padding-left: 250px;  /* Example text color for the sidebar */
-    /* Add other styles as needed */
-  }
-  
-  .content {
-    flex: 1; 
-    padding: 20px; 
-    /* Add other styles as needed */
-  }
-  
+.active {
+  /* or any other styling you want */
+ font-weight: 18px;
+ background-color: white;
+ color: #A62A22 !important;
+}

@@ -21,6 +21,7 @@ import { AdminDashboardComponent } from './features/dashboard/admin-dashboard/ad
 import { UserRouteConstant } from './constant/routing/user-routing-constant.model';
 import { UserOrderComponent } from './features/user-order/user-order.component';
 import { TestComponent } from './features/test/test.component';
+import { OrderManagementBodyComponent } from './features/management/manage-orders/order-management-body/order-management-body.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -31,8 +32,9 @@ const routes: Routes = [
   {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/add_staff', component : AddStaffComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
-  {path: 'manage_online_orders', component: OnlineOrdersComponent},
-  {path: 'manage_onsite_orders', component: OnsiteOrdersComponent},
+  {path: ManagementRouteConstant.orderManagement, component: OrderManagementBodyComponent},
+  {path: ManagementRouteConstant.onlineOrderManagement, component: OnlineOrdersComponent},
+  {path: ManagementRouteConstant.onsiteOrderManagement, component: OnsiteOrdersComponent},
   {path: 'manage_users', component: ManageUsersComponent},
   {path: 'manage_users/:id', component: UserDetailsComponent},
   {path: 'manage_users/:id/history', component: UserDisableHistoryComponent},

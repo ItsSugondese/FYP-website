@@ -30,7 +30,6 @@ import { FoodFilterComponent } from 'src/app/templates/food-menu/food-filter.com
     UserDetailsComponent,
     StaffDisableHistoryComponent,
     UserDisableHistoryComponent,
-    FoodFilterComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +40,6 @@ import { FoodFilterComponent } from 'src/app/templates/food-menu/food-filter.com
     NgprimeModule,
     FlexLayoutModule,
     MaterialModule,
-    
   ]
 })
 export class ManagementModule { }

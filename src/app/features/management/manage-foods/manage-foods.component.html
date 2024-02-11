@@ -60,7 +60,7 @@
               <span class="h-full"> Available Today: </span>
               <div class="form-check  form-switch flex items-center justify-end">
                 <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck{{item.id}}"
-                  (click)="resetSwitch()" [checked]="item.isAvailableToday">
+                   [checked]="item.isAvailableToday">
               </div>
             </div>
             <div class="px-3" (click)="toggleFormToEdit(item)">
@@ -138,35 +138,23 @@
           <div class="col-auto">
             <label class="form-check-label" for="flexSwitchCheckChecked">Package : </label>
           </div>
-
-          <div class="col">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                (click)="resetSwitch()" [checked]="isSwitchChecked" formControlName="isPackage">
-            </div>
-          </div>
-        </div>
-        <div *ngIf="isSwitchChecked">
-
-          <div class="form-group mt-3">
-            <label for="foodItems">food Items</label>
-            <div formArrayName="menuItems">
-              <div class="input-group mb-3" *ngFor="let item of menuFormGroups.controls; let i = index">
-                <input type="text" class="form-control" [id]="'foodItems' + i" placeholder="Price of the food"
-                  formControlName="{{i}}">
-                <button class="btn btn-outline-secondary" type="button" (click)="removeItem(i)">
-                  <i class="bi bi-trash-fill"></i>
-                </button>
-              </div>
-            </div>
-
-          </div>
-
-          <button class="bg-blue text-white" type="button" (click)="addItem()">Add Item</button>
         </div>
 
+        <div class="dropright">
+          <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{selectedOption != null? selectedOption :  'Select Food Type'}} <mat-icon>arrow_right</mat-icon>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item hover:cursor-pointer" *ngFor="let option of menuList" (click)="selectedDropdownOption(option)" >
+              {{option}}</a>
+           
+          </div>
+        </div>
+        
+       
 
-        <button type="submit" class="text-white bg-customPrimary hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg pr-2 pl-1 py-1.5 text-base">Submit</button>
+
+        <button type="submit" class=" hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg pr-2 pl-1 py-1.5 text-base">Submit</button>
       </form>
     </div>
   </div>
