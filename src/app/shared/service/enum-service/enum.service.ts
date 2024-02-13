@@ -17,4 +17,8 @@ export class EnumService {
     return this.httpClient.get<ResponseData<string[]>>(this.backendUrl + this.moduleName +  "/food-menu");
  }
 
+  getFeedbackStauts(){
+    return this.httpClient.get<ResponseData<string[]>>(this.backendUrl + this.moduleName +  "/feedbacks");
+ }
+
 }

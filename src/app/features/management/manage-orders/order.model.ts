@@ -1,4 +1,5 @@
-import { foodMenu } from "../manage-foods/manage-foods-service/model/food-menu.model";
+import { foodMenu } from "../manage-food-body/manage-foods/manage-foods-service/model/food-menu.model";
+
 
 export interface orderedFood {
     id: number;

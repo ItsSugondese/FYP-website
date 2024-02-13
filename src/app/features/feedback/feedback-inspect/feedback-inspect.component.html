@@ -1,45 +1,74 @@
-<div class="container">
-    <app-sidenav></app-sidenav>
-    <div class="content">
-        
-        <input type="text" [ngModel]="this.paginationNavigator.row" (keyup.enter)="onEnterPress($event)">
+<!-- <div *ngIf="feedbackStatusList && feedbackData"> -->
+
+    <p-calendar class="bg-black" id="cal" [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" (onSelect)="onRangeSelect($event)"></p-calendar>
+
     
-        <table id="example" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Contact Number</th>
-                    <th>Account Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-               
-                <tr *ngFor="let data of paginatedData.data.content | paginate: {
+
+    
+    <div class=" text-center mb-3" *ngIf="feedbackData">
+        <div class="text-4xl font-semibold">
+            {{feedbackData.sentiment}}
+        </div>
+        <div>
+            Based on {{feedbackData.totalFeedback}} feedbacks.
+        </div>
+    </div>
+
+    <table >
+        <tr *ngFor="let item of feedbackStatusList; let first= first; let i = index; let last = last"
+            class="text-[#15803D] font-semibold " [class.text-yellow-600]="first" [class.text-red-600]="last"
+            >
+            <td class="">{{item}}</td>
+            <td class="w-full  pl-2">
+                <div class="progress h-3">
+                    <div class="progress-bar bg-[#15803D]" [class.bg-yellow-600]="first" [class.bg-red-600]="last" role="progressbar" [style.width.%]="filterFeedbackDataByIndex('width', i)">
+                    </div>
+                </div>
+                
+            </td>
+            <td class="pl-2">{{filterFeedbackDataByIndex('count', i)}}</td>
+        </tr>
+    </table>
+<!-- </div> -->
+
+
+
+<div class="content" *ngIf="paginatedData != null">
+
+
+    <input type="text" [ngModel]="this.paginationNavigator.row" (keyup.enter)="onEnterPress($event)">
+
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Contact Number</th>
+                <th>Account Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let data of paginatedData.content | paginate: {
                     itemsPerPage : paginationNavigator.row,
                     currentPage : paginationNavigator.currentPage,
                     totalItems : paginationNavigator.totalNoOfElements
                 }">
-                    <td class="hidden">{{data.id}}</td>
-                    <td>{{data.date}}</td>
-                    <td>{{data.feedbackStatus}}</td>
-                    <td>{{data.isAnonymous}}</td>
-                    <td>{{data.username}}</td>
-                    <td><img src="{{ data.userProfileUrl }}" width="50" height="50" alt="Food Picture"></td>
-                    
-                </tr>
-            </tbody>
-            <tfoot>
-                <p>{{paginationNavigator.noOfElements}} of {{paginationNavigator.totalNoOfElements}} items</p>
-                <pagination-controls
-                previousLabel="Prev" 
-                nextLabel="Next"
-                (pageChange)="onTableDataChange($event)"
-                >
-                </pagination-controls>
+                <td class="hidden">{{data.id}}</td>
+                <td>{{data.date}}</td>
+                <td>{{data.feedbackStatus}}</td>
+                <td>{{data.isAnonymous}}</td>
+                <td>{{data.username}}</td>
+                <td><img src="{{ data.userProfileUrl }}" width="50" height="50" alt="Food Picture"></td>
 
-            </tfoot>
-        </table>
-    </div>
+            </tr>
+        </tbody>
+        <tfoot>
+            <p>{{paginationNavigator.noOfElements}} of {{paginationNavigator.totalNoOfElements}} items</p>
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+
+        </tfoot>
+    </table>
 </div>

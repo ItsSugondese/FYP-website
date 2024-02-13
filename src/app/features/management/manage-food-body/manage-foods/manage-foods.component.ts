@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { ManageFoodsService } from './manage-foods-service/manage-foods.service';
 import { Observable, Subscription } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -6,8 +6,9 @@ import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/att
 import { Router } from '@angular/router';
 import { SidenavService } from 'src/app/shared/ui/nav/sidenav/sidenav-service/sidenav.service';
 import { FoodFilter } from 'src/app/constant/filter/food-filter.model';
-import { foodMenu } from './manage-foods-service/model/food-menu.model';
+import { FoodMenuWithImageData, foodMenu } from './manage-foods-service/model/food-menu.model';
 import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
+import { FoodMenuPagination } from './manage-foods-service/model/food-menu.payload';
 
 @Component({
   selector: 'app-manage-foods',
@@ -16,6 +17,14 @@ import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
 })
 export class ManageFoodsComponent implements OnInit, OnDestroy{
 
+  @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
+
+
+  toggleDrawer(isOopen : boolean){
+    this.onOpeningDrawer.emit(isOopen)
+  }
+
+
   foodFilter = FoodFilter
   searchData!: string;
   // screenWidth!: number;
@@ -23,36 +32,39 @@ export class ManageFoodsComponent implements OnInit, OnDestroy{
   navbarCollapse$ !: Subscription;
   collapsed !: boolean;
   numberOfItemsPerRow = 3;
+  imageUrl!: string | null; //
 
-  isSwitchChecked: boolean = false;
   items: any[] = [{}];
   imageId$ !: Subscription;
-  imageId !: number;
+  imageId !: number; //
 
   foodMenuFetch$ !: Subscription;
   foodMenu : foodMenu[] = [];
-  postFoodMenu$ !: Subscription;
+  postFoodMenu$ !: Subscription; //
   getFoodPicture$ !: Subscription;
   id !: number;
   imageDataMap: { [key: number]: string } = {};
-  foodTypeSubscribable$ !: Subscription
-  menuList !: string[]
   
+  foodMenuPagination : FoodMenuPagination = {
+    page: 1,
+    row: 10
+  }
 
   foodForm : FormGroup =this.formBuilder.group({
     id : new FormControl(),
   name: new FormControl(),
   description: new FormControl(),
   cost: new FormControl(),
-  isPackage: new FormControl(),
   photoId: new FormControl(),
+  foodType : new FormControl()
   });
 
-  selectedOption !: string
+
   
   selectedDropdownOption(option: string) {
-    this.selectedOption = option;
+    this.formValue("foodType")?.setValue(option);
   }
+
   constructor(private foodService : ManageFoodsService,
     private formBuilder : FormBuilder, private router: Router,
     private sideNavService: SidenavService, private enumService: EnumService
@@ -75,9 +87,12 @@ export class ManageFoodsComponent implements OnInit, OnDestroy{
     });
 
  
-    this.foodMenuFetch$ = this.foodService.getFoodMenu().subscribe(
+    // this.foodMenuFetch$ = this.foodService.getFoodMenu().subscribe(
+    this.foodMenuFetch$ = this.foodService.getFoodMenuPaginated(this.foodMenuPagination).subscribe(
       (response) => {
-        this.foodMenu = response.data;
+        
+        this.foodMenu = response.data.content;
+
         this.foodMenu.forEach((menu) => {
           if(menu.photoId){
             this.getFoodPicture$ = this.foodService.getFoodPicture(menu.photoId).subscribe((imageBlob: Blob) => {
@@ -86,6 +101,7 @@ export class ManageFoodsComponent implements OnInit, OnDestroy{
             createImageFromBlob(imageBlob, menu.photoId)
              .then((imageData) => {
               this.imageDataMap[menu.photoId] = imageData;
+              
           })
           .catch((error) => {
               console.log("error when trying to access")
@@ -96,49 +112,16 @@ export class ManageFoodsComponent implements OnInit, OnDestroy{
       }
     )
 
-    this.foodTypeSubscribable$ = this.enumService.getFoodMenuData().subscribe(
-      (response) => {
-        this.menuList = response.data
-      }
-    )
+    
     
   }
 
- 
-
-
-
-
-
- 
-
- 
-
-
-
-  isOffcanvasOpen = true;
-  // isOffcanvasOpen = false;
-  
-  toggleOffcanvas() {
-    console.log(this.foodForm.get("id")?.value)
-    console.log(this.foodForm.get("id") === null)
-    console.log(this.foodForm.value);
-    this.isOffcanvasOpen = !this.isOffcanvasOpen;
-    while(this.menuFormGroups.length){
-      this.menuFormGroups.removeAt(0);
-    }
-    this.foodForm.reset();
-    if(this.isOffcanvasOpen == true){
-      
-    }else{
-      this.isSwitchChecked = false;
-      
-      
-    }
-
- 
-    
+  isEmptyObject(obj: any): boolean {
+    return Object.keys(obj).length === 0;
   }
+
+
+
   onFileSelected(event: any) {
     const files : FileList = event.target.files;
     if (files.length > 0) {
@@ -181,30 +164,34 @@ export class ManageFoodsComponent implements OnInit, OnDestroy{
   
   
   
-toggleFormToEdit(item : foodMenu){
-    this.toggleOffcanvas();
-    console.log(this.menuFormGroups.length)
-    
-    this.isSwitchChecked = item.isPackage;
-    
+toggleFormToEdit(item : foodMenu | null){
    
-    this.foodForm.setValue({
-      id : item.id,
-  name: item.name,
-  description: item.description,
-  cost: item.cost,
-  isPackage: item.isPackage,
-  photoId: item.photoId,
-    })
+
+  let val !: FoodMenuWithImageData | null;
+  
+  if(item == null){
+    val = null
+  }else {
+    val = {
+      foodMenu: item,
+      image: this.imageDataMap[item.photoId]
+    }
+  }
+
+    this.foodService.sendSelectedFoodMenu(val)
 }
 
 
-  
-  
 
-  get menuFormGroups () {
-    return this.foodForm.get('menuItems') as FormArray
-  }
+
+
+
+  
+formValue(name : string) {
+  return this.foodForm.get(name);
+}
+
+ 
 
 
 
@@ -222,8 +209,5 @@ toggleFormToEdit(item : foodMenu){
     if(this.navbarCollapse$){
       this.navbarCollapse$.unsubscribe();
     }
-    // if(this.screenWidth$){
-    //   this.screenWidth$.unsubscribe();
-    // }
   }
 }

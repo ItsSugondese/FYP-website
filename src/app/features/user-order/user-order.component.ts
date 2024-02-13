@@ -6,13 +6,13 @@ import { UserOrderHistoryPagination } from './user-order-service/model/user-orde
 import { Subscription } from 'rxjs';
 import { UserOrderService } from './user-order-service/user-order.service';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
-import { ManageFoodsService } from '../management/manage-foods/manage-foods-service/manage-foods.service';
 import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/attachment.handler';
 import { SidenavService } from 'src/app/shared/ui/nav/sidenav/sidenav-service/sidenav.service';
-import { FoodMenuPagination } from '../management/manage-foods/manage-foods-service/model/food-menu.payload';
 import { foodOrdering } from 'src/app/shared/model/order/food-order.model';
 import { Router } from '@angular/router';
 import { UserRouteConstant } from 'src/app/constant/routing/user-routing-constant.model';
+import { FoodMenuPagination } from '../management/manage-food-body/manage-foods/manage-foods-service/model/food-menu.payload';
+import { ManageFoodsService } from '../management/manage-food-body/manage-foods/manage-foods-service/manage-foods.service';
 
 @Component({
   selector: 'app-user-order',
@@ -50,7 +50,7 @@ export class UserOrderComponent implements OnInit, OnDestroy {
 
   // @ViewChild('quantityInput') quantityInput !: ElementRef;
   constructor(private userOrderService : UserOrderService, private foodService: ManageFoodsService,
-    private sideNavService: SidenavService, private router: Router, private foodMenuSerivce: ManageFoodsService) {
+    private sideNavService: SidenavService, private router: Router) {
 
   }
 

@@ -1,0 +1,29 @@
+// ::ng-deep mat-progress-bar {
+//     color: red;
+    
+//     border-radius: 6px;
+//    border: 2px solid;
+//   }
+
+// ::ng-deep .mat-input-underline{
+
+// }
+
+
+::ng-deep .p-datepicker table td > span {
+    background-color: orange;
+  }
+  
+  ::ng-deep .p-datepicker table td.p-datepicker-today > span {
+    background-color: burlywood;
+  }
+
+  ::ng-deep .p-inputtext {
+    background-color: blue;
+  }
+
+  .ui-button {
+    border: 1px solid black !important;
+    color: #FFFFFF;
+    background: black !important;
+   }

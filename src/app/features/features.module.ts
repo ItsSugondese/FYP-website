@@ -21,7 +21,6 @@ import { TestComponent } from './test/test.component';
   declarations: [
     HomepageComponent,
     FeedbackComponent,
-    FeedbackInspectComponent,
     UserOrderComponent,
     TestComponent,
   ],

@@ -1,0 +1,94 @@
+<!-- <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+      [ngClass]="{'show': isOffcanvasOpen}" tabindex="-1" id="myOffcanvas" data-bs-backdrop="false" *ngIf="isOffcanvasOpen" > -->
+<div class="">
+  <div class="flex justify-between">
+    <h5> {{foodForm.get("id")?.value == null? 'Add' : 'Update'}} Food</h5>
+
+  </div>
+  <div class="offcanvas-body">
+    <form [formGroup]="foodForm" (ngSubmit)="submitDetails()">
+      <input type="hidden" name="hiddenField" value="{{formValue('id')?.value}}" formControlName="id">
+      <div class="form-group">
+        <label for="inputFoodName">Food Name</label>
+        <input type="text" class="form-control border-2 focus:ring-0" id="inputFoodName" placeholder="Enter Food Name"
+          formControlName="name">
+
+        <div class="flex justify-between mt-2">
+          <div>
+            <span>FoodType:</span>
+            <div class="dropright">
+              <button class="border-gray-300 border-2  w-fit rounded p-1 flex" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{formValue("foodType")?.value != null? formValue("foodType")?.value : 'Select Food Type'}}
+                <div class="">
+                  <mat-icon>arrow_right</mat-icon>
+                </div>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item hover:cursor-pointer hover:bg-gray-200" *ngFor="let option of menuList"
+                  (click)="selectedDropdownOption(option)">
+                  {{option}}</a>
+
+              </div>
+            </div>
+          </div>
+          <div class="w-40">
+            <label for="inputPrice">Price</label>
+            <input type="number" class="form-control border-2 focus:ring-0" id="inputPrice"
+              placeholder="Price of the food" formControlName="cost">
+          </div>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="inputDescription">Description</label>
+          <textarea class="form-control border-2 focus:ring-0" id="inputDescription" aria-describedby="emailHelp"
+            placeholder="Description of the food" formControlName="description"></textarea>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="exampleFormControlFile1">Image upload</label>
+          <!-- <input type="file" class="form-control-file" id="exampleFormControlFile1"
+                (change)="onFileSelected($event)"> -->
+
+
+          <div class=" bg-gray-100 border-dashed border-2 border-gray-400 p-8 text-center" (drop)="onDrop($event)"
+            (dragover)="onDragOver($event)" (click)="fileInput.click()">
+            <span class="text-lg text-gray-600">Drag & Drop files here or click to upload</span>
+            <input type="file" multiple style="display: none;" (change)="onFileSelect($event)" #fileInput />
+
+            <div class="">
+              <div class="flex justify-center hover:cursor-default">
+                <div class="group image-container relative w-fit h-40 p-3 px-0 pt-1 overflow-hidden rounded-sm">
+                  <img *ngIf="imageUrl" [src]="imageUrl" class=" rounded-sm h-full object-contain"
+                    [class.group-hover:brightness-75]="selectedFoodImage == null || selectedFoodImage != imageUrl">
+                  <div class="hidden absolute top-0 right-0 p-1 group-hover:block hover:cursor-pointer bg-white rounded"
+                    *ngIf="selectedFoodImage == null || selectedFoodImage != imageUrl">
+
+
+                    <svg viewBox="64 64 896 896" focusable="false" data-icon="delete" width="1em" height="1em"
+                      fill="currentColor" aria-hidden="true">
+                      <path
+                        d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-200 0H360v-72h304v72z">
+                      </path>
+                    </svg>
+
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+      <button type="submit"
+        class=" hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg pr-2 pl-1 py-1.5 text-base">Submit</button>
+    </form>
+  </div>
+</div>

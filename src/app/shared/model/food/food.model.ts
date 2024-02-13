@@ -3,8 +3,6 @@ export interface foodMenu {
     name: string,
     description: string,
     cost: number,
-    isPackage: boolean,
     photoId: number,
     foodType: string,
-    menuItems: string[]
 }

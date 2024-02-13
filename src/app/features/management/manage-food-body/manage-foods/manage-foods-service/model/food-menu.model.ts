@@ -3,9 +3,15 @@ export interface foodMenu{
     name: string,
     description: string,
     cost: number,
-    isPackage: boolean,
     photoId: number,
     isAvailableToday : boolean,
     foodType: string,
     menuItems : string[]
+  }
+
+
+export interface FoodMenuWithImageData{
+  foodMenu: foodMenu,
+  image: string
+    
   }
