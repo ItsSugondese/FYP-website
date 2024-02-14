@@ -15,4 +15,6 @@ export class ManageUsersService {
      return this.httpClient.post<any>(this.backendUrl + this.moduleName + "/paginated", paginationRequest);
   }
   
+  
+  
 }

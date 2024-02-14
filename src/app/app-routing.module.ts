@@ -32,7 +32,7 @@ const routes: Routes = [
   {path: 'admin/manage_staff', component : ManageStaffComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
-  {path: 'admin/manage_staff/add_staff', component : AddStaffComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
+  {path: ManagementRouteConstant.addStaff, component : AddStaffComponent,},
   {path: ManagementRouteConstant.orderManagement, component: OrderManagementBodyComponent},
   {path: ManagementRouteConstant.onlineOrderManagement, component: OnlineOrdersComponent},
   {path: ManagementRouteConstant.onsiteOrderManagement, component: OnsiteOrdersComponent},

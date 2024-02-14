@@ -18,12 +18,12 @@
     background-color: burlywood;
   }
 
-  ::ng-deep .p-inputtext {
-    background-color: blue;
+  ::ng-deep .p-inputtext:focus {
+    outline: none !important;
+    border: none !important;
   }
 
-  .ui-button {
-    border: 1px solid black !important;
-    color: #FFFFFF;
-    background: black !important;
-   }
+::ng-deep .p-calendar .p-inputtext:focus {
+    outline: none !important;
+    border: none;
+}

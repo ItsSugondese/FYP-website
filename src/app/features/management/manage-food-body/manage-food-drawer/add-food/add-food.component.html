@@ -9,13 +9,13 @@
     <form [formGroup]="foodForm" (ngSubmit)="submitDetails()">
       <input type="hidden" name="hiddenField" value="{{formValue('id')?.value}}" formControlName="id">
       <div class="form-group">
-        <label for="inputFoodName">Food Name</label>
+        <label for="inputFoodName">Food Name<span class="text-red-600 text-xl">*</span></label>
         <input type="text" class="form-control border-2 focus:ring-0" id="inputFoodName" placeholder="Enter Food Name"
           formControlName="name">
 
         <div class="flex justify-between mt-2">
           <div>
-            <span>FoodType:</span>
+            <span>FoodType<span class="text-red-600 text-xl">*</span></span>
             <div class="dropright">
               <button class="border-gray-300 border-2  w-fit rounded p-1 flex" type="button" id="dropdownMenuButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -33,9 +33,9 @@
             </div>
           </div>
           <div class="w-40">
-            <label for="inputPrice">Price</label>
-            <input type="number" class="form-control border-2 focus:ring-0" id="inputPrice"
-              placeholder="Price of the food" formControlName="cost">
+            <label for="inputPrice">Price<span class="text-red-600 text-xl">*</span></label>
+            <input type="number" class="form-control border-2 focus:ring-0" 
+              placeholder="Price of the food" formControlName="cost" (input)="item!=null && compareFormAndMenu()">
           </div>
         </div>
 
@@ -45,25 +45,23 @@
             placeholder="Description of the food" formControlName="description"></textarea>
         </div>
 
-        <div class="form-group mt-2">
-          <label for="exampleFormControlFile1">Image upload</label>
-          <!-- <input type="file" class="form-control-file" id="exampleFormControlFile1"
-                (change)="onFileSelected($event)"> -->
+        <div class="form-group mt-2 h-fit">
+          <label for="exampleFormControlFile1">Image upload<span class="text-red-600 text-xl">*</span></label>
 
 
           <div class=" bg-gray-100 border-dashed border-2 border-gray-400 p-8 text-center" (drop)="onDrop($event)"
-            (dragover)="onDragOver($event)" (click)="fileInput.click()">
-            <span class="text-lg text-gray-600">Drag & Drop files here or click to upload</span>
-            <input type="file" multiple style="display: none;" (change)="onFileSelect($event)" #fileInput />
+            (dragover)="onDragOver($event)" >
+            <span class="text-lg text-gray-600 w-full hover:cursor-pointer"  (click)="fileInput.click()">Drag & Drop files here or click to upload</span>
+            <input type="file" multiple style="display: none;" (change)="onFileSelect($event); fileInput.value = '';" #fileInput />
 
             <div class="">
               <div class="flex justify-center hover:cursor-default">
-                <div class="group image-container relative w-fit h-40 p-3 px-0 pt-1 overflow-hidden rounded-sm">
-                  <img *ngIf="imageUrl" [src]="imageUrl" class=" rounded-sm h-full object-contain"
+                <div class="group image-container relative w-fit h-fit p-3 px-0 pt-1 overflow-hidden rounded-sm">
+                  <img *ngIf="imageUrl" [src]="imageUrl" class=" rounded-sm w-32 object-cover"
                     [class.group-hover:brightness-75]="selectedFoodImage == null || selectedFoodImage != imageUrl">
                   <div class="hidden absolute top-0 right-0 p-1 group-hover:block hover:cursor-pointer bg-white rounded"
-                    *ngIf="selectedFoodImage == null || selectedFoodImage != imageUrl">
-
+                    *ngIf="selectedFoodImage == null || selectedFoodImage != imageUrl"
+                     (click)="removeImage($event)">
 
                     <svg viewBox="64 64 896 896" focusable="false" data-icon="delete" width="1em" height="1em"
                       fill="currentColor" aria-hidden="true">
@@ -87,8 +85,14 @@
 
 
 
-      <button type="submit"
-        class=" hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg pr-2 pl-1 py-1.5 text-base">Submit</button>
+      <div class="flex justify-end mt-3">
+        <div  (click)="toggleDrawer(false)"
+          class="w-fit mr-2  hover:cursor-pointer items-center text-customPrimary border-2 border-customPrimary rounded-lg pr-2 pl-1 py-1.5 text-base">
+          Cancel</div>
+        <button type="submit" [disabled]="foodForm.invalid"
+          class=" hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg px-2  py-1.5 text-base"
+          [class.disabled-button]="foodForm.invalid || (item == null ?  imageId == null : compareFormAndMenu() && imageId ==null)">Save</button>
+      </div>
     </form>
   </div>
 </div>

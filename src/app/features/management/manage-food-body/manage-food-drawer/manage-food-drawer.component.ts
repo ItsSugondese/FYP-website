@@ -15,7 +15,7 @@ export class ManageFoodDrawerComponent implements OnInit, OnDestroy {
   
   editFoodIndex = 1
   feedbackIndex = 2
-  selectedNavbar : number = this.feedbackIndex;
+  selectedNavbar : number = this.editFoodIndex;
   navItem = 
     {[this.editFoodIndex]: "Food Details", [this.feedbackIndex]: "Feedback"}
     selectedFoodMenuSubscribable$ !: Subscription

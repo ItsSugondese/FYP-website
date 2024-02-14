@@ -6,7 +6,6 @@ export interface foodMenu{
     photoId: number,
     isAvailableToday : boolean,
     foodType: string,
-    menuItems : string[]
   }
 
 

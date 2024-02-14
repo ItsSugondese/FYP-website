@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
 import { Subscription } from 'rxjs';
 import { ManageFoodsService } from '../../manage-foods/manage-foods-service/manage-foods.service';
@@ -17,15 +17,26 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   @Output() onOpeningDrawer: EventEmitter<boolean> = new EventEmitter();
   @Input() item !: FoodMenuWithImageData | null
 
+  
 
   hoverField = textFiledWhenClick()
   isOffcanvasOpen = false;
   imageUrl!: string | null;
   postFoodMenu$ !: Subscription;
   foodTypeSubscribable$ !: Subscription
-  // selectedFoodMenuSubscribable$ !: Subscription
-  foodForm !: FormGroup
-  imageId !: number;
+
+  foodForm : FormGroup = this.formBuilder.group({
+    id: new FormControl(),
+    name: new FormControl('', [Validators.required]), // Validation added for name
+    description: new FormControl(''), // No validation for description
+    cost: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]), // Validation added for cost
+    photoId: new FormControl(),
+    foodType: new FormControl('', [Validators.required]) // Validation added for foodType
+  });
+  
+  imageId$ !: Subscription;
+
+  imageId !: number | null;
   menuList !: string[]
   imageDataMapByMenuId: { [key: number]: string[] } = {};
 
@@ -37,14 +48,7 @@ export class AddFoodComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.foodForm = this.formBuilder.group({
-      id: new FormControl(),
-      name: new FormControl(),
-      description: new FormControl(),
-      cost: new FormControl(),
-      photoId: new FormControl(),
-      foodType: new FormControl()
-    });
+
 
     this.foodTypeSubscribable$ = this.enumService.getFoodMenuData().subscribe(
       (response) => {
@@ -52,15 +56,13 @@ export class AddFoodComponent implements OnInit, OnDestroy {
       }
     )
 
-   
-
         if (this.item != null) {
           this.foodForm.setValue({
             id: this.item.foodMenu.id,
             name: this.item.foodMenu.name,
             description: this.item.foodMenu.description,
             cost: this.item.foodMenu.cost,
-            photoId: this.item.foodMenu.photoId,
+            photoId: null,
             foodType: this.item.foodMenu.foodType
           })
           this.imageUrl = this.item.image
@@ -71,28 +73,19 @@ export class AddFoodComponent implements OnInit, OnDestroy {
           this.selectedFoodImage = null
         }
       
-    // this.selectedFoodMenuSubscribable$ = this.foodService.getSelectedFoodMenu().subscribe(
-    //   (item) => {
-    //     if (item != null) {
-    //       this.foodForm.setValue({
-    //         id: item.foodMenu.id,
-    //         name: item.foodMenu.name,
-    //         description: item.foodMenu.description,
-    //         cost: item.foodMenu.cost,
-    //         photoId: item.foodMenu.photoId,
-    //         foodType: item.foodMenu.foodType
-    //       })
-    //       this.imageUrl = item.image
-    //       this.selectedFoodImage = item.image
-    //     }else{
-    //       this.foodForm.reset();
-    //       this.imageUrl = null;
-    //       this.selectedFoodImage = null
-    //     }
-    //   }
-    // )
   }
 
+  removeImage(event: MouseEvent): void {
+    if(this.item != null){
+      this.imageUrl = this.item.image
+    }else{
+    this.imageUrl = null;
+    }
+    this.imageId = null;
+
+
+  }
+  
   selectedDropdownOption(option: string) {
     this.formValue("foodType")?.setValue(option);
   }
@@ -120,6 +113,7 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   }
 
   onFileSelect(event: Event) {
+    console.log("here is it")
     const input = event.target as HTMLInputElement;
     if (input.files!.length > 0) {
       this.uploadFiles(input.files!);
@@ -133,33 +127,64 @@ export class AddFoodComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imageUrl = e.target.result;
+        const formData = new FormData();
+        formData.append('attachments', file);
+        this.imageId$ = this.foodService.postImage(formData).subscribe(
+          (response) => {
+            this.imageId = response.data[0];
+            this.imageId$.unsubscribe()
+            
+          }
+        )
       };
       reader.readAsDataURL(file);
     }
-  }
+    }
+  
 
   submitDetails() {
-
-
     if (this.imageId) {
       const photoIdControl = this.foodForm.get('photoId');
       photoIdControl?.setValue(this.imageId);
     }
+    
+    let tempFoodType !: string;
+    const foodType = this.foodForm.get('foodType');
+    tempFoodType =  foodType?.value;
+    foodType?.setValue(tempFoodType.toUpperCase());
 
-
+    console.log("hello")
     this.postFoodMenu$ = this.foodService.postFoodMenu(this.foodForm.value).subscribe(
       (results) => {
         console.log(results);
         this.postFoodMenu$.unsubscribe();
       }
     );
+
+    foodType?.setValue(tempFoodType)
   }
 
 
 
+  compareFormAndMenu():boolean {
+    console.log(this.formValue('description')!.value.toUpperCase())
+    console.log(this.item?.foodMenu.foodType.toUpperCase())
+    if(this.item?.foodMenu.cost == this.formValue('cost')!.value &&
+    this.item?.foodMenu.name.toUpperCase() == this.formValue('name')!.value.toUpperCase() &&
+    this.item?.foodMenu.foodType.toUpperCase() == this.formValue('foodType')!.value.toUpperCase() &&
+    this.item?.foodMenu.description.toUpperCase() == this.formValue('description')!.value.toUpperCase()) {
+      return true;
+    }
+    
+    return false;
+  }
 
   formValue(name: string) {
     return this.foodForm.get(name);
+  }
+
+  toggleDrawer(isOopen : boolean){
+    this.onOpeningDrawer.emit(isOopen)
   }
 
   ngOnDestroy(): void {
@@ -170,6 +195,8 @@ export class AddFoodComponent implements OnInit, OnDestroy {
     if (this.foodTypeSubscribable$) {
       this.foodTypeSubscribable$.unsubscribe()
     }
-    console.log("check if getting called")
+    if(this.imageId$){
+      this.imageId$.unsubscribe()
+    }
   }
 }

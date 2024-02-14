@@ -1,7 +1,7 @@
 <div>
-<app-manage-foods (onOpeningDrawer)="onToggleDrawer($event)"></app-manage-foods>
+<app-manage-foods (onOpeningDrawer)="onToggleDrawer($event)" class="{{ isOpenDrawer ? 'pointer-events-none' : '' }}"></app-manage-foods>
 </div>
 
-<div class="right-0  top-0 w-1/4 h-screen fixed bg-white" *ngIf="isOpenDrawer">
+<div class="right-0  top-0 w-1/4  fixed bg-white overflow-y-auto h-full custom-scrollbar" *ngIf="isOpenDrawer">
 <app-manage-food-drawer (onOpeningDrawer)="onToggleDrawer($event)"></app-manage-food-drawer>
 </div>

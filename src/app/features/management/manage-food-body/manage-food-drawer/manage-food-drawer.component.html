@@ -4,12 +4,12 @@
     <div class="food-drawer-navbar flex">
 
         <div class=" first:ml-0 ml-2 hover:cursor-pointer" [class.active]="selectedNavbar.toString() === item.key" (click)="isClicked(item.key)" *ngFor="let item of navItem | keyvalue">
-            <div>
-            {{item.value}}
-        </div>
-        <!-- <div *ngIf="(selectedFoodMenu != null) || (selectedFoodMenu == null && item.key !== feedbackIndex.toString())">
+            <!-- <div>
             {{item.value}}
         </div> -->
+        <div *ngIf="(selectedFoodMenu != null) || (selectedFoodMenu == null && item.key !== feedbackIndex.toString())">
+            {{item.value}}
+        </div>
         </div>
     </div>
 

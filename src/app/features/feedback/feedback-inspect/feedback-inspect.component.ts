@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
@@ -12,6 +12,7 @@ import { FeedbackStatistics } from './feedback-inspect-service/model/feedback-in
 import { FeedbackInspectService } from './feedback-inspect-service/feedback-inspect.service';
 import { data } from 'jquery';
 import { FeedbackStatisticsPayload } from './feedback-inspect-service/model/feedback-inspect.payload';
+import { Calendar } from 'primeng/calendar';
 
 @Component({
   selector: 'app-feedback-inspect',
@@ -19,19 +20,17 @@ import { FeedbackStatisticsPayload } from './feedback-inspect-service/model/feed
   styleUrls: ['./feedback-inspect.component.scss']
 })
 export class FeedbackInspectComponent {
-
+  myFunc(){
+    return "fuck you"
+  }
   // @Input() foodId !: Number;
-  @Input() foodId: Number = 2;
+  @Input() foodId !: number ;
   paginatedData !: PaginatedData<Feedback>
   paginationNavigator: defaultPaginationNavigator = {
     currentPage: 1,
     row: 10,
   }
-  paginationJson: FeedbackPagination = {
-    page: 1,
-    row: 10,
-    foodId: this.foodId
-  }
+  paginationJson !: FeedbackPagination 
   fromTime = new Date();
   getFeedbackSubscriable$ !: Subscription
   getStatusSubscriable$ !: Subscription
@@ -39,19 +38,24 @@ export class FeedbackInspectComponent {
   tableSizes = [5, 10, 15, 20]
   feedbackStatusList !: string[]
 
-  rangeDates !: Date[]
+  // rangeDates !: any
+  rangeDates : Date[] = []
+  placing : string = "Today"
 
   feedbackData !: FeedbackStatistics
-  statisticsPayload: FeedbackStatisticsPayload = {}
+  statisticsPayload: FeedbackStatisticsPayload = {
+    foodId : this.foodId
+  }
+  minDateValue = new Date();
+
 
   constructor(private feedbackService: FeedbackService, private enumService: EnumService,
     private feedbackInspectService: FeedbackInspectService,) {
 
   }
 
+ 
   onRangeSelect(event: any) {
-
-    console.log("size of date is " + this.rangeDates.length)
     if (this.rangeDates.length == 2 && this.rangeDates[1] != null) {
       console.log("here")
       const fromDate = this.rangeDates[0];
@@ -60,30 +64,71 @@ export class FeedbackInspectComponent {
       const fromDateString = fromDate.getFullYear() + '-' + ('0' + (fromDate.getMonth() + 1)).slice(-2) + '-' + ('0' + fromDate.getDate()).slice(-2);
       const toDateString = toDate.getFullYear() + '-' + ('0' + (toDate.getMonth() + 1)).slice(-2) + '-' + ('0' + toDate.getDate()).slice(-2);
 
-      this.statisticsPayload.fromDate = fromDateString
-      this.statisticsPayload.toDate = toDateString
-      // console.log('From Date: ', fromDateString);
-      // console.log('To Date: ', toDateString);
+      this.setAndCallFeedback(fromDateString, toDateString)
+      this.setAndCallFeedbackStatisctic(fromDateString, toDateString)
+     
+
     }
   }
 
   ngOnInit(): void {
-    this.getStatusSubscriable$ = this.enumService.getFeedbackStauts().subscribe(
-      (response) => {
-        this.feedbackStatusList = response.data
-      }
-    )
+    this.paginationJson = {
+      page: 1,
+      row: 10,
+      foodId: this.foodId
+    }
 
-    this.getStatisticsSubscriable$ = this.feedbackInspectService.getFeedbackStatistics({}).subscribe(
-      (response) => {
-        this.feedbackData = response.data
-      }
-    )
+    this.statisticsPayload = {
+      foodId : this.foodId
+    }
+
+    this.rangeDates[0] =new Date(2024, 0, 1);
+    this.rangeDates[1] = new Date(2024, 0, 31);
+    const fromDate = this.rangeDates[0];
+      const toDate = this.rangeDates[this.rangeDates.length - 1];
+
+      const fromDateString = fromDate.getFullYear() + '-' + ('0' + (fromDate.getMonth() + 1)).slice(-2) + '-' + ('0' + fromDate.getDate()).slice(-2);
+      const toDateString = toDate.getFullYear() + '-' + ('0' + (toDate.getMonth() + 1)).slice(-2) + '-' + ('0' + toDate.getDate()).slice(-2);
+    this.setAndCallFeedbackStatisctic(fromDateString, toDateString)
+    this.setAndCallFeedback(fromDateString, toDateString)
+    this.getFeedbackStatus();
+    // this.getFeedbackStatistics();
+    // this.getPaginatedData();
+
   }
 
 
+  setAndCallFeedback(fromDate: string, toDate: string){
+    this.paginationJson.fromDate = fromDate;
+    this.paginationJson.toDate = toDate;
 
-  getPaginatedData(foodId: Number, page: number, row: number) {
+    this.getPaginatedData();
+  }
+  setAndCallFeedbackStatisctic(fromDate: string, toDate: string){
+    this.statisticsPayload.fromDate = fromDate;
+    this.statisticsPayload.toDate = toDate;
+
+    this.getFeedbackStatistics();
+  }
+
+
+  private getFeedbackStatistics() {
+    this.getStatisticsSubscriable$ = this.feedbackInspectService.getFeedbackStatistics(this.statisticsPayload).subscribe(
+      (response) => {
+        this.feedbackData = response.data;
+      }
+    );
+  }
+
+  private getFeedbackStatus() {
+    this.getStatusSubscriable$ = this.enumService.getFeedbackStauts().subscribe(
+      (response) => {
+        this.feedbackStatusList = response.data;
+      }
+    );
+  }
+
+  getPaginatedData() {
     this.getFeedbackSubscriable$ = this.feedbackService.getData(
       this.paginationJson).subscribe(
         (response) => {
@@ -121,14 +166,14 @@ export class FeedbackInspectComponent {
 
   onTableDataChange(event: any) {
     this.paginationNavigator.currentPage = event
-    this.getPaginatedData(this.foodId, this.paginationNavigator.currentPage, this.paginationNavigator.row);
+    this.getPaginatedData();
 
   }
 
   onEnterPress(event: any) {
     if ((event.target.value).trim() !== '') {
       this.paginationNavigator.row = event.target.value
-      this.getPaginatedData(this.foodId, this.paginationNavigator.currentPage, this.paginationNavigator.row);
+      this.getPaginatedData();
     }
     console.log(this.paginationNavigator.row)
   }

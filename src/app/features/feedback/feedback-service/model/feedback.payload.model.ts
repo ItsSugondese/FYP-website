@@ -9,5 +9,7 @@ export interface FeedbackPayload{
 
 
 export interface FeedbackPagination extends paginationPayload{
-  foodId : Number
+  foodId : Number;
+  fromDate ?: string;
+  toDate ?: string;
 }
