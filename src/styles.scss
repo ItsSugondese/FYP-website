@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-
+#main-div{
+  min-height: 100vh;
+  padding-top: 12px;
+  // display: flex;
+  // flex-direction: column;
+}
 
 body {
     background-color: #EBEBEB;
@@ -26,5 +31,6 @@ body {
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 

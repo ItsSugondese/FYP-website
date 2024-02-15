@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
-
+import { MessagesModule } from 'primeng/messages';
 
 
 @NgModule({
@@ -14,7 +14,8 @@ import { CalendarModule } from 'primeng/calendar';
   exports : [
     DialogModule,
     ButtonModule,
-    CalendarModule
+    CalendarModule,
+    MessagesModule
   ]
 })
 export class NgprimeModule { }

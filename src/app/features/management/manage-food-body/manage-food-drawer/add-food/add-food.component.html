@@ -1,11 +1,15 @@
-<!-- <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
-      [ngClass]="{'show': isOffcanvasOpen}" tabindex="-1" id="myOffcanvas" data-bs-backdrop="false" *ngIf="isOffcanvasOpen" > -->
+
+      <div class="absolute bg-black text-white flex w-full items-center justify-center top-0 left-0 h-full
+      opacity-50" *ngIf="foodService.loading">
+        <mat-spinner></mat-spinner>
+      </div>
 <div class="">
   <div class="flex justify-between">
-    <h5> {{foodForm.get("id")?.value == null? 'Add' : 'Update'}} Food</h5>
+    <h5 class="font-semibold text-xl"> {{foodForm.get("id")?.value == null? 'Add' : 'Update'}} Food</h5>
 
   </div>
-  <div class="offcanvas-body">
+  
+  <div class="">
     <form [formGroup]="foodForm" (ngSubmit)="submitDetails()">
       <input type="hidden" name="hiddenField" value="{{formValue('id')?.value}}" formControlName="id">
       <div class="form-group">
@@ -95,4 +99,7 @@
       </div>
     </form>
   </div>
+  
 </div>
+
+<!-- <p-messages [(value)]="endMessage" [enableService]="false" [closable]="false"></p-messages> -->

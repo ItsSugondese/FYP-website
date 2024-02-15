@@ -1,5 +1,5 @@
-<app-sidenav (onToggleSideNav)="onToggleSideNav($event)"></app-sidenav>
-<app-body
-    [collapsed]="isSideNavCollapsed"
-    [screenWidth]="screenWidth">
-</app-body>
+<snackbar-template></snackbar-template>
+<app-sidenav (onToggleSideNav)="onToggleSideNav($event)" ></app-sidenav>
+<div class=""  [ngClass]="!isSideNavCollapsed? 'ml-64 mr-8 w-auto': 'ml-20 mr-4 w-auto'">
+    <router-outlet></router-outlet>
+</div>

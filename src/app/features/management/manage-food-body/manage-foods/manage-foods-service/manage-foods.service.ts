@@ -5,7 +5,8 @@ import { FoodMenuPagination } from './model/food-menu.payload';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
 import { FoodMenuWithImageData, foodMenu } from './model/food-menu.model';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, finalize } from 'rxjs';
+import { LoaderService } from 'src/app/shared/service/loader-service/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,26 +16,50 @@ export class ManageFoodsService {
   backendUrl = environment.apiUrl;
   moduleName : string = "food-menu"
   private selectedMenuSubject = new BehaviorSubject<FoodMenuWithImageData | null>(null);
-
-  constructor(private httpClient : HttpClient) { }
+loading = false;
+  constructor(private httpClient : HttpClient, private loaderService: LoaderService) { }
   
   postImage(data : FormData){
-    return this.httpClient.post<any>(this.backendUrl + "temporary-attachments",data);
+    this.loading = true
+    return this.httpClient.post<any>(this.backendUrl + "temporary-attachments",data)
+    .pipe(
+      catchError(error => {
+        throw error;
+      }),
+      finalize(() => this.loading=false
+      ));;
   }
 
   postFoodMenu(data : { [key: string]: any }){
-    return this.httpClient.post<any>(this.backendUrl + "food-menu",data);
+    this.loading = true
+    return this.httpClient.post<any>(this.backendUrl + "food-menu",data)
+    .pipe(
+      catchError(error => {
+        throw error;
+      }),
+      finalize(() => this.loading=false
+      ));;;
   }
 
   getFoodMenu(){
      return this.httpClient.get<ResponseData<foodMenu[]>>(this.backendUrl + "food-menu" + "?type=ALL");
   }
   getFoodMenuPaginated(data : FoodMenuPagination){
-     return this.httpClient.post<ResponseData<PaginatedData<foodMenu>>>(this.backendUrl + this.moduleName +  "/pageable", data);
+    // this.loaderService.showLoading()
+    this.loading = true
+     return this.httpClient.post<ResponseData<PaginatedData<foodMenu>>>(this.backendUrl + this.moduleName +  "/pageable", data)
+     .pipe(
+      catchError(error => {
+        // Handle error
+        throw error;
+      }),
+      finalize(() => this.loading=false
+      // this.loaderService.hideLoading()
+      ));
+    //  return this.httpClient.post<ResponseData<PaginatedData<foodMenu>>>(this.backendUrl + this.moduleName +  "/pageable", data);
   }
 
   getFoodPicture(id: number) {
-    // Replace 'your_api_endpoint_here' with the actual URL of your Spring Boot API
     return this.httpClient.get(this.backendUrl +'food-menu/photo/' + id, { responseType: 'blob' });
   }
 

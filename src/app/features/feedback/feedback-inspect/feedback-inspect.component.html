@@ -1,64 +1,62 @@
 <!-- <div *ngIf="feedbackStatusList && feedbackData"> -->
 
+<div id="main-div" class="flex flex-col">
     <div class="flex justify-end mb-4">
-    <div
-          class="p-1 px-2 w-fit border-2 border-customPrimary bg-white mt-1 relative rounded-md shadow-sm flex   focus-within:border-customPrimary text-customPrimary">
-          <mat-icon>calendar_today</mat-icon>
-          <p-calendar class="outline-none" [(ngModel)]="rangeDates"
-           (ng-change)="myFunc()"  selectionMode="range" [readonlyInput]="true"
-          (onSelect)="onRangeSelect($event)">
-</p-calendar>
-
-        <mat-icon>expand_more</mat-icon>
-    </div>
-</div>
-
-    
-<div *ngIf="feedbackData">
-    
-    <div class=" text-center mb-3" >
-        <div class="text-4xl font-semibold">
-            {{feedbackData.sentiment}}
-        </div>
-        <div>
-            Based on {{feedbackData.totalFeedback}} feedbacks.
-        </div>
+        <calender-template [dateFilterType]="enumCalenderType.DAY"
+            (selectedDate)="onRangeSelect($event)"></calender-template>
     </div>
 
-    <table >
-        <tr *ngFor="let item of feedbackStatusList; let first= first; let i = index; let last = last"
-            class="text-[#15803D] font-semibold " [class.text-yellow-600]="first" [class.text-red-600]="last"
-            >
-            <td class="">{{item}}</td>
-            <td class="w-full  pl-2">
-                <div class="progress h-3">
-                    <div class="progress-bar bg-[#15803D]" [class.bg-yellow-600]="first" [class.bg-red-600]="last" role="progressbar" [style.width.%]="filterFeedbackDataByIndex('width', i)">
-                    </div>
+    <div *ngIf="feedbackInspectService.loading; else loaded" [class]="centerItems">
+        <mat-spinner style="color: red;"></mat-spinner>
+      </div>
+    <ng-template #loaded>
+    <ng-template #noData>
+    <div [class]="centerItems" *ngIf="paginatedData.content.length ==0">
+        <no-content-template></no-content-template>
+      </div>
+    </ng-template>
+
+    <div *ngIf="(paginatedData && feedbackData) && (paginatedData.content.length>0); else noData">
+
+            <div class=" text-center mb-3">
+                <div class="text-4xl font-semibold">
+                    {{feedbackData.sentiment}}
                 </div>
-                
-            </td>
-            <td class="pl-2">{{filterFeedbackDataByIndex('count', i)}}</td>
-        </tr>
-    </table>
-</div>
+                <div>
+                    Based on {{feedbackData.totalFeedback}} feedbacks.
+                </div>
+            </div>
 
+            <table>
+                <tr *ngFor="let item of feedbackStatusList; let first= first; let i = index; let last = last"
+                    class="text-[#15803D] font-semibold " [class.text-yellow-600]="first" [class.text-red-600]="last">
+                    <td class="">{{item}}</td>
+                    <td class="w-full  pl-2">
+                        <div class="progress h-3">
+                            <div class="progress-bar bg-[#15803D]" [class.bg-yellow-600]="first"
+                                [class.bg-red-600]="last" role="progressbar"
+                                [style.width.%]="filterFeedbackDataByIndex('width', i)">
+                            </div>
+                        </div>
 
-
-<div class="content mt-5" *ngIf="paginatedData != null">
-
-
+                    </td>
+                    <td class="pl-2">{{filterFeedbackDataByIndex('count', i)}}</td>
+                </tr>
+            </table>
    
 
 
-       
+
+        <div class="content mt-5">
+
 
             <div *ngFor="let data of paginatedData.content | paginate: {
                     itemsPerPage : paginationNavigator.row,
                     currentPage : paginationNavigator.currentPage,
                     totalItems : paginationNavigator.totalNoOfElements
                 }; let first = first; let last = last">
-                
-                <div class=" bg-[#EBE9E9] rounded-xl  px-3 mt-4 py-2"  >
+
+                <div class=" bg-[#EBE9E9] rounded-xl  px-3 mt-4 py-2">
                     <div class="header flex  justify-between ">
                         <div class="left-header flex ">
                             <div class="image-container mr-1">
@@ -74,11 +72,11 @@
                         </div>
                         <div class="right-header text-base">
                             <span class="text-[#15803D]"
-                            [class.text-yellow-600]="data.feedbackStatus.toLocaleLowerCase() == 'positive'"
-                            [class.text-red-600]="data.feedbackStatus.toLocaleLowerCase() == 'negative'">
-                               {{data.feedbackStatus}}
+                                [class.text-yellow-600]="data.feedbackStatus.toLocaleLowerCase() == 'positive'"
+                                [class.text-red-600]="data.feedbackStatus.toLocaleLowerCase() == 'negative'">
+                                {{data.feedbackStatus}}
                             </span>
-                           
+
                         </div>
                     </div>
 
@@ -87,6 +85,10 @@
                     </div>
                 </div>
             </div>
-        
 
+
+        </div>
+    </div>
+</ng-template>
+    
 </div>

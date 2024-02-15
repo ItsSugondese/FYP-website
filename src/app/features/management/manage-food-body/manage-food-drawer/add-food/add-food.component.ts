@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
 import { Subscription } from 'rxjs';
-import { ManageFoodsService } from '../../manage-foods/manage-foods-service/manage-foods.service';
+import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { textFiledWhenClick } from 'src/app/shared/class/tailwind/hover-text-field';
+import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
+import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
+import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
+import { ManageFoodsService } from '../../manage-foods/manage-foods-service/manage-foods.service';
 import { FoodMenuWithImageData } from '../../manage-foods/manage-foods-service/model/food-menu.model';
 
 @Component({
@@ -17,7 +20,6 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   @Output() onOpeningDrawer: EventEmitter<boolean> = new EventEmitter();
   @Input() item !: FoodMenuWithImageData | null
 
-  
 
   hoverField = textFiledWhenClick()
   isOffcanvasOpen = false;
@@ -42,8 +44,8 @@ export class AddFoodComponent implements OnInit, OnDestroy {
 
   selectedFoodImage : string| null = null
 
-  constructor(private foodService: ManageFoodsService,
-    private formBuilder: FormBuilder, private enumService: EnumService
+  constructor(public foodService: ManageFoodsService,
+    private formBuilder: FormBuilder, private enumService: EnumService, private snackbarService: SnackbarService
   ) { }
 
 
@@ -155,9 +157,20 @@ export class AddFoodComponent implements OnInit, OnDestroy {
 
     console.log("hello")
     this.postFoodMenu$ = this.foodService.postFoodMenu(this.foodForm.value).subscribe(
-      (results) => {
-        console.log(results);
+      (results: ResponseData<null>) => {
+        if(results.status == true){
+          this.snackbarService.showMessage({
+            label : results.message,
+            status : MessageStatus.SUCCESS
+          });
+          this.toggleDrawer(false)
+        }else{
+          this.snackbarService.showMessage({
+            label : results.message,
+            status : MessageStatus.FAIL
+          });
         this.postFoodMenu$.unsubscribe();
+        }
       }
     );
 
@@ -167,8 +180,7 @@ export class AddFoodComponent implements OnInit, OnDestroy {
 
 
   compareFormAndMenu():boolean {
-    console.log(this.formValue('description')!.value.toUpperCase())
-    console.log(this.item?.foodMenu.foodType.toUpperCase())
+   
     if(this.item?.foodMenu.cost == this.formValue('cost')!.value &&
     this.item?.foodMenu.name.toUpperCase() == this.formValue('name')!.value.toUpperCase() &&
     this.item?.foodMenu.foodType.toUpperCase() == this.formValue('foodType')!.value.toUpperCase() &&

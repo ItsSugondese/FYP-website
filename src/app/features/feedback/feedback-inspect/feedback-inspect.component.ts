@@ -13,18 +13,20 @@ import { FeedbackInspectService } from './feedback-inspect-service/feedback-insp
 import { data } from 'jquery';
 import { FeedbackStatisticsPayload } from './feedback-inspect-service/model/feedback-inspect.payload';
 import { Calendar } from 'primeng/calendar';
+import { CalenderType } from 'src/app/templates/calender/calender.template.componenet';
+import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
 
 @Component({
   selector: 'app-feedback-inspect',
   templateUrl: './feedback-inspect.component.html',
   styleUrls: ['./feedback-inspect.component.scss']
 })
-export class FeedbackInspectComponent {
-  myFunc(){
-    return "fuck you"
-  }
-  // @Input() foodId !: Number;
+export class FeedbackInspectComponent extends CommonVariable {
   @Input() foodId !: number ;
+
+
+  enumCalenderType = CalenderType
+
   paginatedData !: PaginatedData<Feedback>
   paginationNavigator: defaultPaginationNavigator = {
     currentPage: 1,
@@ -50,14 +52,14 @@ export class FeedbackInspectComponent {
 
 
   constructor(private feedbackService: FeedbackService, private enumService: EnumService,
-    private feedbackInspectService: FeedbackInspectService,) {
-
+    public feedbackInspectService: FeedbackInspectService,) {
+      super()
   }
 
  
-  onRangeSelect(event: any) {
-    if (this.rangeDates.length == 2 && this.rangeDates[1] != null) {
-      console.log("here")
+  onRangeSelect(event: Date[]) {
+    console.log("selected")
+      this.rangeDates = event
       const fromDate = this.rangeDates[0];
       const toDate = this.rangeDates[this.rangeDates.length - 1];
 
@@ -67,8 +69,6 @@ export class FeedbackInspectComponent {
       this.setAndCallFeedback(fromDateString, toDateString)
       this.setAndCallFeedbackStatisctic(fromDateString, toDateString)
      
-
-    }
   }
 
   ngOnInit(): void {

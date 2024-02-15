@@ -9,85 +9,96 @@ import { FoodFilter } from 'src/app/constant/filter/food-filter.model';
 import { FoodMenuWithImageData, foodMenu } from './manage-foods-service/model/food-menu.model';
 import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
 import { FoodMenuPagination } from './manage-foods-service/model/food-menu.payload';
+import { CenterItems } from 'src/app/constant/class/display-center.model';
+import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
 
 @Component({
   selector: 'app-manage-foods',
   templateUrl: './manage-foods.component.html',
   styleUrls: ['./manage-foods.component.scss']
 })
-export class ManageFoodsComponent implements OnInit, OnDestroy{
+export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDestroy {
 
   @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
 
+  // centerItems : string = CenterItems()
 
   toggleDrawer(isOopen : boolean){
     this.onOpeningDrawer.emit(isOopen)
   }
 
 
-  foodFilter = FoodFilter
   searchData!: string;
-  // screenWidth!: number;
-  // screenWidth$ !: Subscription;
   navbarCollapse$ !: Subscription;
   collapsed !: boolean;
-  numberOfItemsPerRow = 3;
-  imageUrl!: string | null; //
-
-  items: any[] = [{}];
-  imageId$ !: Subscription;
-  imageId !: number; //
 
   foodMenuFetch$ !: Subscription;
   foodMenu : foodMenu[] = [];
-  postFoodMenu$ !: Subscription; //
   getFoodPicture$ !: Subscription;
-  id !: number;
   imageDataMap: { [key: number]: string } = {};
   
   foodMenuPagination : FoodMenuPagination = {
     page: 1,
-    row: 10
+    row: 10,
   }
 
-  foodForm : FormGroup =this.formBuilder.group({
-    id : new FormControl(),
-  name: new FormControl(),
-  description: new FormControl(),
-  cost: new FormControl(),
-  photoId: new FormControl(),
-  foodType : new FormControl()
-  });
+  selectedFoodMenuType : string | null = null
 
-
-  
-  selectedDropdownOption(option: string) {
-    this.formValue("foodType")?.setValue(option);
-  }
-
-  constructor(private foodService : ManageFoodsService,
+  constructor(public foodService : ManageFoodsService,
     private formBuilder : FormBuilder, private router: Router,
-    private sideNavService: SidenavService, private enumService: EnumService
-    ) {}
+    private sideNavService: SidenavService, private enumService: EnumService,
+    ) {
+      super()
+    }
 
-    selectedNum !: number
-
-  selectOption(id: number) {
-    this.selectedNum = id
-    console.log(this.selectedNum)
-  }
-
-
- 
-
+   
   ngOnInit(): void {
-    this.selectedNum = 1;
+    
     this.navbarCollapse$ =  this.sideNavService.getCollapsed().subscribe((collapsed) => {
       this.collapsed = collapsed;
     });
 
- 
-    // this.foodMenuFetch$ = this.foodService.getFoodMenu().subscribe(
+  this.getFoodMenu()
+  }
+
+
+  selectedFromFoodFilter(event: string | null){
+    this.selectedFoodMenuType = event
+    this.getFoodMenu()
+  }
+
+
+  typedFoodToFilter(event: string){
+    console.log('emitted data is ' + event)
+    if(event.trim() != ''){
+      this.foodMenuPagination.name = event
+    }else{
+      this.foodMenuPagination.name = undefined
+    }
+    this.getFoodMenu()
+  }
+
+
+  toggleFormToEdit(item : foodMenu | null){
+    let val !: FoodMenuWithImageData | null;
+    
+    if(item == null){
+      val = null
+    }else {
+      val = {
+        foodMenu: item,
+        image: this.imageDataMap[item.photoId]
+      }
+    }
+      this.foodService.sendSelectedFoodMenu(val)
+  }
+
+
+
+
+  getFoodMenu(){
+    this.foodMenuPagination.foodType = this.selectedFoodMenuType
+    
     this.foodMenuFetch$ = this.foodService.getFoodMenuPaginated(this.foodMenuPagination).subscribe(
       (response) => {
         
@@ -111,95 +122,10 @@ export class ManageFoodsComponent implements OnInit, OnDestroy{
         }); 
       }
     )
-
-    
-    
   }
-
-  isEmptyObject(obj: any): boolean {
-    return Object.keys(obj).length === 0;
-  }
-
-
-
-  onFileSelected(event: any) {
-    const files : FileList = event.target.files;
-    if (files.length > 0) {
-      const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        formData.append('attachments', file);
-      }
-
-      this.imageId$ = this.foodService.postImage(formData).subscribe(
-        (response) => {
-          this.imageId = response.data[0];
-          this.imageId$.unsubscribe()
-          
-        }
-      )
-
-    }
-  }
-
-  submitDetails(){
-    
-    
-    if(this.imageId){
-    const photoIdControl = this.foodForm.get('photoId');
-    photoIdControl?.setValue(this.imageId);
-    }
-
-
-    this.postFoodMenu$ = this.foodService.postFoodMenu(this.foodForm.value).subscribe(
-      (results) => {
-        console.log(results);
-        this.postFoodMenu$.unsubscribe();
-      }
-    );
-
-  }
-
-  
-  
-  
-  
-toggleFormToEdit(item : foodMenu | null){
-   
-
-  let val !: FoodMenuWithImageData | null;
-  
-  if(item == null){
-    val = null
-  }else {
-    val = {
-      foodMenu: item,
-      image: this.imageDataMap[item.photoId]
-    }
-  }
-
-    this.foodService.sendSelectedFoodMenu(val)
-}
-
-
-
-
-
-
-  
-formValue(name : string) {
-  return this.foodForm.get(name);
-}
-
- 
-
-
 
 
   ngOnDestroy(): void {
-    if(this.imageId$){
-      this.imageId$.unsubscribe();
-    }
     if(this.foodMenuFetch$){
       this.foodMenuFetch$.unsubscribe();
     }

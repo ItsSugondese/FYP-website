@@ -21,6 +21,8 @@ import { ManageUsersComponent } from './people-management/manage-users/manage-us
 import { UserDetailsComponent } from './people-management/manage-users/user-inspect/user-details/user-details.component';
 import { UserDisableHistoryComponent } from './people-management/manage-users/user-inspect/user-disable-history/user-disable-history.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TemplatesModule } from 'src/app/templates/templates.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -50,8 +52,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     FlexLayoutModule,
     MaterialModule,
     BsDatepickerModule.forRoot(),
-    NgprimeModule
-    
+    NgprimeModule,
+    TemplatesModule,
+    BrowserAnimationsModule
   ]
 })
 export class ManagementModule { }
