@@ -47,9 +47,9 @@ export class SnackbarTemplateComponent implements OnInit{
           setTimeout(() => {
             this.isVisible= false
             if(this.message?.status == MessageStatus.SUCCESS){
-                window.location.reload()
+                // window.location.reload()
             }
-          }, 2000); // Snackbar duration
+          }, 4000); // Snackbar duration
         });
       }
 }

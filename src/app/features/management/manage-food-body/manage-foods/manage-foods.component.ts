@@ -11,6 +11,10 @@ import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
 import { FoodMenuPagination } from './manage-foods-service/model/food-menu.payload';
 import { CenterItems } from 'src/app/constant/class/display-center.model';
 import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
+import { AddFoodService } from '../manage-food-drawer/add-food/add-food-service/add-food.service';
+import { ResponseData } from 'src/app/constant/data/response-data.model';
+import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
+import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
 
 @Component({
   selector: 'app-manage-foods',
@@ -35,6 +39,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
   foodMenuFetch$ !: Subscription;
   foodMenu : foodMenu[] = [];
   getFoodPicture$ !: Subscription;
+  toggleAvailableToday$ !: Subscription;
   imageDataMap: { [key: number]: string } = {};
   
   foodMenuPagination : FoodMenuPagination = {
@@ -47,21 +52,51 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
   constructor(public foodService : ManageFoodsService,
     private formBuilder : FormBuilder, private router: Router,
     private sideNavService: SidenavService, private enumService: EnumService,
+    private addFoodService: AddFoodService, private snackService: SnackbarService
     ) {
       super()
     }
 
    
   ngOnInit(): void {
-    
+    this.addFoodService.setIsSaved(false)
+
     this.navbarCollapse$ =  this.sideNavService.getCollapsed().subscribe((collapsed) => {
       this.collapsed = collapsed;
     });
 
+    this.addFoodService.getIsSaved().subscribe(
+      (result) => {
+        this.getFoodMenu()
+      }
+    )
   this.getFoodMenu()
   }
 
 
+  handleCheckboxChange(item: foodMenu, index: number, event: any){
+
+    const isChecked = event.target.checked;
+    console.log(isChecked)
+    this.toggleAvailableToday$ = this.foodService.toggleFoodMenu({
+      foodId: item.id,
+      status: isChecked
+    }, index).subscribe(
+      (response: any) => {
+
+          this.snackService.showMessage({
+            label : response.message,
+            status : MessageStatus.SUCCESS
+          });
+
+          this.foodMenu[index].isAvailableToday = isChecked
+
+        this.toggleAvailableToday$.unsubscribe()
+      }
+    )
+
+    
+  }
   selectedFromFoodFilter(event: string | null){
     this.selectedFoodMenuType = event
     this.getFoodMenu()
@@ -96,7 +131,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
 
 
 
-  getFoodMenu(){
+  public getFoodMenu(){
     this.foodMenuPagination.foodType = this.selectedFoodMenuType
     
     this.foodMenuFetch$ = this.foodService.getFoodMenuPaginated(this.foodMenuPagination).subscribe(
@@ -134,6 +169,9 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
     }
     if(this.navbarCollapse$){
       this.navbarCollapse$.unsubscribe();
+    }
+    if(this.toggleAvailableToday$){
+      this.toggleAvailableToday$.unsubscribe()
     }
   }
 }

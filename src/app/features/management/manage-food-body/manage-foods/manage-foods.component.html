@@ -36,16 +36,22 @@
       <span class="text-xl font-bold">Meal Packages</span>
       <div fxLayout="row wrap" [fxLayoutGap]="collapsed? '20px grid' : '32px grid'" fxLayoutAlign="start">
         <div [fxFlex]="collapsed? '20%' : '25%'" [fxFlex.xs]="'100%' " fxFlex.sm="33%"
-          *ngFor="let item of foodMenu; let firstItem = first; let lastItem = last">
+          *ngFor="let item of foodMenu; let firstItem = first;let i = index; let lastItem = last">
 
+          <div class="h-full flex items-center justify-center bg-white" *ngIf="foodService.toggleLoading.status == true && foodService.toggleLoading.index == i; else toggled">
+          
+        <mat-spinner></mat-spinner>
 
+          </div>
+
+          <ng-template #toggled>
           <div class="rounded  w-full  bg-white">
             <div class="w-full ">
               <div class="flex w-full px-3 pt-2 justify-end items-center ">
                 <span class="h-full"> Available Today: </span>
                 <div class="form-check  form-switch flex items-center justify-end">
                   <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck{{item.id}}"
-                    [checked]="item.isAvailableToday">
+                    [checked]="item.isAvailableToday" (change)="handleCheckboxChange(item, i, $event)">
                 </div>
               </div>
               <div class="px-3" (click)="toggleFormToEdit(item); toggleDrawer(true)" >
@@ -72,6 +78,7 @@
               </div>
             </div>
           </div>
+        </ng-template>
 
         </div>
       </div>

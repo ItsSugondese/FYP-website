@@ -52,7 +52,7 @@ export class FeedbackInspectComponent extends CommonVariable {
 
 
   constructor(private feedbackService: FeedbackService, private enumService: EnumService,
-    public feedbackInspectService: FeedbackInspectService,) {
+    public feedbackInspectService: FeedbackInspectService, ) {
       super()
   }
 

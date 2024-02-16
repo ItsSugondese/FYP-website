@@ -8,6 +8,8 @@ import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/sna
 import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
 import { ManageFoodsService } from '../../manage-foods/manage-foods-service/manage-foods.service';
 import { FoodMenuWithImageData } from '../../manage-foods/manage-foods-service/model/food-menu.model';
+import { ManageFoodsComponent } from '../../manage-foods/manage-foods.component';
+import { AddFoodService } from './add-food-service/add-food.service';
 
 @Component({
   selector: 'app-add-food',
@@ -19,6 +21,7 @@ export class AddFoodComponent implements OnInit, OnDestroy {
 
   @Output() onOpeningDrawer: EventEmitter<boolean> = new EventEmitter();
   @Input() item !: FoodMenuWithImageData | null
+  @Output() sendHaveSaved: EventEmitter<boolean> = new EventEmitter();
 
 
   hoverField = textFiledWhenClick()
@@ -45,7 +48,8 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   selectedFoodImage : string| null = null
 
   constructor(public foodService: ManageFoodsService,
-    private formBuilder: FormBuilder, private enumService: EnumService, private snackbarService: SnackbarService
+    private formBuilder: FormBuilder, private enumService: EnumService, private snackbarService: SnackbarService,
+     private addFoodService: AddFoodService
   ) { }
 
 
@@ -164,6 +168,8 @@ export class AddFoodComponent implements OnInit, OnDestroy {
             status : MessageStatus.SUCCESS
           });
           this.toggleDrawer(false)
+          // this.manageFoodComponenet.getFoodMenu()
+          this.addFoodService.setIsSaved(true)
         }else{
           this.snackbarService.showMessage({
             label : results.message,

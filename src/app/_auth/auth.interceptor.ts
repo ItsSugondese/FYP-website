@@ -4,6 +4,8 @@ import { Route, Router } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { UserService } from "../shared/service/user-service/user.service";
 import { LoginService } from "./registration/login/login-service/login.service";
+import { SnackbarService } from "../templates/snackbar/snackbar-service/snackbar.service";
+import { MessageStatus } from "../templates/snackbar/snackbar.template.component";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -15,7 +17,8 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(
         private userService : UserService, 
         private router : Router,
-        private loginService : LoginService) {
+        private loginService : LoginService,
+        private snackService: SnackbarService) {
      
             this.token = this.userService.getToken();
     }
@@ -34,7 +37,11 @@ export class AuthInterceptor implements HttpInterceptor {
             catchError(
                 
                 (err : HttpErrorResponse) => {
-                    
+                    this.snackService.showMessage({
+                        // label : error.error.message,
+                        label : err.error.message,
+                        status : MessageStatus.FAIL
+                      });
                     if(err.status == 401){
                         if(this.userService.getToken() != null){
                         this.loginService.setFormHeader("Session Expired", "Red")
