@@ -9,44 +9,45 @@ import { BehaviorSubject, catchError, finalize } from 'rxjs';
 import { LoaderService } from 'src/app/shared/service/loader-service/loader.service';
 import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
 import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
+import { ServiceCommonVariable } from 'src/app/shared/helper/inherit/common-variable-serivce';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ManageFoodsService {
+export class ManageFoodsService extends ServiceCommonVariable {
 
   backendUrl = environment.apiUrl;
   moduleName : string = "food-menu"
   private selectedMenuSubject = new BehaviorSubject<FoodMenuWithImageData | null>(null);
-loading = false;
+pictureLoading = false
 public toggleLoading = {
   status: false,
   index: -1
 } 
-  constructor(private httpClient : HttpClient, private loaderService: LoaderService,
-    private snackService: SnackbarService) { }
+  constructor(private httpClient : HttpClient,) { 
+      super()
+    }
   
   postImage(data : FormData){
-    this.loading = true
+    this.pictureLoading = true
     return this.httpClient.post<any>(this.backendUrl + "temporary-attachments",data)
     .pipe(
       catchError(error => {
         throw error;
       }),
-      finalize(() => this.loading=false
+      finalize(() => this.pictureLoading=false
       ));;
   }
 
   postFoodMenu(data : { [key: string]: any }){
-    this.loading = true
+    this.pictureLoading = true
     return this.httpClient.post<any>(this.backendUrl + this.moduleName,data)
     .pipe(
       catchError(error => {
-        this.loading = false
         throw error;
       }),
-      finalize(() => this.loading=false
-      ));;;
+      finalize(() => this.pictureLoading=false
+      ));
   }
   toggleFoodMenu(data : ToggleAvailability, i: number){
     this.toggleLoading = {
@@ -73,14 +74,15 @@ public toggleLoading = {
     this.loading = true
      return this.httpClient.post<ResponseData<PaginatedData<foodMenu>>>(this.backendUrl + this.moduleName +  "/pageable", data)
      .pipe(
-      catchError(error => {
-        // Handle error
-        throw error;
-      }),
-      finalize(() => this.loading=false
-      // this.loaderService.hideLoading()
-      ));
-    //  return this.httpClient.post<ResponseData<PaginatedData<foodMenu>>>(this.backendUrl + this.moduleName +  "/pageable", data);
+      // catchError(error => {
+      //   this.loading = false
+      //   throw error;
+      // }),
+      // finalize(() => this.loading=false
+      // )
+      this.handleError()
+      );
+   
   }
 
   getFoodPicture(id: number) {

@@ -13,16 +13,19 @@ import { AddFoodComponent } from './manage-food-body/manage-food-drawer/add-food
 import { ManageFoodDrawerComponent } from './manage-food-body/manage-food-drawer/manage-food-drawer.component';
 import { ManageFoodsComponent } from './manage-food-body/manage-foods/manage-foods.component';
 import { OrderModule } from './manage-orders/order.module';
-import { AddStaffComponent } from './people-management/manage-staff/add-staff/add-staff.component';
-import { ManageStaffComponent } from './people-management/manage-staff/manage-staff.component';
-import { StaffDetailsComponent } from './people-management/manage-staff/staff-inspect/staff-details/staff-details.component';
-import { StaffDisableHistoryComponent } from './people-management/manage-staff/staff-inspect/staff-disable-history/staff-disable-history.component';
-import { ManageUsersComponent } from './people-management/manage-users/manage-users.component';
-import { UserDetailsComponent } from './people-management/manage-users/user-inspect/user-details/user-details.component';
-import { UserDisableHistoryComponent } from './people-management/manage-users/user-inspect/user-disable-history/user-disable-history.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TemplatesModule } from 'src/app/templates/templates.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ManageStaffBodyComponent } from './people-management/manage-staff-body/manage-staff-body.component';
+import { ManageStaffComponent } from './people-management/manage-staff-body/manage-staff/manage-staff.component';
+import { AddStaffComponent } from './people-management/manage-staff-body/manage-staff/add-staff/add-staff.component';
+import { StaffDetailsComponent } from './people-management/manage-staff-body/manage-staff/staff-inspect/staff-details/staff-details.component';
+import { StaffDisableHistoryComponent } from './people-management/manage-staff-body/manage-staff/staff-inspect/staff-disable-history/staff-disable-history.component';
+import { ManageUserBodyComponent } from './people-management/manage-user-body/manage-user-body.component';
+import { ManageUsersComponent } from './people-management/manage-user-body/manage-users/manage-users.component';
+import { UserDetailsComponent } from './people-management/manage-user-body/manage-users/user-inspect/user-details/user-details.component';
+import { UserDisableHistoryComponent } from './people-management/manage-user-body/manage-users/user-inspect/user-disable-history/user-disable-history.component';
+import { UserInspectBodyComponent } from './people-management/manage-user-body/manage-users/user-inspect/user-inspect-body.component';
 
 
 
@@ -40,6 +43,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FeedbackInspectComponent,
     AddFoodComponent,
     ManageFoodBodyComponent,
+    UserInspectBodyComponent,
+    ManageUserBodyComponent,
+    ManageStaffBodyComponent,
     
   ],
   imports: [

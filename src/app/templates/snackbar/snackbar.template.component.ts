@@ -2,6 +2,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { SnackbarService } from './snackbar-service/snackbar.service';
 import { Message } from 'primeng/api';
+import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
 
 export interface CustomMessage  {
     label : string,
@@ -32,13 +33,14 @@ export enum MessageStatus {
   styles: [
 ],
 })
-export class SnackbarTemplateComponent implements OnInit{
+export class SnackbarTemplateComponent extends CommonVariable implements OnInit{
     success = MessageStatus.SUCCESS
-    messageStatus = MessageStatus
     message: CustomMessage | null = null;
   isVisible: boolean = false;
 
-    constructor(private snackbarService: SnackbarService) { }
+    constructor(private snackbarService: SnackbarService) {
+      super()
+     }
   
     ngOnInit(): void {
         this.snackbarService.message$.subscribe((message: CustomMessage) => {
@@ -46,9 +48,6 @@ export class SnackbarTemplateComponent implements OnInit{
           this.isVisible = true;
           setTimeout(() => {
             this.isVisible= false
-            if(this.message?.status == MessageStatus.SUCCESS){
-                // window.location.reload()
-            }
           }, 4000); // Snackbar duration
         });
       }

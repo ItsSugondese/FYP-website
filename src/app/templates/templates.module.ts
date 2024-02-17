@@ -8,6 +8,8 @@ import { NgprimeModule } from '../shared/module/ngprime.module';
 import { FormModule } from '../shared/module/form.module';
 import { SearchTemplateComponent } from './search/search.template.componenet';
 import { NoContentComponent } from './not-found/no-content.template.component';
+import { TextTypeComponent } from './design/type-text/text-type.template.component';
+import { PaginationDropdownComponenet } from './dropdown/pagination-dropdown.template.component';
 
 
 
@@ -17,7 +19,9 @@ import { NoContentComponent } from './not-found/no-content.template.component';
   SnackbarTemplateComponent,
   CalenderTemplateComponent,
   SearchTemplateComponent,
-  NoContentComponent
+  NoContentComponent,
+  TextTypeComponent,
+  PaginationDropdownComponenet
   ],
   imports: [
     CommonModule,
@@ -31,7 +35,9 @@ import { NoContentComponent } from './not-found/no-content.template.component';
   SnackbarTemplateComponent,
   CalenderTemplateComponent,
   SearchTemplateComponent,
-  NoContentComponent
+  NoContentComponent,
+  TextTypeComponent,
+  PaginationDropdownComponenet
   ]
 })
 export class TemplatesModule { }

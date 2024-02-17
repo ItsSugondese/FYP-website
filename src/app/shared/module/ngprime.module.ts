@@ -4,6 +4,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { MessagesModule } from 'primeng/messages';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { MessagesModule } from 'primeng/messages';
     DialogModule,
     ButtonModule,
     CalendarModule,
-    MessagesModule
+    MessagesModule,
+    DropdownModule
   ]
 })
 export class NgprimeModule { }

@@ -46,7 +46,7 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   imageDataMapByMenuId: { [key: number]: string[] } = {};
 
   selectedFoodImage : string| null = null
-
+  tempImageUrl !: string | null
   constructor(public foodService: ManageFoodsService,
     private formBuilder: FormBuilder, private enumService: EnumService, private snackbarService: SnackbarService,
      private addFoodService: AddFoodService
@@ -132,15 +132,16 @@ export class AddFoodComponent implements OnInit, OnDestroy {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
+        this.tempImageUrl = this.imageUrl
         this.imageUrl = e.target.result;
         const formData = new FormData();
         formData.append('attachments', file);
         this.imageId$ = this.foodService.postImage(formData).subscribe(
-          (response) => {
+          (response : any) => {
             this.imageId = response.data[0];
             this.imageId$.unsubscribe()
             
-          }
+          },(error) => {this.imageUrl = this.tempImageUrl}
         )
       };
       reader.readAsDataURL(file);
@@ -163,18 +164,9 @@ export class AddFoodComponent implements OnInit, OnDestroy {
     this.postFoodMenu$ = this.foodService.postFoodMenu(this.foodForm.value).subscribe(
       (results: ResponseData<null>) => {
         if(results.status == true){
-          this.snackbarService.showMessage({
-            label : results.message,
-            status : MessageStatus.SUCCESS
-          });
           this.toggleDrawer(false)
-          // this.manageFoodComponenet.getFoodMenu()
           this.addFoodService.setIsSaved(true)
         }else{
-          this.snackbarService.showMessage({
-            label : results.message,
-            status : MessageStatus.FAIL
-          });
         this.postFoodMenu$.unsubscribe();
         }
       }

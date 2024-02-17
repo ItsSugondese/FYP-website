@@ -1,0 +1,30 @@
+<!-- <app-user-disable-history></app-user-disable-history> -->
+<div id="main-div">
+    <div class="text-customPrimary flex hover:cursor-pointer mb-4" (click)="goBack()">
+        <mat-icon class="">arrow_back</mat-icon>
+        <span class="">Go Back</span>
+    </div>
+    <div class="bg-white p-3 py-4 rounded-lg">
+    <div class="user-inspect-navbar flex   border-b-2 border-b-[#F0F0F0]">
+
+        <div class=" first:ml-0 ml-2 hover:cursor-pointer text-lg" [class.active]="item.value == selectedNavbar"
+        *ngFor="let item of options" (click)="updateSelectedNavbar(item.value)">
+        <!-- (click)="isClicked(item.key)"  -->
+       
+        {{item.value}}
+        
+    </div>
+</div>
+<div>
+<ng-container *ngIf="selectedNavbar == inspecting.DETAIL">
+    <app-user-details [id]="userId"></app-user-details>
+</ng-container>
+<ng-container *ngIf="selectedNavbar == inspecting.PAYMENT">
+    
+</ng-container>
+<ng-container *ngIf="selectedNavbar == inspecting.DISABLE">
+    <app-user-disable-history [id]="userId"></app-user-disable-history>
+</ng-container>
+</div>
+    </div>
+</div>

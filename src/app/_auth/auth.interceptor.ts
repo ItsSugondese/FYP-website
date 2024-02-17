@@ -1,74 +1,109 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Observable, catchError, throwError } from "rxjs";
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
+import { Observable, catchError, filter, finalize, map, tap, throwError } from "rxjs";
 import { Route, Router } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { UserService } from "../shared/service/user-service/user.service";
 import { LoginService } from "./registration/login/login-service/login.service";
 import { SnackbarService } from "../templates/snackbar/snackbar-service/snackbar.service";
 import { MessageStatus } from "../templates/snackbar/snackbar.template.component";
+import { ResponseData } from "../constant/data/response-data.model";
+import { Crud } from "src/enums/backend/curd.enums";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-     token : string | null= this.userService.getToken();
+    token: string | null = this.userService.getToken();
 
-     
+
 
     constructor(
-        private userService : UserService, 
-        private router : Router,
-        private loginService : LoginService,
+        private userService: UserService,
+        private router: Router,
+        private loginService: LoginService,
         private snackService: SnackbarService) {
-     
-            this.token = this.userService.getToken();
+
+        this.token = this.userService.getToken();
     }
 
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if(req.headers.get("No-Auth") === 'true') {
+        if (req.headers.get("No-Auth") === 'true') {
             return next.handle(req.clone());
         }
 
-        
 
-      
+
+
         req = this.addToken(req, this.token);
         return next.handle(req).pipe(
+            
             catchError(
-                
-                (err : HttpErrorResponse) => {
-                    this.snackService.showMessage({
-                        // label : error.error.message,
-                        label : err.error.message,
-                        status : MessageStatus.FAIL
-                      });
-                    if(err.status == 401){
-                        if(this.userService.getToken() != null){
-                        this.loginService.setFormHeader("Session Expired", "Red")
-                        }else{
+
+                (err: HttpErrorResponse) => {
+                    if (err.error.message) {
+                        this.snackService.showMessage({
+                            // label : error.error.message,
+                            label: err.error.message,
+                            status: MessageStatus.FAIL
+                        });
+                    } else if (err.status == 401) {
+                        if (this.userService.getToken() != null) {
+                            this.loginService.setFormHeader("Session Expired", "Red")
+                        } else {
                             this.loginService.setFormHeader("Must Login first to access the page", "Red")
                         }
                         this.router.navigate(['/login'])
-                    }else if(err.status == 403){
+                    } else if (err.status == 403) {
                         this.router.navigate(['/forbidden'])
+                    } else if (err.status == 0) {
+                        this.snackService.showMessage({
+                            label: "Connection with server failed",
+                            status: MessageStatus.FAIL
+                        });
+                    } 
+                    else {
+                        this.snackService.showMessage({
+                            label: "Something went wrong",
+                            status: MessageStatus.FAIL
+                        });
                     }
                     return throwError("Something is wrong")
                 }
-            )
+            ),
+            map(event => {
+                // Assuming you're only interested in HttpResponse events
+                if (event instanceof HttpResponse) {
+                  return event;
+                }
+                // Return null for other event types, you can handle them accordingly
+                return null;
+              }),
+              filter((event: HttpResponse<any> | null): event is HttpResponse<any> => event !== null),
+              tap((response: HttpResponse<any>) => {  
+                if (response.body && 'crud' in response.body && response.body.crud == 'SAVE') {
+                  this.snackService.showMessage({
+                    label: response.body.message,
+                    status: MessageStatus.SUCCESS
+                  });
+                  // Do your success stuff in here
+                }
+              })
+          
+            
         )
     }
 
 
-    private addToken(req : HttpRequest<any>, token : string | null){
-         return req.clone(
+    private addToken(req: HttpRequest<any>, token: string | null) {
+        return req.clone(
             {
-                setHeaders : {
-                    'Authorization' : `Bearer ${token}`
+                setHeaders: {
+                    'Authorization': `Bearer ${token}`
                 },
-                withCredentials : true
+                withCredentials: true
             }
         );
     }
 
-    
+
 }

@@ -1,6 +1,7 @@
 // radio-button.component.ts
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { EnumItem } from 'src/app/shared/model/enums/MapForEnum.model';
 import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
 
 export enum FoodFilterType {
@@ -10,10 +11,7 @@ export enum FoodFilterType {
   MISC = 'Misc'
 }
 
-interface EnumItem {
-  key: string;
-  value: string;
-}
+
 
 
 @Component({

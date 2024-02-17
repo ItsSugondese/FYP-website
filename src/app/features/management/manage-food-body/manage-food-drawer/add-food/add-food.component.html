@@ -1,6 +1,6 @@
 
       <div class="absolute bg-black text-white flex w-full items-center justify-center top-0 left-0 h-full
-      opacity-50" *ngIf="foodService.loading">
+      opacity-50" *ngIf="foodService.pictureLoading">
         <mat-spinner></mat-spinner>
       </div>
 <div class="">
@@ -60,10 +60,10 @@
 
             <div class="">
               <div class="flex justify-center hover:cursor-default">
-                <div class="group image-container relative w-fit h-fit p-3 px-0 pt-1 overflow-hidden rounded-sm">
+                <div class="group image-container  w-fit h-fit p-3 px-0 pt-1 overflow-hidden rounded-sm">
                   <img *ngIf="imageUrl" [src]="imageUrl" class=" rounded-sm w-32 object-cover"
                     [class.group-hover:brightness-75]="selectedFoodImage == null || selectedFoodImage != imageUrl">
-                  <div class="hidden absolute top-0 right-0 p-1 group-hover:block hover:cursor-pointer bg-white rounded"
+                  <div class="hidden  top-0 right-0 p-1 group-hover:block hover:cursor-pointer bg-white rounded"
                     *ngIf="selectedFoodImage == null || selectedFoodImage != imageUrl"
                      (click)="removeImage($event)">
 

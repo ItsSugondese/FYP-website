@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { SidenavComponent } from './nav/sidenav/sidenav.component';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { HeaderComponent } from './nav/header/header.component';
 
 
 
 @NgModule({
   declarations: [
-    SidenavComponent
+    SidenavComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,
@@ -17,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   exports : [
     SidenavComponent,
+    HeaderComponent
   ]
 })
 export class UiModule { }

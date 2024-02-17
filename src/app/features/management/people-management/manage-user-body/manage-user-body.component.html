@@ -1,0 +1,3 @@
+<!-- <app-manage-users *ngIf="!isInspecting" (sendUserId)="getUserId($event)"></app-manage-users> -->
+<app-manage-users *ngIf="(inspectSubscription$  | async) == false" (sendUserId)="getUserId($event)"></app-manage-users>
+<app-user-inspect-body *ngIf="(inspectSubscription$ | async) == true" [userId]="userId!"></app-user-inspect-body>

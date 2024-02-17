@@ -5,7 +5,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   selector: 'search-template',
   template: `
 <div
-          class="p-1 px-2 w-64 bg-white mt-1 relative rounded-md shadow-sm flex border-2 border-[#CED4DA] focus-within:border-customPrimary ">
+          class="p-1 px-2 w-64 bg-white mt-1  rounded-md shadow-sm flex border-2 border-[#CED4DA] focus-within:border-customPrimary ">
           <input type="text" id="search" name="search" class="block w-full sm:text-sm  focus:outline-none"
             placeholder="Search"  (keyup.enter)="searchData($event)">
           <mat-icon class="">search</mat-icon>

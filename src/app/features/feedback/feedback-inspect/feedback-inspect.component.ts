@@ -37,7 +37,7 @@ export class FeedbackInspectComponent extends CommonVariable {
   getFeedbackSubscriable$ !: Subscription
   getStatusSubscriable$ !: Subscription
   getStatisticsSubscriable$ !: Subscription
-  tableSizes = [5, 10, 15, 20]
+  // tableSizes = [5, 10, 15, 20]
   feedbackStatusList !: string[]
 
   // rangeDates !: any

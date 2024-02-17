@@ -83,14 +83,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
       status: isChecked
     }, index).subscribe(
       (response: any) => {
-
-          this.snackService.showMessage({
-            label : response.message,
-            status : MessageStatus.SUCCESS
-          });
-
           this.foodMenu[index].isAvailableToday = isChecked
-
         this.toggleAvailableToday$.unsubscribe()
       }
     )
@@ -135,7 +128,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
     this.foodMenuPagination.foodType = this.selectedFoodMenuType
     
     this.foodMenuFetch$ = this.foodService.getFoodMenuPaginated(this.foodMenuPagination).subscribe(
-      (response) => {
+      (response ) => {
         
         this.foodMenu = response.data.content;
 
