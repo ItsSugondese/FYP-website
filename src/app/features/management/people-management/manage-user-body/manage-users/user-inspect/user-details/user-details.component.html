@@ -1,53 +1,29 @@
-<div class="container">
-    <app-sidenav></app-sidenav>
+<div id="main-div-no-vh">
+
+  <div class=" " >
     
-    <div class="content" *ngIf="user">
-      <button type="button" class="btn btn-success mr-2 ml-5" (click)="visible = !visible">
-        {{user.accountNonLocked? "Disable" : "Enable"}}
-        </button>
+      <div class="flex" *ngIf="user">
 
-        <button type="button" class="btn btn-success mr-2 ml-5" (click)="navigateToHistory()">
-          History
-          </button>
-            <div class="card">
-                <img src="{{ user.profilePath }}" width="50" height="50" alt="Food Picture">
-              <div class="card-body">
-                <h5 class="card-title">{{user.fullName}}</h5>
-                <p class="card-text">{{user.email}}</p>
-                <p class="card-text">{{user.accountNonLocked}}</p>
-              </div>
+        <div class="image-container">
+          <div class="w-24 h-24 rounded-full overflow-hidden">
+              <img src={{user.profilePath}} alt="Your Image"
+                  class="w-full h-full object-cover" />
+          </div>
+      </div>
+          <div class="ml-2">
+            <div class="flex flex-col">
+              <span class="font-semibold">Full Name</span>
+              <span>{{user.fullName}}</span>
             </div>
+            <div class="flex flex-col mt-2">
+              <span class="font-semibold">Email Address</span>
+              <span>{{user.email}}</span>
+            </div>
+          </div>
+      </div>
 
-            <p-dialog header="Header" [(visible)]="visible" [closable]="false" [style]="{'width': '500px'}">
-              <!-- Header Row -->
-              <ng-template pTemplate="header">
-                <div class="d-flex  justify-content-between align-items-center">
-                  <div class="h4">{{user.accountNonLocked? "Disable" : "Enable"}} Staff</div>
-                  <div>
-                    <span class="mr-3">{{ remarks }}</span>
-                    <span class="cursor-pointer justify-content-end" (click)="visible = false"> &#10006;</span>
-                  </div>
-                </div>
-              </ng-template>
-            
-              <!-- Content Row -->
-              <ng-template pTemplate="content">
-                <div class="form-group">
-                  <label for="remarks">Remarks</label>
-                  <textarea id="remarks" class="form-control" [(ngModel)]="remarks" placeholder="Enter your remarks"></textarea>
-                </div>
-              </ng-template>
-            
-              <!-- Footer Row -->
-              <ng-template pTemplate="footer">
-                <div class="d-flex justify-content-end align-items-center">
-                  <button type="button" class="btn btn-secondary " (click)="visible = false">Cancel</button>
-                  <button type="button" class="btn btn-danger ml-2" (click)="disableUser()">{{user.accountNonLocked? "Disable" : "Enable"}}</button>
-                </div>
-              </ng-template>
-            </p-dialog>
-      
-    </div>
+ 
+
+
   </div>
-  
-  
+</div>

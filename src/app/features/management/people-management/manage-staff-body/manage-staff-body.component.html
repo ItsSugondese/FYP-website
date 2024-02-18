@@ -1,1 +1,3 @@
-<p>manage-staff-body works!</p>
+<app-manage-staff *ngIf="!isInspecting" (sendUserId)="getUserId($event)"
+(isInspectingEvent)="handleIsInspecting($event)"></app-manage-staff>
+<app-staff-inspect-body *ngIf="isInspecting" [staff]="staff!" (isInspectingEvent)="handleIsInspecting($event)" ></app-staff-inspect-body>

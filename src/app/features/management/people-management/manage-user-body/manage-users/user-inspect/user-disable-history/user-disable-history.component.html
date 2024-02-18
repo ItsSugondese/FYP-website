@@ -1,4 +1,5 @@
-<div class=" ">
+
+<div class=" h-full flex-1 flex flex-col" style="height: 100%;">
     <div *ngIf="peopleService.loading; else loaded" [class]="centerItems">
         <mat-spinner style="color: red;"></mat-spinner>
     </div>
@@ -82,6 +83,8 @@
   
     <p>{{selectedHistory.remarks}}</p>
   </p-dialog>
+
+
 <!-- <div class="container">
     <app-sidenav></app-sidenav>
 

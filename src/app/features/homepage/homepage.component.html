@@ -1,4 +1,4 @@
-<ng-container>
+<div id="main-div">
   <div>
     {{arrivalTime}}
 
@@ -18,14 +18,14 @@
 
 
       <div class="filter-header-right flex  items-center">
-        <div
+        <!-- <div
           class="p-1 px-2 w-64 bg-white mt-1 relative rounded-md shadow-sm flex border-2 border-[#CED4DA] focus-within:border-customPrimary ">
           <input type="text" id="search" name="search" class="block w-full sm:text-sm  focus:outline-none"
             placeholder="Search">
-          <!-- [(ngModel)]="searchData"> -->
           <mat-icon class="">search</mat-icon>
-        </div>
+        </div> -->
 
+        <search-template></search-template>
 
 
       </div>
@@ -244,7 +244,4 @@
   </div>
 
 
-
-
-
-</ng-container>
+</div>

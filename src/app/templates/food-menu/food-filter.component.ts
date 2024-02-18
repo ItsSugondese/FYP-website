@@ -37,7 +37,7 @@ export class FoodFilterComponent implements OnInit, OnDestroy{
   options: EnumItem[] = Object.keys(FoodFilterType).map(key => ({ key, value: FoodFilterType[key as keyof typeof FoodFilterType] }));
   // options = FoodFilterType
 
-  selectedKey = 'ALL'
+  selectedKey = 'MISC'
 
   constructor(private enumService: EnumService){}
   

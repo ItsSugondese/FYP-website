@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { defaultPaginationNavigator } from 'src/app/shared/model/pagination/pagination.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -7,25 +7,21 @@ import { DisableHistory } from '../../../../people-service/model/people.model';
 import { PeopleService } from '../../../../people-service/people.service';
 import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
+import { User } from '../../manage-users-service/model/user.model';
 
 @Component({
   selector: 'app-user-disable-history',
   templateUrl: './user-disable-history.component.html',
   styleUrls: ['./user-disable-history.component.scss']
 })
-export class UserDisableHistoryComponent extends CommonVariable implements OnInit, OnDestroy{
-  // @Input() id !: number
-  @Input() id : number  = 1
+export class UserDisableHistoryComponent extends CommonVariable implements OnInit, OnDestroy, OnChanges{
+  @Input() user !: User
   disableHistoryPaginated !: PaginatedData<DisableHistory>
   paginationNavigator: defaultPaginationNavigator = {
     currentPage: 1,
-    row: 10,
-  }
-  paginationJson : disableUserHistoryPagination = {
-    page: 1,
     row: this.selectedRow,
-    userId: this.id
   }
+  paginationJson !: disableUserHistoryPagination 
   fromTime = new Date();
   getHistorySubscriable$ !: Subscription
 
@@ -42,10 +38,23 @@ super()
     this.paginationJson = {
       page: 1,
       row: this.selectedRow,
-      userId: 1
+      userId: this.user.id
     }
     this.getPaginatedData()
   }
+
+  handleEmittedEvent(event: User){
+    this.user = event
+    this.getPaginatedData()
+  }
+  ngOnChanges(changes:  SimpleChanges) {
+    if (changes.user) {
+      if (this.paginationJson != null) {
+        this.getPaginatedData();
+      }
+    }
+    }
+
 
 
   showRemarks(history : DisableHistory){
@@ -70,7 +79,7 @@ super()
   }
 
   onTableDataChange(event: any) {
-    this.paginationNavigator.currentPage = event
+    this.paginationJson.page = event
     this.getPaginatedData();
 
   }

@@ -10,6 +10,7 @@ import { SearchTemplateComponent } from './search/search.template.componenet';
 import { NoContentComponent } from './not-found/no-content.template.component';
 import { TextTypeComponent } from './design/type-text/text-type.template.component';
 import { PaginationDropdownComponenet } from './dropdown/pagination-dropdown.template.component';
+import { DisableEnableButtonComponent } from './buttons/disable-buttons.template.component';
 
 
 
@@ -21,7 +22,8 @@ import { PaginationDropdownComponenet } from './dropdown/pagination-dropdown.tem
   SearchTemplateComponent,
   NoContentComponent,
   TextTypeComponent,
-  PaginationDropdownComponenet
+  PaginationDropdownComponenet,
+  DisableEnableButtonComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +39,8 @@ import { PaginationDropdownComponenet } from './dropdown/pagination-dropdown.tem
   SearchTemplateComponent,
   NoContentComponent,
   TextTypeComponent,
-  PaginationDropdownComponenet
+  PaginationDropdownComponenet,
+  DisableEnableButtonComponent
   ]
 })
 export class TemplatesModule { }

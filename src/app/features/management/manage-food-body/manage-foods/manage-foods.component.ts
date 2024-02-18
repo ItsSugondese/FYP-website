@@ -47,7 +47,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
     row: 10,
   }
 
-  selectedFoodMenuType : string | null = null
+  selectedFoodMenuType : string | null = "MISC"
 
   constructor(public foodService : ManageFoodsService,
     private formBuilder : FormBuilder, private router: Router,

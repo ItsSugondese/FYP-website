@@ -20,7 +20,11 @@ export class PeopleService extends ServiceCommonVariable{
 
   
   getSingleUser(id : Number){
-    return this.httpClient.get<any>(this.backendUrl + this.moduleName + "/" + id);
+    this.loading = true
+    return this.httpClient.get<any>(this.backendUrl + this.moduleName + "/" + id)
+    .pipe(
+      this.handleError()
+    );
  }
 
  disableUser(payload : disableUser) {

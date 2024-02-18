@@ -8,7 +8,7 @@ export enum CalenderType{
   selector: 'calender-template',
   template: `
   <div
-          class="p-1 px-2 w-fit border-2 border-customPrimary bg-white mt-1 relative rounded-md shadow-sm flex   focus-within:border-customPrimary text-customPrimary">
+          class="p-1 px-2 w-fit border-2 border-customPrimary bg-white mt-1  rounded-md shadow-sm flex   focus-within:border-customPrimary text-customPrimary">
           <mat-icon>calendar_today</mat-icon>
           <p-calendar class="outline-none" [(ngModel)]="rangeDates"
             selectionMode="range" [readonlyInput]="true"
@@ -18,7 +18,27 @@ export enum CalenderType{
         <mat-icon>expand_more</mat-icon>
     </div>
   `,
-  styles: [
+  styles: [`
+  
+::ng-deep .p-datepicker table td > span {
+    background-color: orange;
+  }
+  
+  ::ng-deep .p-datepicker table td.p-datepicker-today > span {
+    background-color: burlywood;
+  }
+
+  ::ng-deep .p-inputtext:focus {
+    outline: none !important;
+    border: none !important;
+    position: none;
+  }
+
+::ng-deep .p-calendar .p-inputtext:focus {
+    outline: none !important;
+    border: none;
+}
+  `
 ],
 })
 export class CalenderTemplateComponent implements OnInit{

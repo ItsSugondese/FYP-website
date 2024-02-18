@@ -1,4 +1,4 @@
-<div id="main-div-no-vh" class="h-fit" *ngIf="user">
+<div id="main-div-no-vh" class="h-fit" *ngIf="staff">
     <div class="header flex justify-between items-center ">
         <div class="text-customPrimary h-full flex items-center  hover:cursor-pointer " (click)="goBack()">
             <mat-icon class="">arrow_back</mat-icon>
@@ -6,7 +6,7 @@
         </div>
         <div class="right-button" (click)="visible = !visible">
             <disable-enable-button-template [text]="'Disable'"
-            *ngIf="user.accountNonLocked; else disabled" [status]="false"></disable-enable-button-template>
+            *ngIf="staff.accountNonLocked; else disabled" [status]="false"></disable-enable-button-template>
 
         <ng-template #disabled>
             <disable-enable-button-template [text]="'Enable'" ></disable-enable-button-template>
@@ -23,15 +23,14 @@
             <div class="flex border-b-2 border-b-[#F0F0F0]">
             <div class=" first:ml-0 ml-2 hover:cursor-pointer text-lg " [class.active]="item.value == selectedNavbar"
                 *ngFor="let item of options" (click)="updateSelectedNavbar(item.value)">
-                <!-- (click)="isClicked(item.key)"  -->
 
                 {{item.value}}
 
             </div>
         </div>
-            <div class="left-status" *ngIf="user.accountNonLocked != null">
+            <div class="left-status" *ngIf="staff.accountNonLocked != null">
                 <text-type-template [text]="'Running'"
-                    *ngIf="user.accountNonLocked; else disabled"></text-type-template>
+                    *ngIf="staff.accountNonLocked; else disabled"></text-type-template>
 
                 <ng-template #disabled>
                     <text-type-template [text]="'Disabled'" [status]="false"></text-type-template>
@@ -41,13 +40,10 @@
   
         <div id="pass-val" class="flex flex-col h-fit flex-1">
             <ng-container *ngIf="selectedNavbar == inspecting.DETAIL">
-                <app-user-details [user]="user" [class]="forChild"></app-user-details>
-            </ng-container>
-            <ng-container *ngIf="selectedNavbar == inspecting.PAYMENT" [class]="forChild">
-
+                <app-staff-details [staff]="staff" [class]="forChild"></app-staff-details>
             </ng-container>
             <ng-container *ngIf="selectedNavbar == inspecting.DISABLE">
-                <app-user-disable-history [user]="user"  [class]="forChild"></app-user-disable-history>
+                <app-staff-disable-history [staff]="staff"  [class]="forChild"></app-staff-disable-history>
             </ng-container>
         </div>
     </div>
@@ -59,7 +55,7 @@
     <!-- Header Row -->
     <ng-template pTemplate="header">
       <div class="d-flex  justify-content-between align-items-center">
-        <div class="h4">{{user.accountNonLocked? "Disable" : "Enable"}} User</div>
+        <div class="h4">{{staff.accountNonLocked? "Disable" : "Enable"}} User</div>
       </div>
     </ng-template>
   
@@ -75,9 +71,9 @@
     <ng-template pTemplate="footer">
       <div class="d-flex justify-content-end align-items-center">
         <button class="" (click)="visible = false">Cancel</button>
-        <div  (click)="disableUser()">
+        <div  (click)="disableStaff()">
         <disable-enable-button-template [text]="'Disable'"
-        *ngIf="user.accountNonLocked; else disabled" [isIconFirst]="false" [status]="false"></disable-enable-button-template>
+        *ngIf="staff.accountNonLocked; else disabled" [isIconFirst]="false" [status]="false"></disable-enable-button-template>
 
     <ng-template #disabled >
         <disable-enable-button-template [isIconFirst]="false" [text]="'Enable'"  ></disable-enable-button-template>

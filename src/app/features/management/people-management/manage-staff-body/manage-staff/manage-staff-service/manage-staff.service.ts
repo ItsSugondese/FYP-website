@@ -2,15 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {manageStaffPagination } from './model/manage-staff-payload.model';
+import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-serivce';
+import { catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ManageStaffService {
+export class ManageStaffService extends ServiceCommonVariable {
 
   backendUrl = environment.apiUrl;
   moduleName :string = "staff";
-  constructor(private httpClient : HttpClient) { }
+  constructor(private httpClient : HttpClient) {
+    super()
+   }
 
   postImage(data : FormData){
     return this.httpClient.post<any>(this.backendUrl + "temporary-attachments",data);
@@ -28,8 +32,11 @@ export class ManageStaffService {
   }
   
   getStaffPicture(id: number) {
-    // Replace 'your_api_endpoint_here' with the actual URL of your Spring Boot API
-    return this.httpClient.get(this.backendUrl + this.moduleName +'/photo/' + id, { responseType: 'blob' });
+    this.loading = true
+    return this.httpClient.get(this.backendUrl + this.moduleName +'/photo/' + id, { responseType: 'blob' })
+    .pipe(
+      this.handleError()
+    );
   }
   
   

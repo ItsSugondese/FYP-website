@@ -1,5 +1,5 @@
-<button data-toggle="modal" data-target="#exampleModal">CLick me</button>
-{{foodSearch}}
+<div id="main-div">
+  <calender-template></calender-template>
 <input [(ngModel)] = "foodSearch" (keypress)="searchFood(foodSearch)"/>
 <div class="modal fade" id="exampleModal"  data-backdrop="static" data-keyboard="false"
 [ngClass]="{'show': finalPopUp}" >
@@ -113,3 +113,4 @@
     
 </ng-container>
 
+</div>

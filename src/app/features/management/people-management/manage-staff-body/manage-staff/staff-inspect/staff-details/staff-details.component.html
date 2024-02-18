@@ -1,4 +1,40 @@
-<div class="container">
+<div id="main-div-no-vh">
+
+  <div class=" ">
+
+    <div class="flex" *ngIf="staff">
+
+      <div class="w-24 h-24 rounded-full overflow-hidden" class="image-container">
+        <div>
+        <div *ngIf="staffService.loading; else loaded" [class]="centerItems">
+          <mat-spinner style="color: red;"></mat-spinner>
+        </div>
+      </div>
+        <ng-template #loaded>
+          <div class="w-24 h-24 rounded-full overflow-hidden">
+            <img [src]="imageData" alt="Your Image" class="w-full h-full object-cover" />
+          </div>
+        </ng-template>
+      </div>
+      <div class="ml-2">
+        <div class="flex flex-col">
+          <span class="font-semibold">Full Name</span>
+          <span>{{staff.fullName}}</span>
+        </div>
+        <div class="flex flex-col mt-2">
+          <span class="font-semibold">Email Address</span>
+          <span>{{staff.email}}</span>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </div>
+</div>
+
+<!-- <div class="container">
   <app-sidenav></app-sidenav>
   <div class="content" *ngIf="staff">
     <button type="button" class="btn btn-success mr-2 ml-5" (click)="visible = !visible">
@@ -19,11 +55,7 @@
       </div>
     </div>
 
-    <!-- Your component template -->
-    <!-- Your component template with Bootstrap styles -->
-<!-- Your component template with Bootstrap styles -->
 <p-dialog header="Header" [(visible)]="visible" [closable]="false" [style]="{'width': '500px'}">
-  <!-- Header Row -->
   <ng-template pTemplate="header">
     <div class="d-flex  justify-content-between align-items-center">
       <div class="h4">{{staff.accountNonLocked? "Disable" : "Enable"}} Staff</div>
@@ -34,7 +66,7 @@
     </div>
   </ng-template>
 
-  <!-- Content Row -->
+
   <ng-template pTemplate="content">
     <div class="form-group">
       <label for="remarks">Remarks</label>
@@ -42,7 +74,7 @@
     </div>
   </ng-template>
 
-  <!-- Footer Row -->
+
   <ng-template pTemplate="footer">
     <div class="d-flex justify-content-end align-items-center">
       <button type="button" class="btn btn-secondary " (click)="visible = false">Cancel</button>
@@ -55,4 +87,4 @@
 
 
   </div>
-</div>
+</div> -->

@@ -1,5 +1,4 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ManageUserBodyService } from './manage-user-body-service/manage-user-body.service';
 import { Observable } from 'rxjs';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { User } from './manage-users/manage-users-service/model/user.model';
@@ -11,21 +10,22 @@ import { User } from './manage-users/manage-users-service/model/user.model';
 })
 export class ManageUserBodyComponent implements OnInit, OnDestroy{
   
-  userId !: number | null
-  isInspecting : boolean = true;
-  inspectSubscription$ !: Observable<boolean>
-  constructor(private manageUserBodySerivce: ManageUserBodyService){}
+  user !: User | null
+  isInspecting : boolean = false;
+  constructor(){}
   
   ngOnInit(): void {
-    this.inspectSubscription$ = this.manageUserBodySerivce.getInspect()
   }
   
+  handleIsInspecting(event: boolean){
+    this.isInspecting = event
+  }
   
-  getUserId(event: number){
-    this.userId = event
+  getUserId(event: User){
+    this.user = event
   }
 
   ngOnDestroy(): void {
-    this.manageUserBodySerivce.setInspect(false)
+    this.isInspecting = false
   }
 }

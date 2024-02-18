@@ -1,29 +1,30 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { EnumItem } from 'src/app/shared/model/enums/MapForEnum.model';
-import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
-import { User } from '../manage-users-service/model/user.model';
+import { CommonVariable } from '@shared/helper/inherit/common-variable';
+import { EnumItem } from '@shared/model/enums/MapForEnum.model';
 import { UserProfileService } from '@shared/service/user-profile-service/user-profile.service';
 import { Subscription } from 'rxjs';
-import { disableUser } from '../manage-users-service/model/maange-users-payload.model';
+import { User } from '../../../manage-user-body/manage-users/manage-users-service/model/user.model';
+import { disableUser } from '../../../people-service/model/people-payload.model';
 import { PeopleService } from '../../../people-service/people.service';
+import { Staff } from '../manage-staff-service/model/staff.model';
 
-enum UserInspectNav{
+enum StaffInspectNav{
   DETAIL = "Basic Information",
-   PAYMENT= "Payment History", 
    DISABLE = "Disable History"
 }
+
 @Component({
-  selector: 'app-user-inspect-body',
-  templateUrl: './user-inspect-body.component.html',
-  styleUrls: ['./user-inspect-body.component.scss']
+  selector: 'app-staff-inspect-body',
+  templateUrl: './staff-inspect-body.component.html',
+  styleUrls: ['./staff-inspect-body.component.scss']
 })
-export class UserInspectBodyComponent extends CommonVariable implements OnInit, OnDestroy{
+export class StaffInspectBodyComponent extends CommonVariable implements OnInit, OnDestroy{
   
-  @Input() user !: User
+  @Input() staff !: Staff
   @Output() isInspectingEvent : EventEmitter<boolean> = new EventEmitter()
-  inspecting = UserInspectNav
-  options: EnumItem[] = Object.keys(UserInspectNav).map(key => ({ key, value: UserInspectNav[key as keyof typeof UserInspectNav] }));
-  selectedNavbar = UserInspectNav.DETAIL
+  inspecting = StaffInspectNav
+  options: EnumItem[] = Object.keys(StaffInspectNav).map(key => ({ key, value: StaffInspectNav[key as keyof typeof StaffInspectNav] }));
+  selectedNavbar = StaffInspectNav.DETAIL
 
   remarks !: string
 
@@ -46,23 +47,23 @@ export class UserInspectBodyComponent extends CommonVariable implements OnInit, 
 
   }
 
-  disableUser(){
+  disableStaff(){
     this.visible = false;
     const disablePayload : disableUser = {
-      isDisabled : this.user.accountNonLocked ? true : false,
-      userId : this.user.id,
+      isDisabled : this.staff.accountNonLocked ? true : false,
+      userId : this.staff.id,
       remarks :  this.remarks
     }
     this.disableSend$ =  this.peopleService.disableUser(disablePayload).subscribe(
       (response) => {
-        this.user.accountNonLocked = !disablePayload.isDisabled
-        this.user = {...this.user}
+        this.staff.accountNonLocked = !disablePayload.isDisabled
+        this.staff = {...this.staff}
       }
     );
   }
 
   updateSelectedNavbar(value: string) {
-    this.selectedNavbar = value as UserInspectNav;
+    this.selectedNavbar = value as StaffInspectNav;
   }
 
   goBack(){
@@ -78,3 +79,4 @@ export class UserInspectBodyComponent extends CommonVariable implements OnInit, 
 
   
 }
+

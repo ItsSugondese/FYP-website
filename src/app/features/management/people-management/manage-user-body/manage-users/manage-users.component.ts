@@ -7,7 +7,6 @@ import { User } from './manage-users-service/model/user.model';
 import { Router } from '@angular/router';
 import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
-import { ManageUserBodyService } from '../manage-user-body-service/manage-user-body.service';
 
 
 @Component({
@@ -18,7 +17,8 @@ import { ManageUserBodyService } from '../manage-user-body-service/manage-user-b
 export class ManageUsersComponent extends CommonVariable implements OnInit, OnDestroy {
 
   userListPaginated !: PaginatedData<User>
-  @Output() sendUserId : EventEmitter<number> = new EventEmitter()
+  @Output() sendUserId : EventEmitter<User> = new EventEmitter()
+  @Output() isInspectingEvent : EventEmitter<boolean> = new EventEmitter()
 
   paginationJson: manageUserPagination = {
     userType: 'USER',
@@ -26,12 +26,12 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
     row: this.selectedRow
   }
   fromTime = new Date();
-  getOrderSubscriable$ !: Subscription
+  getUsersSubscriable$ !: Subscription
 
 
   
 
-  constructor(public manageUserService: ManageUsersService, private manageUserBodySerivce: ManageUserBodyService) {
+  constructor(public manageUserService: ManageUsersService,) {
     super()
   }
 
@@ -39,18 +39,18 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
     this.getPaginatedData();
   }
 
-  navigateToSingle(id: number) {
-    this.sendUserId.emit(id);
-    this.manageUserBodySerivce.setInspect(true)
+  navigateToSingle(user: User) {
+    this.sendUserId.emit(user);
+    this.isInspectingEvent.emit(true)
 
   }
 
   getPaginatedData() {
-    this.getOrderSubscriable$ = this.manageUserService.getData(
+    this.getUsersSubscriable$ = this.manageUserService.getData(
       this.paginationJson).subscribe(
         (response) => {
           this.userListPaginated = response.data
-          this.getOrderSubscriable$.unsubscribe()
+          this.getUsersSubscriable$.unsubscribe()
         }
       )
   }
@@ -80,8 +80,8 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
 
 
   ngOnDestroy(): void {
-    if (this.getOrderSubscriable$) {
-      this.getOrderSubscriable$.unsubscribe();
+    if (this.getUsersSubscriable$) {
+      this.getUsersSubscriable$.unsubscribe();
     }
   }
 

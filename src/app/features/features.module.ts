@@ -14,6 +14,7 @@ import { UserOrderComponent } from './user-order/user-order.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../shared/module/material.module';
 import { TestComponent } from './test/test.component';
+import { TemplatesModule } from '../templates/templates.module';
 
 
 
@@ -34,7 +35,8 @@ import { TestComponent } from './test/test.component';
     FormModule,
     NgxModule,
     FlexLayoutModule,
-    MaterialModule
+    MaterialModule,
+    TemplatesModule
   ]
 })
 export class FeaturesModule { }

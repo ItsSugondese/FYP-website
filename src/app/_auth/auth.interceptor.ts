@@ -40,6 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
             catchError(
 
                 (err: HttpErrorResponse) => {
+                    console.log("here")
                     if (err.error.message) {
                         this.snackService.showMessage({
                             // label : error.error.message,
@@ -60,8 +61,7 @@ export class AuthInterceptor implements HttpInterceptor {
                             label: "Connection with server failed",
                             status: MessageStatus.FAIL
                         });
-                    } 
-                    else {
+                    }else {
                         this.snackService.showMessage({
                             label: "Something went wrong",
                             status: MessageStatus.FAIL

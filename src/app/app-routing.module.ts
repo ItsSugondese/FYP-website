@@ -24,13 +24,14 @@ import { ManageUsersComponent } from './features/management/people-management/ma
 import { UserDetailsComponent } from './features/management/people-management/manage-user-body/manage-users/user-inspect/user-details/user-details.component';
 import { UserDisableHistoryComponent } from './features/management/people-management/manage-user-body/manage-users/user-inspect/user-disable-history/user-disable-history.component';
 import { ManageUserBodyComponent } from './features/management/people-management/manage-user-body/manage-user-body.component';
+import { ManageStaffBodyComponent } from './features/management/people-management/manage-staff-body/manage-staff-body.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: ManagementRouteConstant.login, component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
   {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  data: {roles:['ADMIN']}},
-  {path: ManagementRouteConstant.staffManagement, component : ManageStaffComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
+  {path: ManagementRouteConstant.staffManagement, component : ManageStaffBodyComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
   {path: ManagementRouteConstant.addStaff, component : AddStaffComponent,},
