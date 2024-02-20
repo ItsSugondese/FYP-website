@@ -20,7 +20,7 @@ export class SidenavComponent implements OnInit {
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
   labelData = NavbarConstant
   currentRoute: string = '';
-  collapsed = false;
+  // collapsed = false;
   screenWidth = 0;
 
 
@@ -28,13 +28,13 @@ export class SidenavComponent implements OnInit {
   onResize(event: any){
     this.screenWidth = window.innerWidth;
     if(this.screenWidth <= 500){
-      this.collapsed = true;
-      this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
+      this.sidenavService.collapsed = true;
+      this.onToggleSideNav.emit({collapsed: this.sidenavService.collapsed, screenWidth: this.screenWidth})
     }
     this.sidenavService.setScreenResize(this.screenWidth);
   }
 
-  constructor(private router: Router, private sidenavService: SidenavService) {}
+  constructor(private router: Router, public sidenavService: SidenavService) {}
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
@@ -42,14 +42,14 @@ export class SidenavComponent implements OnInit {
 
 
   toggleCollapse(){
-    this.collapsed = !this.collapsed;
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
-    this.sidenavService.setCollapsed(this.collapsed);
+    this.sidenavService.collapsed = !this.sidenavService.collapsed;
+    this.onToggleSideNav.emit({collapsed: this.sidenavService.collapsed, screenWidth: this.screenWidth})
+    this.sidenavService.setCollapsed(this.sidenavService.collapsed);
   }
   
   closeSideNav(){
-    this.collapsed = false;
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
+    this.sidenavService.collapsed = false;
+    this.onToggleSideNav.emit({collapsed: this.sidenavService.collapsed, screenWidth: this.screenWidth})
   }
 
 

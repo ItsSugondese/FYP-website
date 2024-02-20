@@ -7,18 +7,27 @@ import { UserOrderHistory } from './model/user-order.model';
 import { UserOrderHistoryPagination } from './model/user-order.payload';
 import { orderedFood } from '../../management/manage-orders/order.model';
 import { foodOrdering } from 'src/app/shared/model/order/food-order.model';
+import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-serivce';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserOrderService {
+export class UserOrderService extends ServiceCommonVariable {
   backendUrl = environment.apiUrl;
   moduleName = "user"
-  constructor(private httpClient : HttpClient) { }
+  constructor(private httpClient : HttpClient) {
+    super()
+   }
 
   orderMade !: UserOrderHistory
+
   getData(paginationRequest : UserOrderHistoryPagination){
-    return this.httpClient.post<ResponseData<PaginatedData<UserOrderHistory>>>(this.backendUrl + "onsite-order/history/paginated", paginationRequest);
+    this.loading = true
+    return this.httpClient.post<ResponseData<PaginatedData<UserOrderHistory>>>(this.backendUrl + "onsite-order/history/paginated", paginationRequest)
+    .pipe(
+      this.handleError()
+    )
+    ;
  }
 
  setOrderedFood(orderedFoods : UserOrderHistory){

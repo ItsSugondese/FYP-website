@@ -11,6 +11,8 @@ import { NoContentComponent } from './not-found/no-content.template.component';
 import { TextTypeComponent } from './design/type-text/text-type.template.component';
 import { PaginationDropdownComponenet } from './dropdown/pagination-dropdown.template.component';
 import { DisableEnableButtonComponent } from './buttons/disable-buttons.template.component';
+import { AddButtonComponent } from './buttons/add-buttons.template.component';
+import { FileUploadComponent } from './file-upload/file-upload.template.component';
 
 
 
@@ -23,14 +25,17 @@ import { DisableEnableButtonComponent } from './buttons/disable-buttons.template
   NoContentComponent,
   TextTypeComponent,
   PaginationDropdownComponenet,
-  DisableEnableButtonComponent
+  DisableEnableButtonComponent,
+  AddButtonComponent,
+  FileUploadComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     NgprimeModule,
     NgprimeModule,
-    FormModule
+    FormModule,
+    MaterialModule
   ],
   exports:[
     FoodFilterComponent,
@@ -40,7 +45,9 @@ import { DisableEnableButtonComponent } from './buttons/disable-buttons.template
   NoContentComponent,
   TextTypeComponent,
   PaginationDropdownComponenet,
-  DisableEnableButtonComponent
+  DisableEnableButtonComponent,
+  AddButtonComponent,
+  FileUploadComponent
   ]
 })
 export class TemplatesModule { }

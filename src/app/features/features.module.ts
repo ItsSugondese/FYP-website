@@ -15,18 +15,18 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../shared/module/material.module';
 import { TestComponent } from './test/test.component';
 import { TemplatesModule } from '../templates/templates.module';
+import { FeaturesRoutingModule } from './features-routing.module';
 
 
 
 @NgModule({
   declarations: [
-    HomepageComponent,
     FeedbackComponent,
-    UserOrderComponent,
     TestComponent,
   ],
   imports: [
     CommonModule,
+    FeaturesRoutingModule,
     OrderModule,
     DashboardModule,
     ManagementModule,

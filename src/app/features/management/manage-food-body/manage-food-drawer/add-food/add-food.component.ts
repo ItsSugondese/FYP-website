@@ -39,14 +39,10 @@ export class AddFoodComponent implements OnInit, OnDestroy {
     foodType: new FormControl('', [Validators.required]) // Validation added for foodType
   });
   
-  imageId$ !: Subscription;
 
   imageId !: number | null;
   menuList !: string[]
-  imageDataMapByMenuId: { [key: number]: string[] } = {};
 
-  selectedFoodImage : string| null = null
-  tempImageUrl !: string | null
   constructor(public foodService: ManageFoodsService,
     private formBuilder: FormBuilder, private enumService: EnumService, private snackbarService: SnackbarService,
      private addFoodService: AddFoodService
@@ -72,81 +68,26 @@ export class AddFoodComponent implements OnInit, OnDestroy {
             foodType: this.item.foodMenu.foodType
           })
           this.imageUrl = this.item.image
-          this.selectedFoodImage = this.item.image
         }else{
           this.foodForm.reset();
           this.imageUrl = null;
-          this.selectedFoodImage = null
         }
       
   }
 
-  removeImage(event: MouseEvent): void {
-    if(this.item != null){
-      this.imageUrl = this.item.image
-    }else{
-    this.imageUrl = null;
-    }
-    this.imageId = null;
-
-
-  }
   
   selectedDropdownOption(option: string) {
     this.formValue("foodType")?.setValue(option);
   }
 
   toggleOffcanvas() {
-
     this.isOffcanvasOpen = !this.isOffcanvasOpen;
     this.foodForm.reset();
     if (this.isOffcanvasOpen == true) {
-
     } else {
       this.imageUrl = null;
-
-
     }
   }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    this.uploadFiles(event.dataTransfer!.files);
-  }
-
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
-
-  onFileSelect(event: Event) {
-    console.log("here is it")
-    const input = event.target as HTMLInputElement;
-    if (input.files!.length > 0) {
-      this.uploadFiles(input.files!);
-    }
-  }
-
-  uploadFiles(files: FileList) {
-    // For simplicity, assuming only one file is selected
-    const file = files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.tempImageUrl = this.imageUrl
-        this.imageUrl = e.target.result;
-        const formData = new FormData();
-        formData.append('attachments', file);
-        this.imageId$ = this.foodService.postImage(formData).subscribe(
-          (response : any) => {
-            this.imageId = response.data[0];
-            this.imageId$.unsubscribe()
-            
-          },(error) => {this.imageUrl = this.tempImageUrl}
-        )
-      };
-      reader.readAsDataURL(file);
-    }
-    }
   
 
   submitDetails() {
@@ -160,7 +101,6 @@ export class AddFoodComponent implements OnInit, OnDestroy {
     tempFoodType =  foodType?.value;
     foodType?.setValue(tempFoodType.toUpperCase());
 
-    console.log("hello")
     this.postFoodMenu$ = this.foodService.postFoodMenu(this.foodForm.value).subscribe(
       (results: ResponseData<null>) => {
         if(results.status == true){
@@ -204,9 +144,6 @@ export class AddFoodComponent implements OnInit, OnDestroy {
 
     if (this.foodTypeSubscribable$) {
       this.foodTypeSubscribable$.unsubscribe()
-    }
-    if(this.imageId$){
-      this.imageId$.unsubscribe()
     }
   }
 }

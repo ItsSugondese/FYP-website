@@ -21,6 +21,7 @@ import { User } from '../../manage-user-body/manage-users/manage-users-service/m
   staffListPaginated !: PaginatedData<Staff>
   @Output() sendUserId : EventEmitter<Staff> = new EventEmitter()
   @Output() isInspectingEvent : EventEmitter<boolean> = new EventEmitter()
+  @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
 
   paginationJson: manageUserPagination = {
     userType: 'STAFF',

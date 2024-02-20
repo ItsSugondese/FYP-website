@@ -8,7 +8,7 @@ export enum CalenderType{
   selector: 'calender-template',
   template: `
   <div
-          class="p-1 px-2 w-fit border-2 border-customPrimary bg-white mt-1  rounded-md shadow-sm flex   focus-within:border-customPrimary text-customPrimary">
+          class="p-1  px-2 w-fit border-2 border-customPrimary bg-white mt-1  rounded-md shadow-sm flex   focus-within:border-customPrimary text-customPrimary">
           <mat-icon>calendar_today</mat-icon>
           <p-calendar class="outline-none" [(ngModel)]="rangeDates"
             selectionMode="range" [readonlyInput]="true"

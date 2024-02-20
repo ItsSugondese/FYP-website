@@ -45,9 +45,10 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
   foodMenuPagination : FoodMenuPagination = {
     page: 1,
     row: 10,
+    filter: 'ALL'
   }
 
-  selectedFoodMenuType : string | null = "MISC"
+  selectedFoodMenuType : string | null = "ALL"
 
   constructor(public foodService : ManageFoodsService,
     private formBuilder : FormBuilder, private router: Router,
@@ -125,7 +126,11 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
 
 
   public getFoodMenu(){
+    if(this.selectedFoodMenuType == 'ALL'){
+      this.foodMenuPagination.foodType = undefined
+    }else{
     this.foodMenuPagination.foodType = this.selectedFoodMenuType
+    }
     
     this.foodMenuFetch$ = this.foodService.getFoodMenuPaginated(this.foodMenuPagination).subscribe(
       (response ) => {

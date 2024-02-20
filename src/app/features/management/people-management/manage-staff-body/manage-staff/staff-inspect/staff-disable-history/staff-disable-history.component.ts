@@ -1,13 +1,11 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { defaultPaginationNavigator } from 'src/app/shared/model/pagination/pagination.model';
+import { CommonVariable } from '@shared/helper/inherit/common-variable';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
+import { defaultPaginationNavigator } from 'src/app/shared/model/pagination/pagination.model';
 import { disableUserHistoryPagination } from '../../../../people-service/model/people-payload.model';
 import { DisableHistory } from '../../../../people-service/model/people.model';
 import { PeopleService } from '../../../../people-service/people.service';
-import { CommonVariable } from '@shared/helper/inherit/common-variable';
-import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
-import { User } from '../../../../manage-user-body/manage-users/manage-users-service/model/user.model';
 import { Staff } from '../../manage-staff-service/model/staff.model';
 
 @Component({

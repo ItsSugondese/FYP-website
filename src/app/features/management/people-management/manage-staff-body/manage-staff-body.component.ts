@@ -10,11 +10,16 @@ export class ManageStaffBodyComponent implements OnInit, OnDestroy{
   
   staff !: Staff | null
   isInspecting : boolean = false;
+  isOpenDrawer: boolean = false;
   constructor(){}
   
   ngOnInit(): void {
   }
   
+
+  onToggleDrawer(data: boolean){
+    this.isOpenDrawer = data
+  }
   handleIsInspecting(event: boolean){
     this.isInspecting = event
   }

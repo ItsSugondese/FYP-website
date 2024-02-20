@@ -10,12 +10,6 @@ export const  NavbarConstant = [
         
     },
     {
-        routeLink: ManagementRouteConstant.login,
-        label: "Login",
-        icon: 'login',
-        iconLibrary: "angular"
-    },
-    {
         routeLink: ManagementRouteConstant.foodManagement,
         label: "Food Management",
         icon: 'lunch_dining',
@@ -39,27 +33,11 @@ export const  NavbarConstant = [
         icon: 'people',
         iconLibrary: "angular"
     },
-    {
-        routeLink: ManagementRouteConstant.addStaff,
-        label: "Staff Management",
-        icon: 'dining',
-        iconLibrary: "angular"
-    },
-
-
-
-    //for user data
-    {
-        routeLink: UserRouteConstant.userOrder,
-        label: "My Orders",
-        icon: 'lunch_dining',
-        iconLibrary: "angular"
-    },
-    {
-        routeLink: UserRouteConstant.homepage,
-        label: "Homepage",
-        icon: 'lunch_dining',
-        iconLibrary: "angular"
-    },
+    // {
+    //     routeLink: ManagementRouteConstant.addStaff,
+    //     label: "Staff Management",
+    //     icon: 'dining',
+    //     iconLibrary: "angular"
+    // },
     
 ];

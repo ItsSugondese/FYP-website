@@ -8,19 +8,15 @@
     <div id="filter-header" class="flex w-full justify-between items-center mb-3 bg-white p-2 rounded-lg">
       
       <div class="left-filter-header">
-        <food-filter-template (optionSelected)="selectedFromFoodFilter($event)"></food-filter-template>
+        <food-filter-template [selectedKey]="selectedFoodMenuType!" (optionSelected)="selectedFromFoodFilter($event)"></food-filter-template>
       </div>
 
 
       <div class="filter-header-right flex  items-center">
         <search-template (typedData)="typedFoodToFilter($event)"></search-template>
 
-
-        <div
-          class="flex ml-5 hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg pr-2 pl-1 py-1.5 text-base"
-          (click)="toggleFormToEdit(null); toggleDrawer(true)">
-          <mat-icon class="mr-1">add</mat-icon>
-          <button class="">Add New Menu</button>
+        <div (click)="toggleFormToEdit(null); toggleDrawer(true)">
+          <add-button-template [text]="'Menu'"></add-button-template>
         </div>
       </div>
     </div>

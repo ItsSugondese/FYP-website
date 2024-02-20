@@ -22,7 +22,6 @@ export class ManageFoodBodyComponent implements OnInit, OnDestroy {
   
   onToggleDrawer(data: boolean){
     this.isOpenDrawer = data
-    
   }
   ngOnDestroy(): void {
    

@@ -12,6 +12,12 @@
   flex-direction: column;
 }
 
+.disabled-button {
+  background-color: lightgray !important;
+  color: gray !important;
+  cursor: not-allowed;
+}
+
 // :host #router-container{
 //   display: flex;
 //   flex-direction: column;

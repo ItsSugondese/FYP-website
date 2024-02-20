@@ -3,17 +3,41 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
+import { ValidateToken } from './model/forgot-password.model';
+import { ResponseData } from 'src/app/constant/data/response-data.model';
+import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-serivce';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService extends ServiceCommonVariable{
 
   private loginStatus = new BehaviorSubject<boolean>(this.loggedIn())
   private username = new BehaviorSubject<string>(localStorage.getItem('username')!)
   private path = environment.apiUrl
+  moduleName: string = "auth"
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    super()
+   }
+
+  validatePasswordToken(data: ValidateToken){
+    this.loading = true
+    return this.httpClient.post<ResponseData<string>>(this.path + this.moduleName + "/validate-token", data)
+    .pipe(
+      this.handleError()
+    )
+  }
+
+  // validatePasswordToken(data: ValidateToken){
+  //   this.loading = true
+  //   return this.httpClient.post<ResponseData<string>>(this.path + this.moduleName + "/validate-token", data)
+  //   .pipe(
+  //     this.handleError()
+  //   )
+  // }
+
+
 
   public signOutExternal = () => {
       localStorage.removeItem("token");
@@ -25,33 +49,17 @@ export class AuthService {
     return this.httpClient.post(this.path + "auth/login-with-google", JSON.stringify(credentials), { headers: header, withCredentials: true });
   }
 
-  LoginWithFacebook(credentials: string): Observable<any> {
-    const header = new HttpHeaders().set('Content-type', 'application/json');
-    return this.httpClient.post(this.path + "LoginWithFacebook", JSON.stringify(credentials), { headers: header, withCredentials: true });
-  }
+  
 
   login(loginModel:any): Observable<any> {
     const header = new HttpHeaders().set('Content-type', 'application/json');
 
     return this.httpClient.post(this.path + 'Login', JSON.stringify(loginModel), { headers: header, withCredentials: true })
-    
   }
 
-  getClient(): Observable<any> {
-    const header = new HttpHeaders().set('Content-type', 'application/json');
-    return this.httpClient.get(this.path + "GetColorList", { headers: header, withCredentials: true });
-  }
 
-  
-  refreshToken(): Observable<any> {
-    const header = new HttpHeaders().set('Content-type', 'application/json');
-    return this.httpClient.get(this.path + "RefreshToken", { headers: header, withCredentials: true });
-  }
 
-  revokeToken(): Observable<any> {
-    const header = new HttpHeaders().set('Content-type', 'application/json');
-    return this.httpClient.delete(this.path + "RevokeToken/" + this.username.value, { headers: header, withCredentials: true });
-  }
+
 
   saveToken(token:string) {
     localStorage.setItem('token', token)

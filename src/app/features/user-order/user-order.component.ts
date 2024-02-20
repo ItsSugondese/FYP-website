@@ -13,20 +13,15 @@ import { Router } from '@angular/router';
 import { UserRouteConstant } from 'src/app/constant/routing/user-routing-constant.model';
 import { FoodMenuPagination } from '../management/manage-food-body/manage-foods/manage-foods-service/model/food-menu.payload';
 import { ManageFoodsService } from '../management/manage-food-body/manage-foods/manage-foods-service/manage-foods.service';
+import { CommonVariable } from '@shared/helper/inherit/common-variable';
 
 @Component({
   selector: 'app-user-order',
   templateUrl: './user-order.component.html',
   styleUrls: ['./user-order.component.scss']
 })
-export class UserOrderComponent implements OnInit, OnDestroy {
-  foodId !: Number;
+export class UserOrderComponent extends CommonVariable implements OnInit, OnDestroy {
   paginatedData !: ResponseData<PaginatedData<UserOrderHistory>>
-  paginationNavigator: defaultPaginationNavigator = {
-    currentPage: 1,
-    row: 10,
-  }
-  finalPopUp:boolean = false
   collapsed !: boolean;
   getFoodPicture$!: Subscription
   getFoodMenu$!: Subscription
@@ -41,52 +36,26 @@ export class UserOrderComponent implements OnInit, OnDestroy {
     row: 10,
   }
   fromTime = new Date();
-  getStaffSubscriable$ !: Subscription
+  getOrderHistorySubscriable$ !: Subscription
 
   imageDataMap: { [key: number]: string } = {};
-  tableSizes = [5, 10, 15, 20]
   selectedOrder !: UserOrderHistory
-  navbarCollapse$ !: Subscription;
 
-  // @ViewChild('quantityInput') quantityInput !: ElementRef;
-  constructor(private userOrderService : UserOrderService, private foodService: ManageFoodsService,
+  constructor(public userOrderService : UserOrderService, private foodService: ManageFoodsService,
     private sideNavService: SidenavService, private router: Router) {
+      super()
 
   }
 
-  foodOrderList : foodOrdering[] = []
-  removeFoodOrder : Number[] = []
-  foodSearch : string = ""
   
   ngOnInit(): void {
-    this.getPaginatedData(this.paginationJson);
-    this.navbarCollapse$ =  this.sideNavService.getCollapsed().subscribe((collapsed) => {
-      this.collapsed = collapsed;
-    });
+    this.getPaginatedData();
   }
 
-  togglePopUp(){
-    this.finalPopUp = !this.finalPopUp;
-  }
 
   
-
-  searchFood(val : string){
-   
-    console.log(val)
-    if(this.foodSearch.trim() !== ''){
-      this.getFoodMenuPaginatedData(this.foodMenuPaginationJson);
-    }
-   
-  }
  
   toggleOrderDetailsPopUp(orderDetails: UserOrderHistory){
-
-    // this.togglePopUp();
-    // console.log(this.selectedOrder)
-  
-
-
     if(orderDetails.orderType == 'ONLINE_ORDER'){
    
     
@@ -96,36 +65,8 @@ export class UserOrderComponent implements OnInit, OnDestroy {
   }
 
 
-  getPaginatedData(json: UserOrderHistoryPagination) {
-    this.getStaffSubscriable$ = this.userOrderService.getData(json).subscribe(
-        (response) => {
-          this.paginatedData = response
-          this.paginatedData.data.content.forEach((orderDetails) => {
-            orderDetails.orderFoodDetails.forEach(
-              (foodItem) => {
-                if(foodItem.photoId){
-                  if(!(foodItem.photoId in  this.imageDataMap)){
-                  this.getFoodPicture$ = this.foodService.getFoodPicture(foodItem.photoId).subscribe((imageBlob: Blob) => {
-      
-      
-                  createImageFromBlob(imageBlob, foodItem.photoId)
-                   .then((imageData) => {
-                    this.imageDataMap[foodItem.photoId] = imageData;
-                })
-                .catch((error) => {
-                    console.log("error when trying to access")
-                });
-                });
-              }
-              }
-              }
-            )
-          }); 
-        }
-      )
-  }
-  getFoodMenuPaginatedData(json: FoodMenuPagination) {
-    this.getFoodMenu$ = this.userOrderService.getData(json).subscribe(
+  getPaginatedData() {
+    this.getOrderHistorySubscriable$ = this.userOrderService.getData(this.paginationJson).subscribe(
         (response) => {
           this.paginatedData = response
           this.paginatedData.data.content.forEach((orderDetails) => {
@@ -153,30 +94,12 @@ export class UserOrderComponent implements OnInit, OnDestroy {
       )
   }
 
- 
 
-  onTableDataChange(event: any) {
-    this.paginationNavigator.currentPage = event
-    this.paginationJson.page = event
-    this.getPaginatedData(this.paginationJson);
-
-  }
-
-  onEnterPress(event: any) {
-    if ((event.target.value).trim() !== '') {
-      this.paginationNavigator.row = event.target.value
-      this.paginationJson.row = event.target.value
-      this.getPaginatedData(this.paginationJson);
-    }
-    console.log(this.paginationNavigator.row)
-  }
 
   ngOnDestroy(): void {
-    if(this.getStaffSubscriable$){
-      this.getStaffSubscriable$.unsubscribe();
+    if(this.getOrderHistorySubscriable$){
+      this.getOrderHistorySubscriable$.unsubscribe();
     }
-    if(this.navbarCollapse$){
-      this.navbarCollapse$.unsubscribe();
-    }
+    
   }
 }

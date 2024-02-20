@@ -25,28 +25,66 @@ import { UserDetailsComponent } from './features/management/people-management/ma
 import { UserDisableHistoryComponent } from './features/management/people-management/manage-user-body/manage-users/user-inspect/user-disable-history/user-disable-history.component';
 import { ManageUserBodyComponent } from './features/management/people-management/manage-user-body/manage-user-body.component';
 import { ManageStaffBodyComponent } from './features/management/people-management/manage-staff-body/manage-staff-body.component';
+import { LoginLayoutComponent } from './layouts/login-layout/login-layout.component';
+import { FeaturesLayoutComponent } from './layouts/features-layout/features-layout.component';
+import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/login', pathMatch: 'full'},
-  {path: ManagementRouteConstant.login, component: LoginComponent},
-  {path: 'logout', component: LogoutComponent},
-  {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  data: {roles:['ADMIN']}},
-  {path: ManagementRouteConstant.staffManagement, component : ManageStaffBodyComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
-  {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
-  {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
-  {path: ManagementRouteConstant.addStaff, component : AddStaffComponent,},
-  {path: ManagementRouteConstant.orderManagement, component: OrderManagementBodyComponent},
-  {path: ManagementRouteConstant.onlineOrderManagement, component: OnlineOrdersComponent},
-  {path: ManagementRouteConstant.onsiteOrderManagement, component: OnsiteOrdersComponent},
-  {path: ManagementRouteConstant.userManagement, component: ManageUserBodyComponent},
-  {path: 'manage_users/:id', component: UserDetailsComponent},
-  {path: 'manage_users/:id/history', component: UserDisableHistoryComponent},
-  {path: UserRouteConstant.homepage, component: HomepageComponent},
-  {path: ManagementRouteConstant.adminDashboard, component: AdminDashboardComponent},
-  {path: UserRouteConstant.userOrder, component: UserOrderComponent},
-  // {path: 'feedback/:id', component: FeedbackComponent}
-  {path: 'feedback/:id', component: FeedbackInspectComponent},
-  {path: 'test', component: TestComponent}
+  {
+    path: '',
+    component: LoginLayoutComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: '/',
+        pathMatch: 'full'
+      },
+      {
+        path: '',
+        loadChildren: () => import('./_auth/auth.module').then(m => m.AuthModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    component: FeaturesLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./features/features.module').then(m => m.FeaturesModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    component: UserLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./layouts/user-layout/user/user.module').then(m => m.UserPageHolderModule)
+      }
+    ]
+  }
+  // {path: '', redirectTo: '/login', pathMatch: 'full'},
+  // {path: ManagementRouteConstant.login, component: LoginComponent},
+  // {path: 'logout', component: LogoutComponent},
+  // {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  data: {roles:['ADMIN']}},
+  // {path: ManagementRouteConstant.staffManagement, component : ManageStaffBodyComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
+  // {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
+  // {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
+  // {path: ManagementRouteConstant.addStaff, component : AddStaffComponent,},
+  // {path: ManagementRouteConstant.orderManagement, component: OrderManagementBodyComponent},
+  // {path: ManagementRouteConstant.onlineOrderManagement, component: OnlineOrdersComponent},
+  // {path: ManagementRouteConstant.onsiteOrderManagement, component: OnsiteOrdersComponent},
+  // {path: ManagementRouteConstant.userManagement, component: ManageUserBodyComponent},
+  // {path: 'manage_users/:id', component: UserDetailsComponent},
+  // {path: 'manage_users/:id/history', component: UserDisableHistoryComponent},
+  // {path: UserRouteConstant.homepage, component: HomepageComponent},
+  // {path: ManagementRouteConstant.adminDashboard, component: AdminDashboardComponent},
+  // {path: UserRouteConstant.userOrder, component: UserOrderComponent},
+  // // {path: 'feedback/:id', component: FeedbackComponent}
+  // {path: 'feedback/:id', component: FeedbackInspectComponent},
+  // {path: 'test', component: TestComponent}
 ];
 
 @NgModule({

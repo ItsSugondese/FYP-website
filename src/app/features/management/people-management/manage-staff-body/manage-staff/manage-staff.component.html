@@ -1,10 +1,22 @@
 <div id="main-div" class="">
 
-    <search-template (typedData)="typedUserToFilter($event)"></search-template>
+    <div class="flex justify-between">
+
+        <search-template (typedData)="typedUserToFilter($event)"></search-template>
+        
+        <div (click)="onOpeningDrawer.emit(true)" 
+        > 
+        <!-- (click)="toggleFormToEdit(null); toggleDrawer(true)"
+        -->
+        <add-button-template [text]="'Staff'"></add-button-template>
+    </div>
+</div>
+
 
     <div *ngIf="manageUserService.loading; else loaded" [class]="centerItems">
         <mat-spinner style="color: red;"></mat-spinner>
     </div>
+
 
     
     <ng-template #loaded>

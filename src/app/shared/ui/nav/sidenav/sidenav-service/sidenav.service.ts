@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class SidenavService {
   private collapsedSubject = new BehaviorSubject<boolean>(false);
   private resizeSubject = new BehaviorSubject<number>(window.innerWidth);
-  
+  collapsed: boolean = false;
   constructor() { }
 
   setCollapsed(collapsed: boolean) {

@@ -1,0 +1,7 @@
+<app-sidenav (onToggleSideNav)="onToggleSideNav($event)" ></app-sidenav>
+<div>
+    <app-header></app-header>
+    <div class=""  [ngClass]="!sidenavService.collapsed? 'ml-64 mr-8 w-auto': 'ml-20 mr-4 w-auto'">
+        <router-outlet></router-outlet>
+    </div>
+</div>

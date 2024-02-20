@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HomepageService } from './homepage-service/homepage.service';
 import { FormControl, Validators } from '@angular/forms';
@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { UserRouteConstant } from 'src/app/constant/routing/user-routing-constant.model';
 import { UserOrderHistory } from '../user-order/user-order-service/model/user-order.model';
 import { ManageFoodsService } from '../management/manage-food-body/manage-foods/manage-foods-service/manage-foods.service';
+import { CommonVariable } from '@shared/helper/inherit/common-variable';
+import { FoodMenuPagination } from '../management/manage-food-body/manage-foods/manage-foods-service/model/food-menu.payload';
 
 
 
@@ -20,8 +22,8 @@ import { ManageFoodsService } from '../management/manage-food-body/manage-foods/
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.scss']
 })
-export class HomepageComponent implements OnInit, OnDestroy {
-  getFoodItems$ !: Subscription
+export class HomepageComponent extends CommonVariable implements OnInit, OnDestroy, AfterViewInit {
+  foodMenuFetch$ !: Subscription
   getFoodPicture$ !: Subscription
   foodMenuList !: foodMenu[]
   imageDataMap: { [key: number]: string } = {};
@@ -43,12 +45,23 @@ export class HomepageComponent implements OnInit, OnDestroy {
   orderHistory ?: UserOrderHistory
   arrivalTime : string = '';
   @ViewChild('quantityInput') quantityInput !: ElementRef;
-
+  selectedFoodMenuType : string | null = "ALL"
+  foodMenuPagination : FoodMenuPagination = {
+    page: 1,
+    row: 10,
+    filter:  'TODAY'
+  }
+  
   constructor(private homepageService: HomepageService,
-    private foodService: ManageFoodsService, private userOrderService: UserOrderService,
+    public foodService: ManageFoodsService, private userOrderService: UserOrderService,
     private router: Router
   ) {
-
+super()
+  }
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+    }, 4000); // Snackbar duration
+  
   }
 
   ngOnInit(): void {
@@ -72,7 +85,44 @@ export class HomepageComponent implements OnInit, OnDestroy {
       this.visible= true;
     }
 
-    this.getFoodItems$ = this.loadFoodMenusAndImage();
+    this.getFoodMenu();
+  }
+
+  public getFoodMenu(){
+    if(this.selectedFoodMenuType == 'ALL'){
+      this.foodMenuPagination.foodType = undefined
+    }else{
+    this.foodMenuPagination.foodType = this.selectedFoodMenuType
+    }
+    
+    this.foodMenuFetch$ = this.foodService.getFoodMenuPaginated(this.foodMenuPagination).subscribe(
+      (response ) => {
+        
+        this.foodMenuList = response.data.content;
+
+        this.foodMenuList.forEach((menu) => {
+          if(menu.photoId){
+            this.getFoodPicture$ = this.foodService.getFoodPicture(menu.photoId).subscribe((imageBlob: Blob) => {
+
+
+            createImageFromBlob(imageBlob, menu.photoId)
+             .then((imageData) => {
+              this.imageDataMap[menu.photoId] = imageData;
+              
+          })
+          .catch((error) => {
+              console.log("error when trying to access")
+          });
+          });
+        }
+        }); 
+      }
+    )
+  }
+
+  selectedFromFoodFilter(event: string | null){
+    this.selectedFoodMenuType = event
+    this.getFoodMenu()
   }
 
   cancelEdit(){
@@ -89,6 +139,9 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
   visible: boolean = false;
   position: any = 'top-right';
+
+
+  
 
   comingToEdit: boolean = false;
   
@@ -109,6 +162,8 @@ export class HomepageComponent implements OnInit, OnDestroy {
         break;
       }
     }
+
+    
 
     if (!found) {
       this.foodOrderList.push({
@@ -262,11 +317,12 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-    if (this.getFoodItems$) {
-      this.getFoodItems$.unsubscribe();
+    if (this.foodMenuFetch$) {
+      this.foodMenuFetch$.unsubscribe();
     }
 
-    this.reloadPage()
+    // this.reloadPage()
+    this.foodOrderList = []
     
     
   }

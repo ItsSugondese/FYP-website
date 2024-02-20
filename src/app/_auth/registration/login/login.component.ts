@@ -8,6 +8,8 @@ import { LoginService } from './login-service/login.service';
 import { AuthService } from '../../auth-service/auth.service';
 import { UserService } from 'src/app/shared/service/user-service/user.service';
 import { loginFormHeader } from 'src/app/shared/model/design/login.model';
+import { ManagementRouteConstant } from 'src/app/constant/routing/management-routing-constant.model';
+import { UserRouteConstant } from 'src/app/constant/routing/user-routing-constant.model';
 
 declare const FB: any;
 
@@ -19,7 +21,7 @@ declare const FB: any;
 export class LoginComponent implements OnInit {
 
   form = this.fb.group({
-    username: ['', Validators.email],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
 
@@ -27,7 +29,7 @@ export class LoginComponent implements OnInit {
   formHeader !: loginFormHeader;
 
   constructor(
-    private router: Router,
+    public router: Router,
     private service: AuthService,
     private _ngZone: NgZone,
     private fb: FormBuilder,
@@ -51,9 +53,17 @@ export class LoginComponent implements OnInit {
       // @ts-ignore
       google.accounts.id.renderButton(
         // @ts-ignore
-        document.getElementById("buttonDiv"),
-        { theme: "outline", size: "large", width: "100%" }
-      );
+        
+        document.getElementById("parent"),
+        { theme: "outline", size: "large", width: "100%",}
+        );
+        //@ts-ignore
+        google.accounts.id.renderButton(
+          // @ts-ignore
+          
+          document.getElementById("buttonDiv"),
+          { theme: "outline", size: "large", width: "100%",}
+        );
       // @ts-ignore
       google.accounts.id.prompt((notification: PromptMomentNotification) => { });
     };
@@ -78,7 +88,7 @@ export class LoginComponent implements OnInit {
         } else if ((result.data.roles).includes('STAFF'.toUpperCase)) {
           this.router.navigate(["/admin/manage_staff"])
         } else {
-          this.router.navigate(['/logout']);
+          this.router.navigate(['',UserRouteConstant.homepage]);
         }
       },
       (error: any) => {
@@ -111,6 +121,10 @@ export class LoginComponent implements OnInit {
     } else {
       //this.formSubmitAttempt = true;
     }
+  }
+
+  formValue(name: string) {
+    return this.form.get(name);
   }
 
 

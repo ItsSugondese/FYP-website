@@ -1,4 +1,68 @@
-<div class="container">
+<div class="main-div min-h-screen flex flex-col bg-white">
+  <div class="login-contents  flex-1 flex items-center justify-center" >
+    <div class="contents-all flex flex-col justify-center items-center " >
+    <div class="headers flex flex-col items-center mb-5">
+      <span class=" text-5xl font-light">Login</span>
+      <span class="mt-3 text-sm">Add your details to login</span>
+    </div>
+    
+    <div class="login-form h-full">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="email-div">
+        <label for="email-input" class="text-xl">Email Address</label>
+          <input type="email"  id="email-input" name="search" class="p-3 rounded-full  bg-[#EEEEEE] w-full 
+          sm:text-sm  focus:outline-none border-2 border-transparent focus:border-2 focus:border-customPrimary"
+            placeholder="Your Email"  style="font-size: 18px; padding-left: 10px; text-indent: 15px;"
+            formControlName="email">
+            <div class="pl-8">
+            <mat-error *ngIf="formValue('email')?.touched && formValue('email')?.invalid">
+              Please provide a valid email address
+            </mat-error>
+          </div>
+      </div>
+      <div class="password-div mt-2 mb-4">
+       
+        <label for="password-input" class="text-xl">Password</label>
+          <input type="password"  id="password-input" name="search" class="p-3 rounded-full bg-[#EEEEEE] w-full 
+          sm:text-sm  focus:outline-none border-2 border-transparent focus:border-2 focus:border-customPrimary"
+            placeholder="Your Password"  style="font-size: 18px; padding-left: 10px; text-indent: 15px;"
+            formControlName="password">
+            <div class="pl-8">
+            <mat-error *ngIf="formValue('password')?.touched && formValue('password')?.invalid" class="bg-blak">
+              Password is must
+            </mat-error>
+          </div>
+      
+          </div>
+          
+          <div class="login-btn-div">
+
+            <button type="password"  id="password-input" name="search" class="p-3 py-2 text-xl rounded-full bg-customPrimary text-white w-full 
+              focus:outline-none border-2 border-transparent focus:border-2 focus:border-customPrimary"
+            placeholder="Your Password" [disabled]="form.invalid" [class.disabled-button]="form.invalid" > Login </button>
+          </div>
+      </form>
+    </div>
+    <div class="forgot-passord-footer mt-3">
+     <span> Forgot your password? </span> <span class="text-[#012AFF] hover:cursor-pointer"
+     (click)="router.navigate(['forgot-password'])">Click Here</span>
+    </div>
+
+    <div class="or-divider flex items-center mx-4 mt-5  w-full">
+      <div class="border-t border-gray-500 flex-grow"></div>
+      <div class="mx-1 text-sm text-black">Or</div>
+      <div class="border-t border-gray-500 flex-grow"></div>
+  </div>
+
+
+  <div id="parentDiv" class=" mt-2 w-full flex justify-center">
+    <div id="buttonDiv" class="w-full"></div> 
+  </div>
+  </div>
+  </div>
+</div>
+
+<!-- <div class="container">
   <div class="content">
 
 
@@ -31,4 +95,4 @@
 
 </div> 
   </div>
-</div>
+</div> -->

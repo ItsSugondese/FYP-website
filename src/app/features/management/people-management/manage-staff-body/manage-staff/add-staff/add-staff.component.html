@@ -1,4 +1,89 @@
-Hello
+<div class="p-3">
+  <div class="add-header flex justify-between text-xl  items-center mb-5">
+    <div></div>
+    <div class="Header-topic flex">
+      <h5 class="font-semibold text-xl"> {{staffForm.get("id")?.value == null? 'Add' : 'Update'}} Staff</h5>
+
+    </div>
+
+
+    <div class="text-base hover:cursor-pointer" (click)="onOpeningDrawer.emit(false)">
+      <svg fill-rule="evenodd" viewBox="64 64 896 896" focusable="false" data-icon="close" width="1em" height="1em"
+        fill="currentColor" aria-hidden="true">
+        <path
+          d="M799.86 166.31c.02 0 .04.02.08.06l57.69 57.7c.04.03.05.05.06.08a.12.12 0 010 .06c0 .03-.02.05-.06.09L569.93 512l287.7 287.7c.04.04.05.06.06.09a.12.12 0 010 .07c0 .02-.02.04-.06.08l-57.7 57.69c-.03.04-.05.05-.07.06a.12.12 0 01-.07 0c-.03 0-.05-.02-.09-.06L512 569.93l-287.7 287.7c-.04.04-.06.05-.09.06a.12.12 0 01-.07 0c-.02 0-.04-.02-.08-.06l-57.69-57.7c-.04-.03-.05-.05-.06-.07a.12.12 0 010-.07c0-.03.02-.05.06-.09L454.07 512l-287.7-287.7c-.04-.04-.05-.06-.06-.09a.12.12 0 010-.07c0-.02.02-.04.06-.08l57.7-57.69c.03-.04.05-.05.07-.06a.12.12 0 01.07 0c.03 0 .05.02.09.06L512 454.07l287.7-287.7c.04-.04.06-.05.09-.06a.12.12 0 01.07 0z">
+
+        </path>
+      </svg>
+    </div>
+  </div>
+
+  <div class="add-staff-body">
+    <div class="absolute bg-black text-white flex w-full items-center justify-center top-0 left-0 h-full
+    opacity-50" *ngIf="staffService.pictureLoading">
+      <mat-spinner></mat-spinner>
+    </div>
+<div class="z-30">
+<div class="flex justify-between">
+  
+
+</div>
+
+<div class="">
+  <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
+    <input type="hidden" name="hiddenField" value="{{formValue('id')?.value}}" formControlName="id">
+    <div class="form-group">
+      <label for="inputFoodName">Food Name<span class="text-red-600 text-xl">*</span></label>
+      <input type="text" class="form-control border-2 focus:ring-0" id="inputFoodName" placeholder="Enter Food Name"
+        formControlName="name">
+
+      <div class="flex justify-between mt-2">
+        <div class="w-40">
+          <label for="inputPrice">Price<span class="text-red-600 text-xl">*</span></label>
+          <input type="number" class="form-control border-2 focus:ring-0" 
+            placeholder="Price of the food" formControlName="cost" 
+            >
+            <!-- (input)="item!=null && compareFormAndMenu()" -->
+        </div>
+      </div>
+
+      <div class="form-group mt-2">
+        <label for="inputDescription">Description</label>
+        <textarea class="form-control border-2 focus:ring-0" id="inputDescription" aria-describedby="emailHelp"
+          placeholder="Description of the food" formControlName="description"></textarea>
+      </div>
+
+      <div class="form-group mt-2 h-fit">
+        <label for="exampleFormControlFile1">Image upload<span class="text-red-600 text-xl">*</span></label>
+
+       
+          <div class="mt-1">
+            <file-upload-template [originalImage]="imageUrl" (imageIdEvent)="imageId = $event"></file-upload-template>
+          </div>
+      </div>
+
+    </div>
+
+
+
+
+    <!-- <div class="flex justify-end mt-3">
+      <div  (click)="toggleDrawer(false)"
+        class="w-fit mr-2  hover:cursor-pointer items-center text-customPrimary border-2 border-customPrimary rounded-lg pr-2 pl-1 py-1.5 text-base">
+        Cancel</div>
+      <button type="submit" [disabled]="foodForm.invalid"
+        class=" hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg px-2  py-1.5 text-base"
+        [class.disabled-button]="foodForm.invalid || (item == null ?  imageId == null : compareFormAndMenu() && imageId ==null)">Save</button>
+    </div> -->
+  </form>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<!-- Hello
 
 <div>
             <h2>My Form</h2>
@@ -29,4 +114,4 @@ Hello
             </form>
 </div>
           
- 
+  -->

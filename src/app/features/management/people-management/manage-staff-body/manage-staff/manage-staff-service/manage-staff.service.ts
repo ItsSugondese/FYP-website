@@ -12,12 +12,18 @@ export class ManageStaffService extends ServiceCommonVariable {
 
   backendUrl = environment.apiUrl;
   moduleName :string = "staff";
+  pictureLoading = false
+
   constructor(private httpClient : HttpClient) {
     super()
    }
 
   postImage(data : FormData){
-    return this.httpClient.post<any>(this.backendUrl + "temporary-attachments",data);
+    this.pictureLoading = true
+    return this.httpClient.post<any>(this.backendUrl + "temporary-attachments",data)
+    .pipe(
+      this.handleError()
+    );
   }
 
   postStaffData(data : { [key: string]: any }){

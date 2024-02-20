@@ -1,7 +1,10 @@
 export const ManagementRouteConstant = {
-    login: "login",
+    login: "auth/login",
+    forgotPassword: "forgot-password",
+    resetPassword: "reset-password/:token",
     foodManagement: "manage_foods",
     adminDashboard: 'admin/dashboard',
+    staffDashboard: 'staff/dashboard',
     orderManagement: 'orders',
     userManagement: 'manage_users',
     staffManagement: 'admin/manage_staff',

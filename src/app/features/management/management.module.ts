@@ -62,7 +62,6 @@ import { StaffInspectBodyComponent } from './people-management/manage-staff-body
     BsDatepickerModule.forRoot(),
     NgprimeModule,
     TemplatesModule,
-    BrowserAnimationsModule
   ]
 })
 export class ManagementModule { }
