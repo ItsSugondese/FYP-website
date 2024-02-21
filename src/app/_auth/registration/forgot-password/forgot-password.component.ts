@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth-service/auth.service';
-import { ValidateToken } from '../../auth-service/model/forgot-password.model';
+import { ForgotPassword, ValidateToken } from '../../auth-service/model/auth.model';
 import { Subscription, from } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -24,10 +24,10 @@ export class ForgotPasswordComponent implements OnDestroy {
   onSubmit() {
     //this.formSubmitAttempt = false;
     if (this.form.valid) {
-      const val : ValidateToken = {
-        resetToken: this.formValue('email')?.value
+      const val : ForgotPassword = {
+        userEmail:  this.formValue('email')?.value
       }
-    this.forgotPasswordSubscription$ =   this.authService.validatePasswordToken(val).subscribe(
+    this.forgotPasswordSubscription$ =   this.authService.forgotPassword(val).subscribe(
       (res) => {
         this.forgotPasswordSubscription$.unsubscribe()
       }

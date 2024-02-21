@@ -4,7 +4,7 @@
 
         <search-template (typedData)="typedUserToFilter($event)"></search-template>
         
-        <div (click)="onOpeningDrawer.emit(true)" 
+        <div (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(null);" 
         > 
         <!-- (click)="toggleFormToEdit(null); toggleDrawer(true)"
         -->
@@ -61,10 +61,20 @@
                                 </td>
                                 <td align="center" class="h-full mt-2">
 
-                                    <mat-icon class="hover:cursor-pointer h-full"
+                                    <div class="flex justify-center">
+                                    <div>
+                                    <mat-icon class="hover:cursor-pointer h-full
+                                    hover:text-customPrimary"
+                                        style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
+                                        (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(data);">edit</mat-icon>
+                                    </div>
+                                    <div>
+                                    <mat-icon class="hover:cursor-pointer h-full
+                                    hover:text-customPrimary"
                                         style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
                                         (click)="navigateToSingle(data)">visibility</mat-icon>
-
+                                    </div>
+                                </div>
                                 </td>
 
                             </tr>

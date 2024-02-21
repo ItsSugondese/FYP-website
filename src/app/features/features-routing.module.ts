@@ -19,10 +19,18 @@ import { TestComponent } from './test/test.component';
 import { StaffDashboardComponent } from './dashboard/staff-dashboard/staff-dashboard.component';
 
 const routes: Routes = [
-  {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  data: {roles:['ADMIN']}},
-  {path: ManagementRouteConstant.staffManagement, component : ManageStaffBodyComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
-  {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
-  {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, canActivate: [AuthGuard], data: {roles:['USER']}},
+  {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  
+    // data: {roles:['ADMIN']}
+  },
+  {path: ManagementRouteConstant.staffManagement, component : ManageStaffBodyComponent, 
+    // canActivate: [AuthGuard], data: {roles:['USER']}
+  },
+  {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, 
+  // canActivate: [AuthGuard],  data: {roles:['USER']}
+},
+  {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, 
+  // canActivate: [AuthGuard], data: {roles:['USER']}
+},
   {path: ManagementRouteConstant.addStaff, component : AddStaffComponent,},
   {path: ManagementRouteConstant.orderManagement, component: OrderManagementBodyComponent},
   {path: ManagementRouteConstant.onlineOrderManagement, component: OnlineOrdersComponent},

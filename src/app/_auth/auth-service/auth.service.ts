@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
-import { ValidateToken } from './model/forgot-password.model';
+import { ChangePassword, ForgotPassword, LoginModel, ValidateToken } from './model/auth.model';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-serivce';
 
@@ -24,6 +24,29 @@ export class AuthService extends ServiceCommonVariable{
   validatePasswordToken(data: ValidateToken){
     this.loading = true
     return this.httpClient.post<ResponseData<string>>(this.path + this.moduleName + "/validate-token", data)
+    .pipe(
+      this.handleError()
+    )
+  }
+
+  forgotPassword(data: ForgotPassword){
+    this.loading = true;
+    return this.httpClient.post<ResponseData<string>>(this.path + this.moduleName + "/forgot-password", data)
+    .pipe(
+      this.handleError()
+    )
+  }
+
+  resetPassword(data: ChangePassword){
+    this.loading = true;
+    return this.httpClient.post<ResponseData<string>>(this.path + this.moduleName + "/reset-password", data)
+    .pipe(
+      this.handleError()
+    )
+  }
+  loginUser(data: LoginModel){
+    this.loading = true;
+    return this.httpClient.post<ResponseData<string>>(this.path + this.moduleName + "/login", data)
     .pipe(
       this.handleError()
     )
@@ -51,11 +74,6 @@ export class AuthService extends ServiceCommonVariable{
 
   
 
-  login(loginModel:any): Observable<any> {
-    const header = new HttpHeaders().set('Content-type', 'application/json');
-
-    return this.httpClient.post(this.path + 'Login', JSON.stringify(loginModel), { headers: header, withCredentials: true })
-  }
 
 
 

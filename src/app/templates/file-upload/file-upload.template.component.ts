@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ManageFoodsService } from 'src/app/features/management/manage-food-body/manage-foods/manage-foods-service/manage-foods.service';
 
@@ -38,80 +38,85 @@ import { ManageFoodsService } from 'src/app/features/management/manage-food-body
           </div>
   `,
   styles: [
-],
+  ],
 })
-export class FileUploadComponent implements OnInit, OnDestroy{
+export class FileUploadComponent implements OnInit, OnChanges, OnDestroy {
 
-    @Input() originalImage : string | null = null
-    imageUrl : string | null = null
-    tempImageUrl !: string | null
+  @Input() originalImage: string | null = null
+  imageUrl: string | null = null
+  tempImageUrl !: string | null
 
-    imageId$ !: Subscription;
+  imageId$ !: Subscription;
 
-    @Output() imageIdEvent : EventEmitter<number | null> = new EventEmitter<number | null>()
-    constructor(private foodService: ManageFoodsService) { }
+  @Output() imageIdEvent: EventEmitter<number | null> = new EventEmitter<number | null>()
+  constructor(private foodService: ManageFoodsService, private cdr: ChangeDetectorRef) { }
 
-    ngOnInit(): void {
-        if(this.originalImage != null){
-            this.imageUrl = this.originalImage
-        }
+  ngOnInit(): void {
+    if (this.originalImage != null) {
+      this.imageUrl = this.originalImage
     }
+    this.cdr.detectChanges();
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.originalImage) {
+      this.imageUrl = this.originalImage
+    }
+  }
 
-    removeImage(event: MouseEvent): void {
-        if(this.originalImage != null){
-          this.imageUrl = this.originalImage
-        }else{
-        this.imageUrl = null;
-        }
-        this.imageIdEvent.emit(null)
-        // this.imageId = null;
-      }
+  removeImage(event: MouseEvent): void {
+    if (this.originalImage != null) {
+      this.imageUrl = this.originalImage
+    } else {
+      this.imageUrl = null;
+    }
+    this.imageIdEvent.emit(null)
+    // this.imageId = null;
+  }
 
-    onDrop(event: DragEvent) {
-        event.preventDefault();
-        this.uploadFiles(event.dataTransfer!.files);
-      }
-    
-      onDragOver(event: DragEvent) {
-        event.preventDefault();
-      }
-    
-      onFileSelect(event: Event) {
-        console.log("here is it")
-        const input = event.target as HTMLInputElement;
-        if (input.files!.length > 0) {
-          this.uploadFiles(input.files!);
-        }
-      }
-    
-      uploadFiles(files: FileList) {
-        const file = files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (e: any) => {
-            this.tempImageUrl = this.imageUrl
-            this.imageUrl = e.target.result;
-            const formData = new FormData();
-            formData.append('attachments', file);
-            this.imageId$ = this.foodService.postImage(formData).subscribe(
-              (response : any) => {
-                this.imageIdEvent.emit(response.data[0])
-                this.imageId$.unsubscribe()
-                
-              },(error) => {this.imageUrl = this.tempImageUrl}
-            )
-          };
-          reader.readAsDataURL(file);
-        }
-        }
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.uploadFiles(event.dataTransfer!.files);
+  }
 
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
 
-    ngOnDestroy(): void {
-        if(this.imageId$){
+  onFileSelect(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files!.length > 0) {
+      this.uploadFiles(input.files!);
+    }
+  }
+
+  uploadFiles(files: FileList) {
+    const file = files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.tempImageUrl = this.imageUrl
+        this.imageUrl = e.target.result;
+        const formData = new FormData();
+        formData.append('attachments', file);
+        this.imageId$ = this.foodService.postImage(formData).subscribe(
+          (response: any) => {
+            this.imageIdEvent.emit(response.data[0])
             this.imageId$.unsubscribe()
-        }
 
+          }, (error) => { this.imageUrl = this.tempImageUrl }
+        )
+      };
+      reader.readAsDataURL(file);
     }
-  
-    
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.imageId$) {
+      this.imageId$.unsubscribe()
+    }
+
+  }
+
+
 }

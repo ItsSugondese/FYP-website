@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
 import { Observable, catchError, filter, finalize, map, tap, throwError } from "rxjs";
 import { Route, Router } from "@angular/router";
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { UserService } from "../shared/service/user-service/user.service";
 import { LoginService } from "./registration/login/login-service/login.service";
 import { SnackbarService } from "../templates/snackbar/snackbar-service/snackbar.service";
@@ -10,10 +10,9 @@ import { ResponseData } from "../constant/data/response-data.model";
 import { Crud } from "src/enums/backend/curd.enums";
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor, OnInit {
 
-    token: string | null = this.userService.getToken();
-
+    // token!: string | null
 
 
     constructor(
@@ -21,8 +20,9 @@ export class AuthInterceptor implements HttpInterceptor {
         private router: Router,
         private loginService: LoginService,
         private snackService: SnackbarService) {
+    }
+    ngOnInit(): void {
 
-        this.token = this.userService.getToken();
     }
 
 
@@ -34,13 +34,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
 
 
-        req = this.addToken(req, this.token);
+        req = this.addToken(req, this.userService.getToken());
         return next.handle(req).pipe(
             
             catchError(
 
                 (err: HttpErrorResponse) => {
-                    console.log("here")
                     if (err.error.message) {
                         this.snackService.showMessage({
                             // label : error.error.message,

@@ -61,7 +61,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
    
   ngOnInit(): void {
     this.addFoodService.setIsSaved(false)
-
+    
     this.navbarCollapse$ =  this.sideNavService.getCollapsed().subscribe((collapsed) => {
       this.collapsed = collapsed;
     });
@@ -71,12 +71,12 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
         this.getFoodMenu()
       }
     )
-  this.getFoodMenu()
+    this.getFoodMenu()
   }
 
 
   handleCheckboxChange(item: foodMenu, index: number, event: any){
-
+    
     const isChecked = event.target.checked;
     console.log(isChecked)
     this.toggleAvailableToday$ = this.foodService.toggleFoodMenu({
@@ -95,8 +95,8 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
     this.selectedFoodMenuType = event
     this.getFoodMenu()
   }
-
-
+  
+  
   typedFoodToFilter(event: string){
     console.log('emitted data is ' + event)
     if(event.trim() != ''){
@@ -106,8 +106,8 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
     }
     this.getFoodMenu()
   }
-
-
+  
+  
   toggleFormToEdit(item : foodMenu | null){
     let val !: FoodMenuWithImageData | null;
     
@@ -120,17 +120,18 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
       }
     }
       this.foodService.sendSelectedFoodMenu(val)
-  }
-
-
+    }
+    
+    
 
 
   public getFoodMenu(){
+    this.addFoodService.setIsSaved(false)
     if(this.selectedFoodMenuType == 'ALL'){
       this.foodMenuPagination.foodType = undefined
     }else{
     this.foodMenuPagination.foodType = this.selectedFoodMenuType
-    }
+  }
     
     this.foodMenuFetch$ = this.foodService.getFoodMenuPaginated(this.foodMenuPagination).subscribe(
       (response ) => {

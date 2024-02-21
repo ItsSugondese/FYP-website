@@ -10,6 +10,7 @@ import { UserService } from 'src/app/shared/service/user-service/user.service';
 import { loginFormHeader } from 'src/app/shared/model/design/login.model';
 import { ManagementRouteConstant } from 'src/app/constant/routing/management-routing-constant.model';
 import { UserRouteConstant } from 'src/app/constant/routing/user-routing-constant.model';
+import { LoginModel } from '../../auth-service/model/auth.model';
 
 declare const FB: any;
 
@@ -97,30 +98,24 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  async onSubmit() {
+   onSubmit() {
     //this.formSubmitAttempt = false;
     if (this.form.valid) {
-      try {
-        this.service.login(this.form.value).subscribe((x: any) => {
-          this.router.navigate(['/logout']);
-          this._snackBar.open("Login Successful", "Close", {
-            duration: 2000
-          });
-        },
-          (error: any) => {
-            console.error(error);
-            this._snackBar.open("Error with Username or Password", "Close", {
-              duration: 5000
-            });
-          });
-      } catch (err) {
-        this._snackBar.open("Error with Username or Password", "Close", {
-          duration: 5000
-        });
+      const val : LoginModel = {
+        userEmail: this.formValue('email')?.value,
+        userPassword: this.formValue('password')?.value
       }
-    } else {
-      //this.formSubmitAttempt = true;
-    }
+
+      this.service.loginUser(val).subscribe(
+        (result) => {
+          this.userService.setToken(result.data.jwtToken);
+          this.userService.setRoles(result.data.roles);
+          this.userService.setUsername(result.data.username);
+          this.router.navigate(['/' + ManagementRouteConstant.adminDashboard])
+          
+        }
+      )
+    } 
   }
 
   formValue(name: string) {

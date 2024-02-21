@@ -6,3 +6,8 @@ export interface Staff {
     contactNumber : string;
     startedWorkingOn : string
   }
+
+export interface StaffWithImageData {
+    staff: Staff,
+    image: string
+  }

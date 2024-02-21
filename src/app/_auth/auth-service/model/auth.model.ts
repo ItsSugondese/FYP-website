@@ -10,3 +10,8 @@ export interface ChangePassword{
     resetToken: string;
     password: string
 }
+
+export interface LoginModel{
+    userEmail: string;
+    userPassword: string;
+}

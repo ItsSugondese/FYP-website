@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {manageStaffPagination } from './model/manage-staff-payload.model';
 import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-serivce';
-import { catchError } from 'rxjs';
+import { catchError, finalize } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -38,10 +38,14 @@ export class ManageStaffService extends ServiceCommonVariable {
   }
   
   getStaffPicture(id: number) {
-    this.loading = true
+    this.pictureLoading = true
     return this.httpClient.get(this.backendUrl + this.moduleName +'/photo/' + id, { responseType: 'blob' })
     .pipe(
-      this.handleError()
+      catchError(error => {
+        this.pictureLoading = false;
+        throw error;
+      }),
+      finalize(() => this.pictureLoading = false)
     );
   }
   

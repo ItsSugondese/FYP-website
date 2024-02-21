@@ -47,7 +47,6 @@ export class SnackbarTemplateComponent extends CommonVariable implements OnInit,
         this.subscription$ =  this.snackbarService.message$.subscribe((message: CustomMessage) => {
           this.message = message;
           this.snackbarService.isVisible = true;
-          console.log(this.snackbarService.isVisible)
           setTimeout(() => {
             this.snackbarService.isVisible= false
           }, 4000); // Snackbar duration

@@ -19,7 +19,7 @@ import { User } from '../../manage-user-body/manage-users/manage-users-service/m
  export class ManageStaffComponent extends CommonVariable implements OnInit, OnDestroy {
 
   staffListPaginated !: PaginatedData<Staff>
-  @Output() sendUserId : EventEmitter<Staff> = new EventEmitter()
+  @Output() sendUserId : EventEmitter<Staff | null> = new EventEmitter()
   @Output() isInspectingEvent : EventEmitter<boolean> = new EventEmitter()
   @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
 
