@@ -10,12 +10,22 @@ import { LoaderService } from 'src/app/shared/service/loader-service/loader.serv
 import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
 import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
 import { ServiceCommonVariable } from 'src/app/shared/helper/inherit/common-variable-serivce';
+import { EnumItem } from '@shared/model/enums/MapForEnum.model';
+
+export enum FoodFilterType {
+  ALL = 'All',
+  MEAL = 'Meal',
+  DRINKS = 'Drinks',
+  MISC = 'Misc'
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ManageFoodsService extends ServiceCommonVariable {
 
+  filterOptions : EnumItem[] = this.enumToEnumItems(FoodFilterType)
+  defaltFoodSelect : string = 'ALL'
   backendUrl = environment.apiUrl;
   moduleName : string = "food-menu"
   private selectedMenuSubject = new BehaviorSubject<FoodMenuWithImageData | null>(null);

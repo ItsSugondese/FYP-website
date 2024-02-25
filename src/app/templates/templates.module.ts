@@ -13,6 +13,8 @@ import { PaginationDropdownComponenet } from './dropdown/pagination-dropdown.tem
 import { DisableEnableButtonComponent } from './buttons/disable-buttons.template.component';
 import { AddButtonComponent } from './buttons/add-buttons.template.component';
 import { FileUploadComponent } from './file-upload/file-upload.template.component';
+import { DefaultButtonComponent } from './buttons/default.buttons.template.component';
+import { AreYouSureComponent } from './pop-up/are-you-sure.template.component';
 
 
 
@@ -27,12 +29,13 @@ import { FileUploadComponent } from './file-upload/file-upload.template.componen
   PaginationDropdownComponenet,
   DisableEnableButtonComponent,
   AddButtonComponent,
-  FileUploadComponent
+  FileUploadComponent,
+  DefaultButtonComponent,
+  AreYouSureComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
-    NgprimeModule,
     NgprimeModule,
     FormModule,
     MaterialModule
@@ -47,7 +50,9 @@ import { FileUploadComponent } from './file-upload/file-upload.template.componen
   PaginationDropdownComponenet,
   DisableEnableButtonComponent,
   AddButtonComponent,
-  FileUploadComponent
+  FileUploadComponent,
+  DefaultButtonComponent,
+  AreYouSureComponent
   ]
 })
 export class TemplatesModule { }

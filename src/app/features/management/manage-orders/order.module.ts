@@ -9,6 +9,9 @@ import { UiModule } from 'src/app/shared/ui/ui.module';
 import { NgxModule } from 'src/app/shared/module/ngx.module';
 import { MaterialModule } from 'src/app/shared/module/material.module';
 import { OrderManagementBodyComponent } from './order-management-body/order-management-body.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { TemplatesModule } from 'src/app/templates/templates.module';
+import { NgprimeModule } from '@shared/module/ngprime.module';
 
 
 
@@ -25,7 +28,9 @@ import { OrderManagementBodyComponent } from './order-management-body/order-mana
     FormModule,
     UiModule,
     NgxModule,
-    MaterialModule
+    MaterialModule,
+    TemplatesModule,
+    NgprimeModule
   ]
 })
 export class OrderModule { }

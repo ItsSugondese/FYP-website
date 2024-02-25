@@ -4,9 +4,9 @@
 
     <div class="flex" *ngIf="staff">
 
-      <div class="w-24 h-24 rounded-full overflow-hidden" class="image-container">
-        <div>
-        <div *ngIf="staffService.loading; else loaded" [class]="centerItems">
+      <div class="overflow-hidden" class="image-container">
+        <div class="w-24 h-24 rounded-full ">
+        <div *ngIf="staffService.pictureLoading; else loaded" [class]="centerItems">
           <mat-spinner style="color: red;"></mat-spinner>
         </div>
       </div>

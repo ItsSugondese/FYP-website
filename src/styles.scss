@@ -31,6 +31,7 @@ body {
     background-color: #EBEBEB;
 }
 
+
 .disabled-button {
   opacity: 0.6; /* You can adjust the opacity as needed */
   pointer-events: none;
@@ -45,6 +46,7 @@ body {
 
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+// @import "primeflex/primeflex.css";
 
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 

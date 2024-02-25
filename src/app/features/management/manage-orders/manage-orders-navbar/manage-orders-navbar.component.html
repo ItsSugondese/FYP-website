@@ -2,12 +2,12 @@
       <div class=" justify-content-center" id="navbarNav">
         <ul class="navbar-nav">
           <li class="hover:cursor-pointer">
-            <a [class.active]="!isOnsite"
+            <a [class.active]="!manageOrderNavbarService.isOnsite"
              (click)="isClicked(false)" 
             >Online</a>
           </li>
           <li class="hover:cursor-pointer">
-            <a [class.active]="isOnsite"  (click)="isClicked(true)"   
+            <a [class.active]="manageOrderNavbarService.isOnsite"  (click)="isClicked(true)"   
         >Onsite</a>
           </li>
          

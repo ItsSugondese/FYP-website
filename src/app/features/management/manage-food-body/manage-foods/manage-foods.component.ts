@@ -15,6 +15,7 @@ import { AddFoodService } from '../manage-food-drawer/add-food/add-food-service/
 import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
 import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
+import { EnumItem } from '@shared/model/enums/MapForEnum.model';
 
 @Component({
   selector: 'app-manage-foods',
@@ -27,6 +28,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
 
   // centerItems : string = CenterItems()
 
+  
   toggleDrawer(isOopen : boolean){
     this.onOpeningDrawer.emit(isOopen)
   }
@@ -48,7 +50,8 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
     filter: 'ALL'
   }
 
-  selectedFoodMenuType : string | null = "ALL"
+  
+  selectedFoodMenuType : string | null = "MEAL"
 
   constructor(public foodService : ManageFoodsService,
     private formBuilder : FormBuilder, private router: Router,
@@ -75,8 +78,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
   }
 
 
-  handleCheckboxChange(item: foodMenu, index: number, event: any){
-    
+  handleCheckboxChange(item: foodMenu, index: number, event: any){ 
     const isChecked = event.target.checked;
     console.log(isChecked)
     this.toggleAvailableToday$ = this.foodService.toggleFoodMenu({
@@ -87,10 +89,9 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
           this.foodMenu[index].isAvailableToday = isChecked
         this.toggleAvailableToday$.unsubscribe()
       }
-    )
-
-    
+    )  
   }
+
   selectedFromFoodFilter(event: string | null){
     this.selectedFoodMenuType = event
     this.getFoodMenu()
@@ -98,7 +99,6 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
   
   
   typedFoodToFilter(event: string){
-    console.log('emitted data is ' + event)
     if(event.trim() != ''){
       this.foodMenuPagination.name = event
     }else{
@@ -125,8 +125,8 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
     
 
 
-  public getFoodMenu(){
-    this.addFoodService.setIsSaved(false)
+   getFoodMenu(){
+    
     if(this.selectedFoodMenuType == 'ALL'){
       this.foodMenuPagination.foodType = undefined
     }else{
@@ -143,7 +143,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
             this.getFoodPicture$ = this.foodService.getFoodPicture(menu.photoId).subscribe((imageBlob: Blob) => {
 
 
-            createImageFromBlob(imageBlob, menu.photoId)
+            this.createImageFromBlob(imageBlob, menu.photoId)
              .then((imageData) => {
               this.imageDataMap[menu.photoId] = imageData;
               

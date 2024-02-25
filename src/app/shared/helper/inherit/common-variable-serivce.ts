@@ -1,3 +1,4 @@
+import { EnumItem } from "@shared/model/enums/MapForEnum.model";
 import { Observable, catchError, finalize } from "rxjs";
 
 export class ServiceCommonVariable{
@@ -13,5 +14,9 @@ export class ServiceCommonVariable{
             finalize(() => this.loading = false)
           );
         };
+      }
+
+      enumToEnumItems(enumObject: Record<string, string>): EnumItem[] {
+        return Object.keys(enumObject).map(key => ({ key, value: enumObject[key] }));
       }
 }

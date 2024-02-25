@@ -13,7 +13,14 @@ export class UserService {
   localStorage.setItem("roles", JSON.stringify(roles));
   }
 
-  public getRoles() : []{
+  public getSingleRole(){
+    const roles = this.getRoles();
+if (roles.length > 0) {
+    return roles[0]; // Accessing the first element if the array is not empty
+} 
+else "";
+  }
+  public getRoles() : any[]{
     
     return JSON.parse(localStorage.getItem('roles') || '{}');
   }

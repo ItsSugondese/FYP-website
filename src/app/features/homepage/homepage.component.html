@@ -3,7 +3,7 @@
     <div id="filter-header" class="flex w-full justify-between items-center mb-3 bg-white p-2 rounded-lg">
 
       <div class="left-filter-header">
-          <food-filter-template [selectedKey]="selectedFoodMenuType!" (optionSelected)="selectedFromFoodFilter($event)"></food-filter-template>
+          <food-filter-template [selectedKey]="foodService.defaltFoodSelect" [options]="foodService.filterOptions" (optionSelected)="selectedFromFoodFilter($event)"></food-filter-template>
       </div>
 
 

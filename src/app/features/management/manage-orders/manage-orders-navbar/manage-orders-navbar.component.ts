@@ -12,13 +12,13 @@ export class ManageOrdersNavbarComponent {
   @Output() onToggleOrderSection: EventEmitter<boolean> = new EventEmitter();
 
   routes = ManagementRouteConstant
-  isOnsite = true;
+  
   constructor(public manageOrderNavbarService: ManageOrdersNavbarService) {}
 
   isClicked(isOnsite : boolean){
     // this.manageOrderNavbarService.setIsOnsiteOrder(isOnsite)
     this.onToggleOrderSection.emit(isOnsite)
-    this.isOnsite = isOnsite;
+    this.manageOrderNavbarService.isOnsite = isOnsite;
   }
  
   
