@@ -9,13 +9,6 @@ import { CommonVariable } from '@shared/helper/inherit/common-variable';
    (onHide)="afterHide()" 
 [modal]="true">
 
-
-
-<!-- <div [class]="centerItems" *ngIf="isLoading; else loaded" >
-    <mat-spinner  style="color: red;"></mat-spinner>
-</div> -->
-
-
         <p-header>
       <div class="d-flex  justify-content-between align-items-center">
         <div class="h4">{{header}}</div>

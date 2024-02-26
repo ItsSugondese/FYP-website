@@ -9,8 +9,11 @@ export interface onsiteOrder {
     orderedTime : string;
     totalPrice: number;
     remainingAmount: number;
+    amountToPay: number;
     profileUrl: string;
     orderFoodDetails : orderedFood[];
-    markAsRead: boolean
+    markAsRead: boolean;
+    payStatus: string;
+    payStatusCheck: string
 }
 

@@ -6,7 +6,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { MessagesModule } from 'primeng/messages';
 import { DropdownModule } from 'primeng/dropdown';
 import { DataViewModule } from 'primeng/dataview';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PanelModule } from 'primeng/panel';
 
 
 @NgModule({
@@ -21,7 +21,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     MessagesModule,
     DropdownModule,
     DataViewModule,
-    ProgressSpinnerModule
+    PanelModule
   ]
 })
 export class NgprimeModule { }

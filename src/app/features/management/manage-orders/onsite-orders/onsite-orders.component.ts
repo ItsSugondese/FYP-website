@@ -17,7 +17,8 @@ import { createImageFromBlob } from '@shared/helper/attachment-helper/attachment
 })
 export class OnsiteOrdersComponent extends CommonVariable implements OnInit, OnDestroy {
 
-  showPopUp: boolean = false;
+  payCashPopUp : boolean = false
+  
   selectedOrderId !: number
   paidAmount : number = 0
   paginatedData !: PaginatedData<onsiteOrder>
@@ -38,11 +39,9 @@ export class OnsiteOrdersComponent extends CommonVariable implements OnInit, OnD
   
   ngOnInit(): void {
       this.getPaginatedData();
-      console.log(this.onsiteOrdersService.selectedOption)
   }
 
   cancelOrder(id: number){
-    console.log(id);
     this.updateOrder(id, "REJECTED")
     
   }
@@ -143,9 +142,15 @@ export class OnsiteOrdersComponent extends CommonVariable implements OnInit, OnD
     
    this.postPaymentSubscriable$ = this.onsiteOrdersService.postPayment(this.paymentPayload).subscribe(
     (respose) => {
+      this.paidAmount = 0
+      this.payCashPopUp = false
       this.getPaginatedData()
     }
    );
+  }
+
+  buttonCss(){
+    return "mt-2 h-full items-end"
   }
 
   ngOnDestroy(): void {

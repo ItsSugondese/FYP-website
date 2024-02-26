@@ -30,7 +30,6 @@ export class HomepageComponent extends CommonVariable implements OnInit, OnDestr
   selectedFoodMenu !: foodMenu;
   selectedImageDataMap !: string
 
-  showPopUp = false;
   finalPopUp = false;
   quantity ?:number;
 

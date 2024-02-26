@@ -13,6 +13,7 @@ enum OnsiteOrderFilter{
   PENDING = "Pending",
   VIEWED = "Viewed",
   DELIVERED = "Delivered",
+  PAID = "Paid",
   CANCELED = "Canceled"
 }
 
@@ -29,7 +30,7 @@ export class OnsiteOrdersService extends ServiceCommonVariable {
    }
 
    options: EnumItem[] = this.enumToEnumItems(OnsiteOrderFilter)
-   selectedOption = Object.keys(OnsiteOrderFilter)[3]
+   selectedOption = Object.keys(OnsiteOrderFilter)[2]
 
    public markingLoading = {
     status: false,

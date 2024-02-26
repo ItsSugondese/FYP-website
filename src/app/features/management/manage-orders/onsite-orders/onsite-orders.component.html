@@ -15,14 +15,14 @@
     <div class="mt-4 grid grid-cols-2 gap-4 " *ngIf="paginatedData.content.length > 0">
       <ng-container *ngFor="let content of paginatedData.content; let first = first; let last = last; let i= index">
 
-        <div class="order-list bg-white px-3 py-2 h-full flex flex-col justify-between rounded-lg">
+        <div class="order-list bg-white px-3 py-2 h-full flex flex-col  rounded-lg">
 
-          <div class="w-full rounded-full ">
-            <div *ngIf="onsiteOrdersService.markingLoading.status && 
+
+          <div class="w-full rounded-full " *ngIf="onsiteOrdersService.markingLoading.status && 
             onsiteOrdersService.markingLoading.index == i; else marked" [class]="centerItems">
-              <mat-spinner style="color: red;"></mat-spinner>
-            </div>
+            <mat-spinner style="color: red;"></mat-spinner>
           </div>
+
 
 
           <ng-template #marked>
@@ -57,21 +57,24 @@
               </ng-container>
             </div>
 
-            <ng-container  *ngIf="onsiteOrdersService.selectedOption == 'PENDING'">
-            <div class="footer-order flex justify-between items-center" >
-              <div class=" flex justify-center items-center hover:cursor-pointer hover:text-customPrimary"
-                data-toggle="tooltip" title="Mark as seen" (click)="handleMarkAsReadChange(content.id, i)">
-                <mat-icon class="text-xl">visibility</mat-icon>
+            <ng-container *ngIf="onsiteOrdersService.selectedOption == 'PENDING'">
+              <div class="footer-order flex justify-between " [class]="buttonCss()">
+                <div class=" flex justify-center items-center hover:cursor-pointer hover:text-customPrimary"
+                  data-toggle="tooltip" title="Mark as seen" (click)="handleMarkAsReadChange(content.id, i)">
+                  <mat-icon class="text-xl">visibility</mat-icon>
+                </div>
+                <!-- <default-button-template [text]="'Deliver'"></default-button-template> -->
+                <span class="text-priceColor font-semibold text-base">Rs. {{content.totalPrice}}</span>
               </div>
-              <!-- <default-button-template [text]="'Deliver'"></default-button-template> -->
-              <span class="text-priceColor font-semibold text-base">Rs. {{content.totalPrice}}</span>
-            </div>
-          </ng-container>
+            </ng-container>
 
             <ng-container *ngIf="onsiteOrdersService.selectedOption == 'VIEWED'">
-              <div class=" footer-order flex justify-between items-center">
+              <div class=" footer-order flex justify-between " [class]="buttonCss()">
 
-                <default-button-template [text]="'Deliver'"></default-button-template>
+                <div (click)="updateOrder(content.id, 'DELIVERED')">
+
+                  <default-button-template [text]="'Deliver'"></default-button-template>
+                </div>
                 <span class="text-priceColor font-semibold text-base">Rs. {{content.totalPrice}}</span>
                 <div (click)="showPopUp = true; selectedOrderId = content.id">
                   <default-button-template [text]="'Cancel Order'" [background]="'white'"
@@ -79,13 +82,45 @@
                 </div>
               </div>
             </ng-container>
+            <ng-container *ngIf="onsiteOrdersService.selectedOption == 'DELIVERED'">
+              <div class="mt-2  footer-order flex justify-between  " [class]="buttonCss()">
+
+                <div>
+
+                  <text-type-custom-template text="{{content.payStatus}}"
+                    border="{{content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : null}}"
+                    color="{{content.payStatusCheck == 'PAID'?  '[#1565C0]' : content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : 'red-700'}}"
+                    bgColor="{{content.payStatusCheck == 'PAID'?  'blue-200' : content.payStatusCheck == 'PARTIAL_PAID'? '[#F8F9FA]' : 'red-300'}}"></text-type-custom-template>
+
+                </div>
+                <span class="text-priceColor font-semibold text-base">Rs. {{content.totalPrice}}</span>
+                <div (click)="selectedOrder = content; payCashPopUp = true">
+                  <default-button-template [text]="'Pay'" [background]="'customPrimary'"
+                    [color]="'white'"></default-button-template>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="onsiteOrdersService.selectedOption == 'PAID'">
+              <div class="mt-2  footer-order flex justify-between  " [class]="buttonCss()">
+
+                <div>
+                  <text-type-custom-template text="{{content.payStatus}}"
+                    border="{{content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : null}}"
+                    color="{{content.payStatusCheck == 'PAID'?  '[#1565C0]' : content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : 'red-700'}}"
+                    bgColor="{{content.payStatusCheck == 'PAID'?  'blue-200' : content.payStatusCheck == 'PARTIAL_PAID'? '[#F8F9FA]' : 'red-300'}}"></text-type-custom-template>
+                </div>
+                <span class="text-priceColor font-semibold text-base">Rs. {{content.totalPrice}}</span>
+
+              </div>
+            </ng-container>
 
             <ng-container *ngIf="onsiteOrdersService.selectedOption == 'CANCELED'">
-              <div class=" footer-order flex justify-end items-center">
+              <div class=" footer-order flex justify-end " [class]="buttonCss()">
 
                 <div (click)="updateOrder(content.id, 'PENDING')">
                   <default-button-template [text]="'Re-Enter'" [background]="'customPrimary'"
-                    [color]="'white'" ></default-button-template>
+                    [color]="'white'"></default-button-template>
                 </div>
               </div>
             </ng-container>
@@ -93,16 +128,125 @@
         </div>
       </ng-container>
     </div>
-    
+
     <div [class]="centerItems" *ngIf="paginatedData.content.length ==0">
       <no-content-template></no-content-template>
     </div>
   </ng-template>
-  
-  <are-you-sure-template [visible]="showPopUp" [header]="'Cancel Order'"
-  [selectedId]="selectedOrderId"
-    [description]="'Are you sure you want to cancel the order?'" [positiveLabel]="'Yes'"
-    [negativeLabel]="'No'" (visibleChange)="showPopUp = false" (yesEvent)="updateOrder($event, 'REJECTED')"
-    [isLoading]="onsiteOrdersService.updateOrderLoader" ></are-you-sure-template>
+
 
 </div>
+<are-you-sure-template [visible]="showPopUp" [header]="'Cancel Order'" [selectedId]="selectedOrderId"
+  [description]="'Are you sure you want to cancel the order?'" [positiveLabel]="'Yes'" [negativeLabel]="'No'"
+  (visibleChange)="showPopUp = false" (yesEvent)="updateOrder($event, 'CANCELED')"
+  [isLoading]="onsiteOrdersService.updateOrderLoader"></are-you-sure-template>
+
+
+
+
+<p-dialog [(visible)]="payCashPopUp" [closable]="true" [style]="{'width': '700px'}" [modal]="true"
+  *ngIf="selectedOrder">
+
+
+
+  <!-- <p-header>
+    <div class="d-flex  justify-content-between align-items-center">
+      <div class="h4">Pay</div>
+    </div>
+  </p-header> -->
+  <ng-container>
+    <div class="container-box">
+      <div class="flex justify-between items-center">
+        <div class="flex flex-col">
+          <span class="text-xl">{{selectedOrder.fullName}}</span>
+          <span class="text-sm">{{selectedOrder.orderedTime}} ago</span>
+        </div>
+        <div class="image-container">
+          <div class="w-16 h-16 rounded-full overflow-hidden">
+            <img src={{selectedOrder.profileUrl}} alt="Your Image" class="w-full h-full object-cover" />
+          </div>
+        </div>
+      </div>
+
+      <div class="item-description flex flex-col mt-2">
+
+        <table class="w-full rounded-lg">
+          <thead class="bg-[#f5f5f5] border-2 border-transparent">
+            <tr class="text-customPrimary p-2 px-3 ">
+              <th style="padding: inherit;"></th>
+              <th>Name</th>
+              <th>Cost</th>
+              <th>Quantity</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            
+            <ng-container *ngFor="let items of selectedOrder.orderFoodDetails; let first= first;">
+              <tr class="table-row-hover bg-white p-2 px-3 hover:bg-[#f5f5f5] h-full   border-2 border-[#F0F0F0]
+                      
+                  text-sm" [class.border-t-0]="first" >
+                <td style="padding: inherit;">
+                  <div class="image-container">
+                    <div class="w-16 h-16 rounded-full overflow-hidden">
+                      <img [src]="imageDataMap[items.photoId]" class="w-full h-full object-cover" />
+                    </div>
+                  </div>
+                </td>
+
+
+                <td>{{items.foodName}}</td>
+                <td>Rs. {{items.cost}}</td>
+                <td>{{items.quantity}}</td>
+                <td>Rs. {{items.totalPrice}} </td>
+                <div class="collapse" id="collapseExample">
+                  <div class="card card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                  </div>
+                </div>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+
+        <div class="flex flex-col justify-center items-center">
+          <span>
+            Total: Rs. {{selectedOrder.totalPrice}}
+          </span>
+          <span>
+            Previous Remaining Amount: {{selectedOrder.remainingAmount}}
+          </span>
+          <div class="text-xl">
+            Total To Pay: <span class="text-customPrimary ">Rs. {{selectedOrder.totalPrice +
+              selectedOrder.remainingAmount}}</span>
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+      <form class="my-4">
+        <div class="flex justify-center  ">
+          <div class="text-[#343A40] ">Rs.</div>
+
+          <input
+            class="ml-4 w-20 border-2 text-center p-0 border-[#CED4DA] focus:border-customPrimary  focus:outline-none"
+            id="amount" [min]="0" [max]="selectedOrder.totalPrice" [(ngModel)]="paidAmount" name="quantity">
+
+        </div>
+
+      </form>
+
+      <div class="flex justify-center">
+        <button type="submit" data-dismiss="modal"
+          [ngClass]="{'disabled-button': paidAmount == null  || paidAmount <= 0 || paidAmount > selectedOrder.totalPrice + selectedOrder.remainingAmount}"
+          (click)="pay(paidAmount)"
+          class="text-white bg-customPrimary hover:cursor-pointer  items-center rounded px-2  py-1.5 text-base">Select</button>
+
+      </div>
+    </div>
+  </ng-container>
+</p-dialog>

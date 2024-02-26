@@ -19,7 +19,6 @@ export class FeaturesLayoutComponent implements AfterViewInit {
 
   }
   onToggleSideNav(data: SideNavToggle){
-    console.log("here")
     console.log(this.sidenavService.collapsed)
     this.sidenavService.collapsed =  data.collapsed;
     this.screenWidth = data.screenWidth

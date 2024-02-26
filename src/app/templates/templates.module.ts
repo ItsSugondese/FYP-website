@@ -15,6 +15,7 @@ import { AddButtonComponent } from './buttons/add-buttons.template.component';
 import { FileUploadComponent } from './file-upload/file-upload.template.component';
 import { DefaultButtonComponent } from './buttons/default.buttons.template.component';
 import { AreYouSureComponent } from './pop-up/are-you-sure.template.component';
+import { TextTypeCustomColorComponent } from './design/type-text/text-type-custom-color.template.component';
 
 
 
@@ -31,7 +32,8 @@ import { AreYouSureComponent } from './pop-up/are-you-sure.template.component';
   AddButtonComponent,
   FileUploadComponent,
   DefaultButtonComponent,
-  AreYouSureComponent
+  AreYouSureComponent,
+  TextTypeCustomColorComponent
   ],
   imports: [
     CommonModule,
@@ -52,7 +54,8 @@ import { AreYouSureComponent } from './pop-up/are-you-sure.template.component';
   AddButtonComponent,
   FileUploadComponent,
   DefaultButtonComponent,
-  AreYouSureComponent
+  AreYouSureComponent,
+  TextTypeCustomColorComponent
   ]
 })
 export class TemplatesModule { }
