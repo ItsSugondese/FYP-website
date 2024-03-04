@@ -11,7 +11,7 @@
         </div>
         <ng-template #notEmpty>
             <div class="h-full mt-4">
-                <div class="flex flex-col items-center" style="" >
+                <div class="flex flex-col items-center"  >
                     <table align="center" class=" rounded-lg" style="width: 70%;">
                         <thead class="bg-[#E3E3E3] border-2 border-transparent">
                             <tr class="text-customPrimary p-2 px-3 ">
@@ -23,7 +23,7 @@
                         <tbody>
 
                             <ng-container *ngFor="let data of disableHistoryPaginated.content | paginate: {
-                            itemsPerPage : disableHistoryPaginated.numberOfElements,
+                            itemsPerPage : paginationJson.row,
                             currentPage : disableHistoryPaginated.currentPageIndex,
                             totalItems : disableHistoryPaginated.totalElements
                         }; let first= first;">

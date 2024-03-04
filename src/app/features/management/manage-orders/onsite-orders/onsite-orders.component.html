@@ -78,7 +78,7 @@
                 <span class="text-priceColor font-semibold text-base">Rs. {{content.totalPrice}}</span>
                 <div (click)="showPopUp = true; selectedOrderId = content.id">
                   <default-button-template [text]="'Cancel Order'" [background]="'white'"
-                    [color]="'customPrimary'"></default-button-template>
+                    [color]="'customPrimary'" [hasBorder]="true" ></default-button-template>
                 </div>
               </div>
             </ng-container>
@@ -147,26 +147,21 @@
 <p-dialog [(visible)]="payCashPopUp" [closable]="true" [style]="{'width': '700px'}" [modal]="true"
   *ngIf="selectedOrder">
 
-
-
-  <!-- <p-header>
-    <div class="d-flex  justify-content-between align-items-center">
-      <div class="h4">Pay</div>
+<p-header>
+  <div class="flex items-center">
+    <div class="image-container">
+      <div class="w-12 h-12 rounded-full overflow-hidden">
+        <img src={{selectedOrder.profileUrl}} alt="Your Image" class="w-full h-full object-cover" />
+      </div>
     </div>
-  </p-header> -->
+    <div class="ml-2 flex flex-col">
+      <span class="text-xl">{{selectedOrder.fullName}}</span>
+      <span class="text-sm">{{selectedOrder.orderedTime}} ago</span>
+    </div>
+  </div>
+  </p-header>
   <ng-container>
     <div class="container-box">
-      <div class="flex justify-between items-center">
-        <div class="flex flex-col">
-          <span class="text-xl">{{selectedOrder.fullName}}</span>
-          <span class="text-sm">{{selectedOrder.orderedTime}} ago</span>
-        </div>
-        <div class="image-container">
-          <div class="w-16 h-16 rounded-full overflow-hidden">
-            <img src={{selectedOrder.profileUrl}} alt="Your Image" class="w-full h-full object-cover" />
-          </div>
-        </div>
-      </div>
 
       <div class="item-description flex flex-col mt-2">
 
@@ -200,11 +195,6 @@
                 <td>Rs. {{items.cost}}</td>
                 <td>{{items.quantity}}</td>
                 <td>Rs. {{items.totalPrice}} </td>
-                <div class="collapse" id="collapseExample">
-                  <div class="card card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                  </div>
-                </div>
               </tr>
             </ng-container>
           </tbody>
@@ -215,11 +205,10 @@
             Total: Rs. {{selectedOrder.totalPrice}}
           </span>
           <span>
-            Previous Remaining Amount: {{selectedOrder.remainingAmount}}
+            Previous Remaining Amount: {{selectedOrder.remainingAmount - selectedOrder.totalPrice}}
           </span>
           <div class="text-xl">
-            Total To Pay: <span class="text-customPrimary ">Rs. {{selectedOrder.totalPrice +
-              selectedOrder.remainingAmount}}</span>
+            Total To Pay: <span class="text-customPrimary ">Rs. {{selectedOrder.remainingAmount}}</span>
           </div>
         </div>
 
@@ -242,7 +231,7 @@
 
       <div class="flex justify-center">
         <button type="submit" data-dismiss="modal"
-          [ngClass]="{'disabled-button': paidAmount == null  || paidAmount <= 0 || paidAmount > selectedOrder.totalPrice + selectedOrder.remainingAmount}"
+          [ngClass]="{'disabled-button': paidAmount == null  || paidAmount <= 0 || paidAmount >  selectedOrder.remainingAmount}"
           (click)="pay(paidAmount)"
           class="text-white bg-customPrimary hover:cursor-pointer  items-center rounded px-2  py-1.5 text-base">Select</button>
 

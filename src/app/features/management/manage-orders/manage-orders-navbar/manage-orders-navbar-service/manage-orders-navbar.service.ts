@@ -16,7 +16,7 @@ export class ManageOrdersNavbarService extends ServiceCommonVariable {
 
   routes = ManagementRouteConstant;
   isOnsite = true;
-  selectedNavbar = OrderNav.ONSITE
+  selectedNavbar = OrderNav.ONLINE
   inspecting = OrderNav
   options: EnumItem[] = this.enumToEnumItems(OrderNav);
   constructor() {

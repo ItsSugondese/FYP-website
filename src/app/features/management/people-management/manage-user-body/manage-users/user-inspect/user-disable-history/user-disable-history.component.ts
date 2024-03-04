@@ -74,6 +74,7 @@ super()
   onSelectedDropdown(event: any) {
     if (this.paginationJson.row != event) {
       this.paginationJson.row = event
+      this.paginationJson.page = 1
       this.getPaginatedData();
     }
   }
@@ -81,7 +82,6 @@ super()
   onTableDataChange(event: any) {
     this.paginationJson.page = event
     this.getPaginatedData();
-
   }
 
   onEnterPress(event: any) {

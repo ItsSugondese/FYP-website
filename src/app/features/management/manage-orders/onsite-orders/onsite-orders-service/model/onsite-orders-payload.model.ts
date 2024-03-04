@@ -6,14 +6,9 @@ export interface onsiteOrderPagination extends paginationPayload{
     name ?: string;
 }
 
-export interface PaymentPayload {
-    totalAmount: number
-    paidAmount: number;
-    discount?: number;
-    dueAmount: number;
-    remarks?: string;
-    paymentMode?: string;
-    onsiteOrderId: number;
-    userId: number;
-  }
-  
+export interface OnsiteOrderOfUserPagination extends paginationPayload{
+    payStatus ?: string;
+    userId : number
+
+}
+

@@ -2,16 +2,55 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { onlineOrderPagination } from './model/online-orders-payload.model';
+import { ResponseData } from 'src/app/constant/data/response-data.model';
+import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
+import { onlineOrder } from './model/online-order-interface';
+import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-serivce';
+import { onlineOrderPayload } from 'src/app/payload.interface';
+import { catchError, finalize } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OnlineOrdersService {
+export class OnlineOrdersService extends ServiceCommonVariable {
   backendUrl = environment.apiUrl;
+  moduleName = "online-order"
 
-  constructor(private httpClient : HttpClient) { }
+  postOnlineLoader: boolean = false;
+
+  constructor(private httpClient : HttpClient) {
+    super()
+   }
 
   getData(paginationRequest : onlineOrderPagination){
-     return this.httpClient.post<any>(this.backendUrl + "online-order/paginated", paginationRequest);
+    this.loading = true
+     return this.httpClient.post<ResponseData<PaginatedData<onlineOrder>>>(this.backendUrl + "online-order/paginated", paginationRequest)
+     .pipe(
+      this.handleError()
+     );
   }
+
+  postOnlineOrder(onlineOrderPayload : onlineOrderPayload){
+    this.postOnlineLoader = true
+    return this.httpClient.post<ResponseData<onlineOrder>>(this.backendUrl + "online-order", onlineOrderPayload)
+    .pipe(
+      catchError(error => {
+        this.postOnlineLoader = false;
+        throw error;
+      }),
+      finalize(() => this.postOnlineLoader = false)
+    );
+   }
+
+
+  makeOnsite(id: number){
+    this.postOnlineLoader = true
+    return this.httpClient.get<ResponseData<null>>(`${this.backendUrl}${this.moduleName}/make-onsite/${id}`)
+   }
+
+   deleteOrderFoodById(id: number){
+    return this.httpClient.delete<ResponseData<null>>(`${this.backendUrl}${this.moduleName}/order-food/${id}`)
+   }
+
+
 }

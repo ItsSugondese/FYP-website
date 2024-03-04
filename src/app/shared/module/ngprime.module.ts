@@ -7,6 +7,7 @@ import { MessagesModule } from 'primeng/messages';
 import { DropdownModule } from 'primeng/dropdown';
 import { DataViewModule } from 'primeng/dataview';
 import { PanelModule } from 'primeng/panel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { PanelModule } from 'primeng/panel';
     MessagesModule,
     DropdownModule,
     DataViewModule,
-    PanelModule
+    PanelModule,
+    AutoCompleteModule
   ]
 })
 export class NgprimeModule { }

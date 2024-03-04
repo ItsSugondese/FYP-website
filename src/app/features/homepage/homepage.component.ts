@@ -277,8 +277,8 @@ super()
     }
     this.homepageService.postOnlineOrder(orderPayload).subscribe(
       (response) => {
-        if(response.status == 1){
-          this.orderCode = response.data
+        if(response.status == true){
+          this.orderCode = response.data.orderCode
           this.isOrderSuccessful = true
         }
       }

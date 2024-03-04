@@ -1,0 +1,222 @@
+<div *ngIf="paginatedData && (amountToPaySubscription$ | async) as res">
+  <div class="header-div mt-2 flex justify-between items-center">
+    <div class="">
+        <food-filter-template [selectedKey]="paymentHistoryService.selectedOption" [options]="paymentHistoryService.options"
+        (optionSelected)="selectedPaidTypeToFilter($event)"></food-filter-template>
+        </div>
+        <div class=" flex flex-col items-center ">
+          <span>Remaining amount to pay </span>
+          <span class="text-customPrimary font-bold">Rs. {{res.data}} </span>
+          
+        </div>
+        <div class="" >
+          <default-button-template [text]="'Pay'" [isDisabled]="res.data == 0? true : false"
+          (clicked)="this.payCashPopUp = true;"></default-button-template>
+        </div>
+      </div>
+      
+      <div *ngIf="onsiteOrdersService.loading; else loaded" [class]="centerItems">
+        <mat-spinner style="color: red;"></mat-spinner>
+      </div>
+      <ng-template #loaded> 
+    <div [class]="centerItems" *ngIf="paginatedData.content.length == 0; else notEmpty">
+      <no-content-template></no-content-template>
+    </div>
+
+    <ng-template #notEmpty>
+    <div class="flex flex-col items-center mt-4" >
+        <table align="center" class=" rounded-lg" style="width: 70%;">
+            <thead class="bg-[#E3E3E3] border-2 border-transparent">
+                <tr class="text-customPrimary p-2 px-3 ">
+                    <th style="padding: inherit;">Order Date</th>
+                    <th class="">Total Price</th>
+                    <th class=" text-center">Status</th>
+                    <th class="text-center">Left To pay</th>
+                    <th class="text-end " style="padding: inherit;">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <ng-container *ngFor="let data of paginatedData.content | paginate: {
+                itemsPerPage : paginationJson.row,
+                currentPage : paginatedData.currentPageIndex,
+                totalItems : paginatedData.totalElements,
+            }; let first= first;">
+                    <tr class="table-row-hover bg-[#F2F2F2] p-2 px-3 hover:bg-[#f5f5f5] h-full   border-2 border-white
+            text-sm" [class.border-t-0]="first" style="border-top: none; border-left: none; border-right: none;" >
+                        <td style="padding: inherit;">{{data.orderedTime}}</td>
+                        <td class="text-priceColor font-semibold">Rs. {{data.totalPrice}}</td>
+                        <td class="text-center">
+                            <div>
+
+                                <text-type-custom-template text="{{data.payStatus}}"
+                                  border="{{data.payStatusCheck == 'PARTIAL_PAID'? 'primary' : null}}"
+                                  color="{{data.payStatusCheck == 'PAID'?  '[#1565C0]' : data.payStatusCheck == 'PARTIAL_PAID'? 'primary' : 'red-700'}}"
+                                  bgColor="{{data.payStatusCheck == 'PAID'?  'blue-200' : data.payStatusCheck == 'PARTIAL_PAID'? '[#F8F9FA]' : 'red-300'}}"></text-type-custom-template>
+              
+                              </div>
+                        </td>
+                        <td class="text-center font-semibold">Rs. {{data.remainingAmount}}</td>
+                        <td align="right" class="h-full mt-2 pr-8" >
+
+                            <mat-icon class="hover:cursor-pointer h-full"
+                                style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
+                                (click)="inspectingOrder(data)">
+                               
+                                visibility</mat-icon>
+                        </td>
+
+                    </tr>
+                </ng-container>
+            </tbody>
+
+
+        </table>
+        <tfoot class="flex justify-between   h-full mt-2" style="width: 70%;">
+            <p>{{paginatedData.numberOfElements}} of {{paginatedData.totalElements}}
+                items</p>
+
+            <pagination-controls previousLabel="Prev" nextLabel="Next"
+                (pageChange)="onTableDataChange($event)" class="">
+            </pagination-controls>
+
+
+            <div class="bg-white w-fit pr-3">
+
+                <pagination-dropdown-template [data]="tableSizes" [defaultSelected]="paginationJson.row"
+                    (selectedDropdownOptionChange)="onSelectedDropdown($event)"></pagination-dropdown-template>
+                <span>/page</span>
+            </div>
+
+
+        </tfoot>
+    </div>
+
+  </ng-template>
+  </ng-template>
+   
+
+    <p-dialog [(visible)]="payCashPopUp" [closable]="true" [style]="{'width': '700px'}" [modal]="true">
+
+
+  <ng-container>
+    <div class="container-box">
+
+      <div class="item-description flex flex-col mt-2">
+
+
+        <div class="flex flex-col justify-center items-center">
+          <div class="text-xl">
+            Total To Pay: <span class="text-customPrimary ">Rs. {{res}}</span>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <form class="my-4">
+        <div class="flex justify-center  ">
+          <div class="text-[#343A40] ">Rs.</div>
+
+          <input
+            class="ml-4 w-20 border-2 text-center p-0 border-[#CED4DA] focus:border-customPrimary  focus:outline-none"
+            id="amount" [min]="0" [max]="res" [(ngModel)]="paidAmount" name="quantity">
+
+        </div>
+
+      </form>
+
+      <div class="flex justify-center">
+        <button type="submit" data-dismiss="modal"
+          [ngClass]="{'disabled-button': paidAmount == null  || paidAmount <= 0 || paidAmount >  res.data}"
+          (click)="postRemainingPayment(paidAmount)"
+          class="text-white bg-customPrimary hover:cursor-pointer  items-center rounded px-2  py-1.5 text-base">Select</button>
+
+      </div>
+    </div>
+  </ng-container>
+</p-dialog>
+</div>
+
+
+<p-dialog [(visible)]="showOrderPopup" [closable]="true" [style]="{'width': '700px'}" [modal]="true"
+  *ngIf="selectedOrder">
+
+
+  <ng-container>
+    <div class="container-box">
+        <div class="flex justify-between items-center">
+            <div class="flex flex-col">
+              <span class="text-xl">{{selectedOrder.fullName}}</span>
+              <span class="text-sm">{{selectedOrder.orderedTime}}</span>
+            </div>
+            <div class="image-container">
+              <div class="w-16 h-16 rounded-full overflow-hidden">
+                <img src={{selectedOrder.profileUrl}} alt="Your Image" class="w-full h-full object-cover" />
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="order-foods flex justify-center flex-wrap mt-2">
+            <ng-container *ngFor="let item of selectedOrder.orderFoodDetails">
+              <div class="flex bg-white w-fit px-1.5 py-1.5 rounded-lg drop-shadow-xl border-2 border-[#aeabab] mr-2">
+                <div class="image-container">
+                  <div class="w-16 h-16 rounded-full overflow-hidden">
+                    <img src={{imageDataMap[item.photoId]}} alt="Your Image" class="w-full h-full object-cover" />
+                  </div>
+                </div>
+                <div class="ml-1.5">
+                  <div class="text-lg">
+                    <span>{{item.foodName}} </span>
+                    <span class="text-customPrimary"> x{{item.quantity}}</span>
+                  </div>
+                  <span class="text-priceColor">Rs. {{item.totalPrice}}</span>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+
+
+
+
+
+      <div class="item-description flex flex-col mt-2">
+
+        <table class="w-full rounded-lg">
+          <thead class="bg-[#f5f5f5] border-2 border-transparent">
+            <tr class="text-customPrimary p-2 px-3 ">
+              <th style="padding: inherit;">Payment Date</th>
+              <th>Amount To Pay</th>
+              <th>Paid Amount</th>
+              <th>Due Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            
+            <ng-container *ngFor="let items of (paymentHistoryOfOrderSubscription$ | async)?.data; let first= first;">
+              <tr class="table-row-hover bg-white p-2 px-3 hover:bg-[#f5f5f5] h-full   border-2 border-[#F0F0F0]
+                      
+                  text-sm" [class.border-t-0]="first" >
+                <td class="" style="padding: inherit;">
+                    {{items.paidDate || '-'}}
+                </td>
+                <td>Rs. {{items.remainingAmount}}</td>
+                <td>Rs. {{items.paidAmount}}</td>
+                <td>Rs. {{items.dueAmount}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+  </ng-container>
+</p-dialog>
+
+
+

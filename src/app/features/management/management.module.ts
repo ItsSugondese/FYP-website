@@ -27,6 +27,7 @@ import { UserDetailsComponent } from './people-management/manage-user-body/manag
 import { UserDisableHistoryComponent } from './people-management/manage-user-body/manage-users/user-inspect/user-disable-history/user-disable-history.component';
 import { UserInspectBodyComponent } from './people-management/manage-user-body/manage-users/user-inspect/user-inspect-body.component';
 import { StaffInspectBodyComponent } from './people-management/manage-staff-body/manage-staff/staff-inspect/staff-inspect-body.component';
+import { UserPaymentHistoryComponent } from './people-management/manage-user-body/manage-users/user-inspect/user-payment-history/user-payment-history.component';
 
 
 
@@ -48,6 +49,7 @@ import { StaffInspectBodyComponent } from './people-management/manage-staff-body
     ManageUserBodyComponent,
     ManageStaffBodyComponent,
     StaffInspectBodyComponent,
+    UserPaymentHistoryComponent,
     
   ],
   imports: [

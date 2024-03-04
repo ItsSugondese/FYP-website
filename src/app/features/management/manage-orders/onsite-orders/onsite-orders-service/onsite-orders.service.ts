@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { PaymentPayload, onsiteOrderPagination } from './model/onsite-orders-payload.model';
+import { OnsiteOrderOfUserPagination, onsiteOrderPagination } from './model/onsite-orders-payload.model';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
 import { onsiteOrder } from './model/onsite-order-interface';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
@@ -46,6 +46,14 @@ export class OnsiteOrdersService extends ServiceCommonVariable {
      );
   }
 
+  getUserOnsiteDataData(paginationRequest : OnsiteOrderOfUserPagination){
+    this.loading = true
+     return this.httpClient.post<ResponseData<PaginatedData<onsiteOrder>>>(this.backendUrl + "onsite-order/by-user/paginated", paginationRequest)
+     .pipe(
+      this.handleError()
+     );
+  }
+
   markAsRead(id : number, i: number){
     this.markingLoading = {
       status: true,
@@ -71,7 +79,5 @@ export class OnsiteOrdersService extends ServiceCommonVariable {
             finalize(() => this.updateOrderLoader = false)
      );
   }
-  postPayment(payload : PaymentPayload){
-     return this.httpClient.post<ResponseData<PaginatedData<onsiteOrder>>>(this.backendUrl + "payment", payload);
-  }
+  
 }

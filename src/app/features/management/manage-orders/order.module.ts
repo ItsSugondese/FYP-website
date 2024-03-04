@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { OnlineOrdersComponent } from './online-orders/online-orders.component';
 import { OnsiteOrdersComponent } from './onsite-orders/onsite-orders.component';
 import { ManageOrdersNavbarComponent } from './manage-orders-navbar/manage-orders-navbar.component';
@@ -31,6 +31,7 @@ import { NgprimeModule } from '@shared/module/ngprime.module';
     MaterialModule,
     TemplatesModule,
     NgprimeModule
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class OrderModule { }

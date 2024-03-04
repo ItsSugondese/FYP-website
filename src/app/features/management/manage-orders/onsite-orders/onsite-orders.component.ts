@@ -1,39 +1,45 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { OrderCommonVariable } from '@shared/helper/inherit/order/order-common-variable';
+import { PaymentPayload } from '@shared/service/payment-service/model/user-payment.model';
+import { PaymentService } from '@shared/service/payment-service/payment.service';
 import { Subscription } from 'rxjs';
-import { defaultPaginationNavigator } from 'src/app/shared/model/pagination/pagination.model';
-import { OnsiteOrdersService } from './onsite-orders-service/onsite-orders.service';
-import { PaymentPayload, onsiteOrderPagination } from './onsite-orders-service/model/onsite-orders-payload.model';
-import { onsiteOrder } from './onsite-orders-service/model/onsite-order-interface';
-import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
 import { ManageFoodsService } from '../../manage-food-body/manage-foods/manage-foods-service/manage-foods.service';
-import { CommonVariable } from '@shared/helper/inherit/common-variable';
-import { createImageFromBlob } from '@shared/helper/attachment-helper/attachment.handler';
+import { onsiteOrder } from './onsite-orders-service/model/onsite-order-interface';
+import { onsiteOrderPagination } from './onsite-orders-service/model/onsite-orders-payload.model';
+import { OnsiteOrdersService } from './onsite-orders-service/onsite-orders.service';
 
 @Component({
   selector: 'app-onsite-orders',
   templateUrl: './onsite-orders.component.html',
   styleUrls: ['./onsite-orders.component.scss']
 })
-export class OnsiteOrdersComponent extends CommonVariable implements OnInit, OnDestroy {
+export class OnsiteOrdersComponent extends OrderCommonVariable implements OnInit, OnDestroy {
 
   payCashPopUp : boolean = false
   
   selectedOrderId !: number
   paidAmount : number = 0
   paginatedData !: PaginatedData<onsiteOrder>
-  paginationJson !:  onsiteOrderPagination 
+
+  paginationJson :  onsiteOrderPagination = {
+    page: 1,
+    row : 10,
+    onsiteOrderFilter: this.onsiteOrdersService.selectedOption
+  }
+
   getOrderSubscriable$ !: Subscription
   markAsReadSubscriable$ !: Subscription
-  getFoodPicture$ !: Subscription
   postPaymentSubscriable$ !: Subscription
+  getFoodPicture$ !: Subscription
   onsiteOrderList !: onsiteOrder[]
   selectedOrder !: onsiteOrder | null;
   paymentPayload!: PaymentPayload
   imageDataMap: { [key: number]: string } = {};
   updateOrderSubscription$ !: Subscription
 
-  constructor(public onsiteOrdersService : OnsiteOrdersService, private foodService: ManageFoodsService) {
+  constructor(public onsiteOrdersService : OnsiteOrdersService, private foodService: ManageFoodsService,
+    private paymentService: PaymentService) {
     super()
   }
   
@@ -90,11 +96,8 @@ export class OnsiteOrdersComponent extends CommonVariable implements OnInit, OnD
 
 
   getPaginatedData() {
-    this.paginationJson = {
-      page: 1,
-      row : 10,
-      onsiteOrderFilter: this.onsiteOrdersService.selectedOption
-    }
+    this.paginationJson.onsiteOrderFilter = this.onsiteOrdersService.selectedOption
+    
     this.getOrderSubscriable$ = this.onsiteOrdersService.getData(
       this.paginationJson).subscribe(
         (response) => {
@@ -140,7 +143,7 @@ export class OnsiteOrdersComponent extends CommonVariable implements OnInit, OnD
       userId: this.selectedOrder!.userId
     }
     
-   this.postPaymentSubscriable$ = this.onsiteOrdersService.postPayment(this.paymentPayload).subscribe(
+   this.postPaymentSubscriable$ = this.paymentService.postPayment(this.paymentPayload).subscribe(
     (respose) => {
       this.paidAmount = 0
       this.payCashPopUp = false
@@ -149,9 +152,7 @@ export class OnsiteOrdersComponent extends CommonVariable implements OnInit, OnD
    );
   }
 
-  buttonCss(){
-    return "mt-2 h-full items-end"
-  }
+  
 
   ngOnDestroy(): void {
     if(this.getOrderSubscriable$){
@@ -165,6 +166,9 @@ export class OnsiteOrdersComponent extends CommonVariable implements OnInit, OnD
     }
     if(this.updateOrderSubscription$){
       this.updateOrderSubscription$.unsubscribe();
+    }
+    if(this.getFoodPicture$){
+      this.getFoodPicture$.unsubscribe()
     }
   }
 }

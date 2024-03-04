@@ -6,6 +6,7 @@ import { UserProfileService } from '@shared/service/user-profile-service/user-pr
 import { Subscription } from 'rxjs';
 import { disableUser } from '../manage-users-service/model/maange-users-payload.model';
 import { PeopleService } from '../../../people-service/people.service';
+import { UserInspectService } from './user-inspect-service/user-inspect.service';
 
 enum UserInspectNav{
   DETAIL = "Basic Information",
@@ -20,10 +21,9 @@ enum UserInspectNav{
 export class UserInspectBodyComponent extends CommonVariable implements OnInit, OnDestroy{
   
   @Input() user !: User
+
   @Output() isInspectingEvent : EventEmitter<boolean> = new EventEmitter()
-  inspecting = UserInspectNav
-  options: EnumItem[] = Object.keys(UserInspectNav).map(key => ({ key, value: UserInspectNav[key as keyof typeof UserInspectNav] }));
-  selectedNavbar = UserInspectNav.DETAIL
+
 
   remarks !: string
 
@@ -33,7 +33,7 @@ export class UserInspectBodyComponent extends CommonVariable implements OnInit, 
   disableSend$ !: Subscription
 
   constructor( userProfileService: UserProfileService,
-    private peopleService: PeopleService){
+    private peopleService: PeopleService, public userInspectService: UserInspectService){
     super()
     // this.tempProfileSubscription = userProfileService.getUserProfile().subscribe(
     //   (res) => {
@@ -61,9 +61,7 @@ export class UserInspectBodyComponent extends CommonVariable implements OnInit, 
     );
   }
 
-  updateSelectedNavbar(value: string) {
-    this.selectedNavbar = value as UserInspectNav;
-  }
+  
 
   goBack(){
     this.isInspectingEvent.emit(false)

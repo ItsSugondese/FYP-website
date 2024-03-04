@@ -26,7 +26,7 @@
                     <tbody>
 
                         <ng-container *ngFor="let data of userListPaginated.content | paginate: {
-                            itemsPerPage : userListPaginated.numberOfElements,
+                            itemsPerPage : paginationJson.row,
                             currentPage : userListPaginated.currentPageIndex,
                             totalItems : userListPaginated.totalElements
                         }; let first= first;">

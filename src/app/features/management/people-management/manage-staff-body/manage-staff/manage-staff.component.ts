@@ -76,6 +76,7 @@ import { User } from '../../manage-user-body/manage-users/manage-users-service/m
   onSelectedDropdown(event: any) {
     if (this.paginationJson.row != event) {
       this.paginationJson.row = event
+      this.paginationJson.page = 1
       this.getPaginatedData();
     }
   }

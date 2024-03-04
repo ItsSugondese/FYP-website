@@ -14,6 +14,6 @@ export interface onsiteOrder {
     orderFoodDetails : orderedFood[];
     markAsRead: boolean;
     payStatus: string;
-    payStatusCheck: string
+    payStatusCheck: string;
 }
 

@@ -14,6 +14,7 @@ import { Staff } from '../../../manage-staff-body/manage-staff/manage-staff-serv
 export class ManageUsersService extends ServiceCommonVariable {
   backendUrl = environment.apiUrl;
   moduleName = "user"
+  isInspecting : boolean = false;
   constructor(private httpClient : HttpClient) {
     super()
    }
@@ -24,6 +25,10 @@ export class ManageUsersService extends ServiceCommonVariable {
      .pipe(
       this.handleError()
      );
+  }
+
+  handleIsInspecting(event: boolean){
+    this.isInspecting = event
   }
   
   
