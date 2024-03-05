@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonVariable } from '@shared/helper/inherit/common-variable';
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
@@ -12,6 +12,8 @@ import { User } from 'src/app/features/management/people-management/manage-user-
 import { UserProfileService } from 'src/app/shared/service/user-profile-service/user-profile.service';
 import { SidenavService } from '../sidenav/sidenav-service/sidenav.service';
 import { ManageOrdersNavbarService, OrderNav } from 'src/app/features/management/manage-orders/manage-orders-navbar/manage-orders-navbar-service/manage-orders-navbar.service';
+import { NotificationService } from '@shared/service/notification-service/notification.service';
+import { NotificationPagination } from '@shared/service/notification-service/model/notification.payload';
 
 enum HeaderNav{
   HOMEPAGE = "Homepage",
@@ -25,7 +27,7 @@ enum HeaderNav{
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent extends CommonVariable implements OnInit {
+export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy {
 
   orderUrl : string =`/${ManagementRouteConstant.orderManagement}`
   allowedUrl : string[] = [this.orderUrl]
@@ -35,21 +37,51 @@ export class HeaderComponent extends CommonVariable implements OnInit {
   manageOrderOptions: EnumItem[] = this.enumToEnumItems(OrderNav)
   selectedNavbar = HeaderNav.HOMEPAGE
   userSubscription$ !: Observable<ResponseData<User>>
+  notificationCountSubscription$ !: Observable<ResponseData<number>>
+
+  notificationPayload !: NotificationPagination
+
+  notificationsSubscription$ !: Subscription
+
+  notifications = ['Notification 1', 'Notification 2', 'Notification 3'];
+
+  clearNotifications() {
+  }
 
   constructor(private userProfileService: UserProfileService, public userService: UserService,
-    public router: Router, public sidenavService: SidenavService, public managementNavbarService: ManageOrdersNavbarService){
+    public router: Router, public sidenavService: SidenavService, public managementNavbarService: ManageOrdersNavbarService,
+    private notificationService: NotificationService){
 super()
   }
   ngOnInit(): void{
     this.userSubscription$ = this.userProfileService.getUserProfile()
-
+    this.notificationCountSubscription$ = this.notificationService.getNewNotificationCount();
+    this.notificationPayload = {
+      page: 1,
+      row : 10
+    }
   }
-
+  
   updateSelectedNavbar(value: string) {
     this.selectedNavbar = value as HeaderNav;
   }
   
   updateSelectedOrderNavbar(value: string) {
     this.managementNavbarService.selectedNavbar = value as OrderNav;
+  }
+  
+  getNotifications(){
+    // this.notificationsSubscription$ = this.notificationService.getUserNotifications(this.notificationPayload).subscribe(
+    //   (res) => {
+
+    //   }
+    // )
+  }
+
+
+  ngOnDestroy(): void {
+    if(this.notificationsSubscription$){
+      this.notificationsSubscription$.unsubscribe()
+    }
   }
 }

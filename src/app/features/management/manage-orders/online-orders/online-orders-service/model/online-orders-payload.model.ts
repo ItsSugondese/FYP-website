@@ -2,5 +2,6 @@ import { paginationPayload } from "src/app/shared/model/pagination/pagination.mo
 
 export interface onlineOrderPagination extends paginationPayload{
     fromTime : string,
-    toTime : string
+    toTime : string,
+    name ?: string
 }

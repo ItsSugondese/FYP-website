@@ -126,6 +126,7 @@ export class OnlineOrdersComponent extends OrderCommonVariable implements OnInit
   makeOnsite(id: number){
     this.makeOnsite$ = this.onlineOrdersService.makeOnsite(id).subscribe(
       (res) => {
+        this.getPaginatedData()
         this.makeOnsite$.unsubscribe()
       }
     )
@@ -147,12 +148,12 @@ export class OnlineOrdersComponent extends OrderCommonVariable implements OnInit
 
 
   typedOrderToFilter(event: string) {
-    // if(event.trim() != ''){
-    //   this.paginationJson.name = event
-    // }else{
-    //   this.paginationJson.name = undefined
-    // }
-    // this.getPaginatedData()
+    if(event.trim() != ''){
+      this.paginationJson.name = event
+    }else{
+      this.paginationJson.name = undefined
+    }
+    this.getPaginatedData()
   }
 
 

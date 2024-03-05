@@ -30,7 +30,7 @@ export class OnsiteOrdersService extends ServiceCommonVariable {
    }
 
    options: EnumItem[] = this.enumToEnumItems(OnsiteOrderFilter)
-   selectedOption = Object.keys(OnsiteOrderFilter)[2]
+   selectedOption = Object.keys(OnsiteOrderFilter)[0]
 
    public markingLoading = {
     status: false,

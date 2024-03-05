@@ -4,6 +4,7 @@ import { SidenavComponent } from './nav/sidenav/sidenav.component';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from './nav/header/header.component';
+import { MaterialModule } from '@shared/module/material.module';
 
 
 
@@ -15,7 +16,7 @@ import { HeaderComponent } from './nav/header/header.component';
   imports: [
     CommonModule,
     RouterModule,
-    MatIconModule
+    MaterialModule
   ],
   exports : [
     SidenavComponent,
