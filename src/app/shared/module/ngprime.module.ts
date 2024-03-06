@@ -8,6 +8,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DataViewModule } from 'primeng/dataview';
 import { PanelModule } from 'primeng/panel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     DropdownModule,
     DataViewModule,
     PanelModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    OverlayPanelModule
+
   ]
 })
 export class NgprimeModule { }

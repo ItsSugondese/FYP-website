@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonVariable } from '@shared/helper/inherit/common-variable';
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
@@ -43,10 +43,11 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
 
   notificationsSubscription$ !: Subscription
 
-  notifications = ['Notification 1', 'Notification 2', 'Notification 3'];
+  isOpen = false;
 
-  clearNotifications() {
-  }
+  closeOverlay() {
+    this.isOpen = false;
+}
 
   constructor(private userProfileService: UserProfileService, public userService: UserService,
     public router: Router, public sidenavService: SidenavService, public managementNavbarService: ManageOrdersNavbarService,

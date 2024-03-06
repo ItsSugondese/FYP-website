@@ -4,3 +4,19 @@
     color: #A62A22;
     border-bottom: #A62A22 solid 2px;
    }
+
+   ::ng-deep.mat-menu-panel {
+    max-width:fit-content !important;
+  }
+  
+  
+  .overlay-content {
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .scrollable-content {
+    max-height: 200px; /* Set your desired height */
+    overflow-y: auto;
+  }

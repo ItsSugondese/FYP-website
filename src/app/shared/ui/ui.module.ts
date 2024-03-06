@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from './nav/header/header.component';
 import { MaterialModule } from '@shared/module/material.module';
+import { NgprimeModule } from '@shared/module/ngprime.module';
+import { OverlayModule } from "@angular/cdk/overlay";
 
 
 
@@ -16,7 +18,9 @@ import { MaterialModule } from '@shared/module/material.module';
   imports: [
     CommonModule,
     RouterModule,
-    MaterialModule
+    MaterialModule,
+    NgprimeModule,
+    OverlayModule
   ],
   exports : [
     SidenavComponent,
