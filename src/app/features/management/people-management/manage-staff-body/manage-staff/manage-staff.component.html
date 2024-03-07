@@ -3,14 +3,11 @@
     <div class="flex justify-between">
 
         <search-template (typedData)="typedUserToFilter($event)"></search-template>
-        
-        <div (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(null);" 
-        > 
-        <!-- (click)="toggleFormToEdit(null); toggleDrawer(true)"
-        -->
-        <add-button-template [text]="'Staff'"></add-button-template>
+
+        <div (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(null);">
+            <add-button-template [text]="'Staff'"></add-button-template>
+        </div>
     </div>
-</div>
 
 
     <div *ngIf="manageUserService.loading; else loaded" [class]="centerItems">
@@ -18,92 +15,93 @@
     </div>
 
 
-    
+
     <ng-template #loaded>
         <div [class]="centerItems" *ngIf="staffListPaginated.content.length == 0; else notEmpty">
             <no-content-template></no-content-template>
-          </div>
+        </div>
         <ng-template #notEmpty>
-        <div class="h-full mt-4" >
-            <div class=" ">
-                <table class="w-full rounded-lg">
-                    <thead class="bg-[#f5f5f5] border-2 border-transparent">
-                        <tr class="text-customPrimary p-2 px-3 ">
-                            <th style="padding: inherit;">Username</th>
-                            <th>Email</th>
-                            <th>Account Status</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <div class="h-full mt-4">
+                <div class=" ">
+                    <table class="w-full rounded-lg">
+                        <thead class="bg-[#f5f5f5] border-2 border-transparent">
+                            <tr class="text-customPrimary p-2 px-3 ">
+                                <th style="padding: inherit;">Username</th>
+                                <th>Email</th>
+                                <th>Account Status</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                        <ng-container *ngFor="let data of staffListPaginated.content | paginate: {
+                            <ng-container *ngFor="let data of staffListPaginated.content | paginate: {
                             itemsPerPage : paginationJson.row,
                             currentPage : staffListPaginated.currentPageIndex,
                             totalItems : staffListPaginated.totalElements
                         }; let first= first;">
-                            <tr class="table-row-hover bg-white p-2 px-3 hover:bg-[#f5f5f5] h-full   border-2 border-[#F0F0F0]
+                                <tr class="table-row-hover bg-white p-2 px-3 hover:bg-[#f5f5f5] h-full   border-2 border-[#F0F0F0]
                             
                         text-sm" [class.border-t-0]="first">
-                                <td class="hidden">{{data.id}}</td>
-                                <td style="padding: inherit;">{{data.fullName}}</td>
-                                <td>{{data.email}}</td>
-                                <td class="pl-5">
+                                    <td class="hidden">{{data.id}}</td>
+                                    <td style="padding: inherit;">{{data.fullName}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td class="pl-5">
 
 
-                                    <text-type-template [text]="'Running'"
-                                        *ngIf="data.accountNonLocked; else disabled"></text-type-template>
+                                        <text-type-template [text]="'Running'"
+                                            *ngIf="data.accountNonLocked; else disabled"></text-type-template>
 
-                                    <ng-template #disabled>
-                                        <text-type-template [text]="'Disabled'" [status]="false"></text-type-template>
-                                    </ng-template>
+                                        <ng-template #disabled>
+                                            <text-type-template [text]="'Disabled'"
+                                                [status]="false"></text-type-template>
+                                        </ng-template>
 
-                                </td>
-                                <td align="center" class="h-full mt-2">
+                                    </td>
+                                    <td align="center" class="h-full mt-2">
 
-                                    <div class="flex justify-center">
-                                    <div>
-                                    <mat-icon class="hover:cursor-pointer h-full
+                                        <div class="flex justify-center">
+                                            <div>
+                                                <mat-icon class="hover:cursor-pointer h-full
                                     hover:text-customPrimary"
-                                        style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
-                                        (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(data);">edit</mat-icon>
-                                    </div>
-                                    <div>
-                                    <mat-icon class="hover:cursor-pointer h-full
+                                                    style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
+                                                    (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(data);">edit</mat-icon>
+                                            </div>
+                                            <div>
+                                                <mat-icon class="hover:cursor-pointer h-full
                                     hover:text-customPrimary"
-                                        style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
-                                        (click)="navigateToSingle(data)">visibility</mat-icon>
-                                    </div>
-                                </div>
-                                </td>
+                                                    style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
+                                                    (click)="navigateToSingle(data)">visibility</mat-icon>
+                                            </div>
+                                        </div>
+                                    </td>
 
-                            </tr>
-                        </ng-container>
-                    </tbody>
+                                </tr>
+                            </ng-container>
+                        </tbody>
 
 
-                </table>
-                <tfoot class="flex justify-between  w-full h-full mt-2">
-                    <p>{{staffListPaginated.numberOfElements}} of {{staffListPaginated.totalElements}} items</p>
-                    
+                    </table>
+                    <tfoot class="flex justify-between  w-full h-full mt-2">
+                        <p>{{staffListPaginated.numberOfElements}} of {{staffListPaginated.totalElements}} items</p>
+
                         <pagination-controls previousLabel="Prev" nextLabel="Next"
                             (pageChange)="onTableDataChange($event)" class="">
                         </pagination-controls>
-                    
-                    
+
+
                         <div class="bg-white w-fit pr-3">
-    
+
                             <pagination-dropdown-template [data]="tableSizes" [defaultSelected]="paginationJson.row"
                                 (selectedDropdownOptionChange)="onSelectedDropdown($event)"></pagination-dropdown-template>
                             <span>/page</span>
                         </div>
-                 
 
-                </tfoot>
+
+                    </tfoot>
+                </div>
             </div>
-        </div>
-    </ng-template>
-       
+        </ng-template>
+
     </ng-template>
 </div>
 

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DropzoneComponent, DropzoneModule } from 'ngx-dropzone-wrapper';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
   exports : [
     NgxPaginationModule,
     DropzoneModule,
+    InfiniteScrollModule
    
   ]
 })

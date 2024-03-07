@@ -16,6 +16,8 @@ import { MaterialModule } from '../shared/module/material.module';
 import { TestComponent } from './test/test.component';
 import { TemplatesModule } from '../templates/templates.module';
 import { FeaturesRoutingModule } from './features-routing.module';
+import { AnnouncementComponent } from './announcement/announcement.component';
+import { GenerateReportComponent } from './generate-report/generate-report.component';
 
 
 
@@ -23,6 +25,8 @@ import { FeaturesRoutingModule } from './features-routing.module';
   declarations: [
     FeedbackComponent,
     TestComponent,
+    AnnouncementComponent,
+    GenerateReportComponent,
   ],
   imports: [
     CommonModule,

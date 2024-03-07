@@ -48,76 +48,77 @@
 
 
 
-    
+
     <!-- <button
     (click)="isOpen = !isOpen"
     cdkOverlayOrigin #trigger="cdkOverlayOrigin"
   >
     Open/close overlay
   </button> -->
-  
-  <!-- This template displays the overlay content and is connected to the button -->
-  
-    
 
-    
+    <!-- This template displays the overlay content and is connected to the button -->
+
+
+
+
     <div class="dropdown">
 
 
         <div class="pr-6   py-1" *ngIf="(userSubscription$ | async) as response">
             <div class="header-right-content flex items-center justify-center">
                 <div class="hover:cursor-pointer notification h-full flex items-center text-xl"
-                (click)="isOpen = !isOpen; "
-    cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+                    (click)="isOpen = !isOpen; appendData()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
                     <svg viewBox="64 64 896 896" focusable="false" data-icon="bell" width="1em" height="1em"
                         fill="currentColor" aria-hidden="true">
                         <path
                             d="M816 768h-24V428c0-141.1-104.3-257.7-240-277.1V112c0-22.1-17.9-40-40-40s-40 17.9-40 40v38.9c-135.7 19.4-240 136-240 277.1v340h-24c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h216c0 61.8 50.2 112 112 112s112-50.2 112-112h216c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM512 888c-26.5 0-48-21.5-48-48h96c0 26.5-21.5 48-48 48zM304 768V428c0-55.6 21.6-107.8 60.9-147.1S456.4 220 512 220c55.6 0 107.8 21.6 147.1 60.9S720 372.4 720 428v340H304z">
                         </path>
                     </svg>
-                    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen" (overlayOutsideClick)="isOpen = false"
-                    (backdropClick)="isOpen = !isOpen" [cdkConnectedOverlayHasBackdrop]="true"
-                    [cdkConnectedOverlayBackdropClass]="'cdk-overlay-transparent-backdrop'"
-                    
-                    [cdkConnectedOverlayPositions]="[{originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'top', 
+                    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
+                        [cdkConnectedOverlayOpen]="isOpen" (overlayOutsideClick)="backDropClick()"
+                        (backdropClick)="backDropClick()" [cdkConnectedOverlayHasBackdrop]="true"
+                        [cdkConnectedOverlayBackdropClass]="'cdk-overlay-transparent-backdrop'"
+                        [cdkConnectedOverlayPositions]="[{originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'top', 
                                                     offsetY: 20}]">
-                                                    
-                        <div class="bg-white rounded p-2 shadow-md row-wrap" style="max-height: 50vh;overflow-y: auto;max-width: 50vh; ">
-                          <div class="flex  " >
-                            <div class="image-container">
-                            <div class="w-12 h-12 rounded-full overflow-hidden">
-                                <img src="assets/avatar/anon.jpg"  alt="Your Image"
-                                    class="w-full h-full object-cover" />
+
+                        <div class="search-results" infiniteScroll [infiniteScrollDistance]="0"
+                            [infiniteScrollThrottle]="0" (scrolled)="onScroll()" [scrollWindow]="false"
+                            style="max-height: 50vh;overflow-y: auto;max-width: 50vh;"
+                            class="bg-white rounded p-2 shadow-md row-wrap">
+                            <div *ngIf="notifications.length == 0; else hasData" >
+                                No notification.
+                            </div>
+                            <ng-template #hasData>
+                            <ng-container *ngFor="let item of notifications; let index = index" #hasData>
+                            <div class="flex justify-start " [class.mt-3]="index !=0">
+                                <div class="image-container mr-1" >
+                                    <div class="w-12 h-12 rounded-full overflow-hidden shadow-md">
+                                        <img src="assets/avatar/anon.jpg" alt="Your Image"
+                                            class="w-full h-full object-cover" />
+                                    </div>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span>{{item.message}}</span>
+                                    <span *ngIf="item.remark != null"><i>{{item.remark}}</i></span>
+                                    <span class="text-sm text-blue-800">{{item.date}}</span>
+                                </div>
+                            </div>
+                            </ng-container>
+                            </ng-template>
+
+
+
+                            <div *ngIf="notificationService.loading">
+                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                             </div>
                         </div>
-                            <span>Your order has been viewed by staff</span>
-
-                          </div>
-                          <div class="flex  " >
-                            <div class="image-container">
-                            <div class="w-12 h-12 rounded-full overflow-hidden">
-                                <img src="assets/avatar/anon.jpg"  alt="Your Image"
-                                    class="w-full h-full object-cover" />
-                            </div>
-                        </div>
-                            <span>Your order has been viewed by staff sucking his/her dick don't knwo wtf I'm writing</span>
-
-                          </div>
-                          <div class="flex  " >
-                            <div class="image-container">
-                            <div class="w-12 h-12 rounded-full overflow-hidden">
-                                <img src="assets/avatar/anon.jpg"  alt="Your Image"
-                                    class="w-full h-full object-cover" />
-                            </div>
-                        </div>
-                            <span>Your order has been viewed by staff</span>
-
-                          </div>
-                          </div>
                     </ng-template>
-                    <div class="absolute translate-x-3 -translate-y-2 bg-red-600 w-5 h-5 rounded-full flex items-center justify-center">
-                    <span class="text-sm font-semibold h-auto text-white"><ng-container></ng-container>{{(notificationCountSubscription$ | async)?.data}}</span>
-                </div>
+                    <div
+                        class="absolute translate-x-3 -translate-y-2 bg-red-600 w-5 h-5 rounded-full flex items-center justify-center">
+                        <span
+                            class="text-sm font-semibold h-auto text-white"><ng-container></ng-container>{{(notificationCountSubscription$
+                            | async)?.data}}</span>
+                    </div>
                 </div>
                 <button class="ml-6 flex items-center   dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">

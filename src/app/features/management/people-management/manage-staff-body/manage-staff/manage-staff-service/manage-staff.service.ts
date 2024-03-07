@@ -13,6 +13,7 @@ export class ManageStaffService extends ServiceCommonVariable {
   backendUrl = environment.apiUrl;
   moduleName :string = "staff";
   pictureLoading = false
+  isInspecting : boolean = false;
 
   constructor(private httpClient : HttpClient) {
     super()

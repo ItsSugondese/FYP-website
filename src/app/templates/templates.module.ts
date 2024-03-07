@@ -16,7 +16,8 @@ import { FileUploadComponent } from './file-upload/file-upload.template.componen
 import { DefaultButtonComponent } from './buttons/default.buttons.template.component';
 import { AreYouSureComponent } from './pop-up/are-you-sure.template.component';
 import { TextTypeCustomColorComponent } from './design/type-text/text-type-custom-color.template.component';
-
+import { AnnouncementPopUpComponent } from './pop-up/announcement.template.component';
+import { AnnouncementButtonComponent } from './buttons/announcement-button.template.component';
 
 
 @NgModule({
@@ -33,7 +34,9 @@ import { TextTypeCustomColorComponent } from './design/type-text/text-type-custo
   FileUploadComponent,
   DefaultButtonComponent,
   AreYouSureComponent,
-  TextTypeCustomColorComponent
+  TextTypeCustomColorComponent,
+  AnnouncementPopUpComponent,
+  AnnouncementButtonComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +58,9 @@ import { TextTypeCustomColorComponent } from './design/type-text/text-type-custo
   FileUploadComponent,
   DefaultButtonComponent,
   AreYouSureComponent,
-  TextTypeCustomColorComponent
+  TextTypeCustomColorComponent,
+  AnnouncementPopUpComponent,
+  AnnouncementButtonComponent
   ]
 })
 export class TemplatesModule { }

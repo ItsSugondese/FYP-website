@@ -17,6 +17,8 @@ import { UserDetailsComponent } from './management/people-management/manage-user
 import { UserDisableHistoryComponent } from './management/people-management/manage-user-body/manage-users/user-inspect/user-disable-history/user-disable-history.component';
 import { TestComponent } from './test/test.component';
 import { StaffDashboardComponent } from './dashboard/staff-dashboard/staff-dashboard.component';
+import { AnnouncementComponent } from './announcement/announcement.component';
+import { GenerateReportComponent } from './generate-report/generate-report.component';
 
 const routes: Routes = [
   {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  
@@ -40,6 +42,8 @@ const routes: Routes = [
   {path: 'manage_users/:id/history', component: UserDisableHistoryComponent},
   {path: ManagementRouteConstant.adminDashboard, component: AdminDashboardComponent},
   {path: ManagementRouteConstant.staffDashboard, component: StaffDashboardComponent},
+  {path: ManagementRouteConstant.announcement, component: AnnouncementComponent},
+  {path: ManagementRouteConstant.report, component: GenerateReportComponent},
   // {path: 'feedback/:id', component: FeedbackComponent}
   {path: 'feedback/:id', component: FeedbackInspectComponent},
   {path: 'test', component: TestComponent}

@@ -22,18 +22,25 @@ export class ManageUserBodyComponent implements OnInit, OnDestroy{
   //   userType: 'USER'
   // }
   isInspecting : boolean = false;
+  isOpenDrawer: boolean = false;
   constructor(public manageUserService: ManageUsersService){}
   
   ngOnInit(): void {
   }
   
+  onToggleDrawer(data: boolean){
+    this.isOpenDrawer = data
+  }
   
+  handleIsInspecting(event: boolean){
+    this.manageUserService.isInspecting = event
+  }
   
   getUserId(event: User){
     this.user = event
   }
 
   ngOnDestroy(): void {
-    this.isInspecting = false
+    this.manageUserService.isInspecting = false
   }
 }

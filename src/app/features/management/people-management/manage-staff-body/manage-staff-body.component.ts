@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Staff } from './manage-staff/manage-staff-service/model/staff.model';
+import { ManageStaffService } from './manage-staff/manage-staff-service/manage-staff.service';
 
 @Component({
   selector: 'app-manage-staff-body',
@@ -9,9 +10,9 @@ import { Staff } from './manage-staff/manage-staff-service/model/staff.model';
 export class ManageStaffBodyComponent implements OnInit, OnDestroy{
   
   staff !: Staff | null
-  isInspecting : boolean = false;
+  
   isOpenDrawer: boolean = false;
-  constructor(){}
+  constructor(public manageStaffService: ManageStaffService){}
   
   ngOnInit(): void {
   }
@@ -21,7 +22,7 @@ export class ManageStaffBodyComponent implements OnInit, OnDestroy{
     this.isOpenDrawer = data
   }
   handleIsInspecting(event: boolean){
-    this.isInspecting = event
+    this.manageStaffService.isInspecting = event
   }
   
   getUserId(event: Staff){
@@ -29,6 +30,6 @@ export class ManageStaffBodyComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(): void {
-    this.isInspecting = false
+    this.manageStaffService.isInspecting = false
   }
 }

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CommonVariable } from '@shared/helper/inherit/common-variable';
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
 import { UserService } from '@shared/service/user-service/user.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, delay, of } from 'rxjs';
 import { AuthService } from 'src/app/_auth/auth-service/auth.service';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { UserNavConstant } from 'src/app/constant/navbar/usernav-data.model';
@@ -14,10 +14,12 @@ import { SidenavService } from '../sidenav/sidenav-service/sidenav.service';
 import { ManageOrdersNavbarService, OrderNav } from 'src/app/features/management/manage-orders/manage-orders-navbar/manage-orders-navbar-service/manage-orders-navbar.service';
 import { NotificationService } from '@shared/service/notification-service/notification.service';
 import { NotificationPagination } from '@shared/service/notification-service/model/notification.payload';
+import { NotificationModel } from '@shared/service/notification-service/model/notification.model';
+import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
 
-enum HeaderNav{
+enum HeaderNav {
   HOMEPAGE = "Homepage",
-   ORDER= "My Orders", 
+  ORDER = "My Orders",
 }
 
 
@@ -29,8 +31,8 @@ enum HeaderNav{
 })
 export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy {
 
-  orderUrl : string =`/${ManagementRouteConstant.orderManagement}`
-  allowedUrl : string[] = [this.orderUrl]
+  orderUrl: string = `/${ManagementRouteConstant.orderManagement}`
+  allowedUrl: string[] = [this.orderUrl]
   navList = UserNavConstant
   inspecting = HeaderNav
   options: EnumItem[] = this.enumToEnumItems(HeaderNav);
@@ -39,39 +41,88 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
   userSubscription$ !: Observable<ResponseData<User>>
   notificationCountSubscription$ !: Observable<ResponseData<number>>
 
+  notificationPaginatedData !: ResponseData<PaginatedData<NotificationModel>>
   notificationPayload !: NotificationPagination
 
   notificationsSubscription$ !: Subscription
-
+  testList = [1, 2, 3, 4, 5, 6, 3, 3, 3, 43, 4, 4, 34, 24, 2, 4, 24, 24, 2, 3]
   isOpen = false;
 
-  closeOverlay() {
+
+
+  private totalItems = 100;
+  notifications: NotificationModel[] = []
+ 
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  appendData = () => {
+    this.notificationsSubscription$ = this.notificationService.getUserNotifications(this.notificationPayload).subscribe(
+      (response) => {
+        this.notifications = [...this.notifications, ...response.data.content];
+        this.notificationPaginatedData = response;
+        this.notificationsSubscription$.unsubscribe()
+      }
+
+    )
+  }
+
+  onScroll = () => {
+    if (this.notificationPaginatedData.data.totalPages != this.notificationPayload.page
+      && !this.notificationService.loading) {
+      this.notificationPayload.page++
+      this.appendData()
+    }
+  }
+
+  backDropClick() {
+    this.notificationPayload.page = 1;
     this.isOpen = false;
-}
+    this.notifications = []
+  }
+
 
   constructor(private userProfileService: UserProfileService, public userService: UserService,
     public router: Router, public sidenavService: SidenavService, public managementNavbarService: ManageOrdersNavbarService,
-    private notificationService: NotificationService){
-super()
+    public notificationService: NotificationService) {
+    super()
   }
-  ngOnInit(): void{
+
+
+  ngOnInit(): void {
     this.userSubscription$ = this.userProfileService.getUserProfile()
     this.notificationCountSubscription$ = this.notificationService.getNewNotificationCount();
     this.notificationPayload = {
       page: 1,
-      row : 10
+      row: 6
     }
   }
-  
+
   updateSelectedNavbar(value: string) {
     this.selectedNavbar = value as HeaderNav;
   }
-  
+
   updateSelectedOrderNavbar(value: string) {
     this.managementNavbarService.selectedNavbar = value as OrderNav;
   }
-  
-  getNotifications(){
+
+  getNotifications() {
     // this.notificationsSubscription$ = this.notificationService.getUserNotifications(this.notificationPayload).subscribe(
     //   (res) => {
 
@@ -81,7 +132,7 @@ super()
 
 
   ngOnDestroy(): void {
-    if(this.notificationsSubscription$){
+    if (this.notificationsSubscription$) {
       this.notificationsSubscription$.unsubscribe()
     }
   }

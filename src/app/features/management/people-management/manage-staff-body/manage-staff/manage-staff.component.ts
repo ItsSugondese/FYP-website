@@ -24,7 +24,7 @@ import { User } from '../../manage-user-body/manage-users/manage-users-service/m
   @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
 
   paginationJson: manageUserPagination = {
-    userType: 'STAFF',
+    userType: ['STAFF'],
     page: 1,
     row: this.selectedRow
   }

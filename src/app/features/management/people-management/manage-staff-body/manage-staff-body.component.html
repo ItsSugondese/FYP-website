@@ -1,6 +1,8 @@
-<div class="right-0  top-0 w-1/4 z-50  fixed bg-white overflow-y-auto h-full custom-scrollbar" *ngIf="isOpenDrawer && !isInspecting">
-<app-add-staff (onOpeningDrawer)="onToggleDrawer($event)" [staff]="staff"></app-add-staff>
+<div class="right-0  top-0 w-1/4 z-50  fixed bg-white overflow-y-auto h-full custom-scrollbar"
+    *ngIf="isOpenDrawer && !manageStaffService.isInspecting">
+    <app-add-staff (onOpeningDrawer)="onToggleDrawer($event)" [staff]="staff"></app-add-staff>
 </div>
-<app-manage-staff *ngIf="!isInspecting" (sendUserId)="getUserId($event!)"
-(isInspectingEvent)="handleIsInspecting($event)" (onOpeningDrawer)="onToggleDrawer($event)"></app-manage-staff>
-<app-staff-inspect-body *ngIf="isInspecting" [staff]="staff!" (isInspectingEvent)="handleIsInspecting($event)" ></app-staff-inspect-body>
+<app-manage-staff *ngIf="!manageStaffService.isInspecting" (sendUserId)="getUserId($event!)"
+    (isInspectingEvent)="handleIsInspecting($event)" (onOpeningDrawer)="onToggleDrawer($event)"></app-manage-staff>
+<app-staff-inspect-body *ngIf="manageStaffService.isInspecting" [staff]="staff!"
+    (isInspectingEvent)="handleIsInspecting($event)"></app-staff-inspect-body>

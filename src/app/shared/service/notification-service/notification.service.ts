@@ -5,6 +5,7 @@ import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model
 import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { environment } from 'src/environments/environment';
 import { NotificationPagination } from './model/notification.payload';
+import { NotificationModel } from './model/notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class NotificationService extends ServiceCommonVariable {
 
   getUserNotifications(payload: NotificationPagination){
     this.loading = true;
-    return this.httpClient.post<ResponseData<PaginatedData<Notification>>>(`${this.backendUrl}${this.moduleName}/paginated`, payload)
+    return this.httpClient.post<ResponseData<PaginatedData<NotificationModel>>>(`${this.backendUrl}${this.moduleName}/paginated`, payload)
     .pipe(
       this.handleError()
     )

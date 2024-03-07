@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { TemplatesModule } from 'src/app/templates/templates.module';
 import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.component';
+import { NgxModule } from '@shared/module/ngx.module';
+import { NgprimeModule } from '@shared/module/ngprime.module';
+import { FormModule } from '@shared/module/form.module';
 
 
 
@@ -13,6 +16,9 @@ import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.compo
   ],
   imports: [
     CommonModule,
+    TemplatesModule,
+    NgprimeModule,
+    FormModule,
     TemplatesModule
   ]
 })

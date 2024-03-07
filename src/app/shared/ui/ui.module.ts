@@ -7,6 +7,7 @@ import { HeaderComponent } from './nav/header/header.component';
 import { MaterialModule } from '@shared/module/material.module';
 import { NgprimeModule } from '@shared/module/ngprime.module';
 import { OverlayModule } from "@angular/cdk/overlay";
+import { NgxModule } from '@shared/module/ngx.module';
 
 
 
@@ -20,7 +21,8 @@ import { OverlayModule } from "@angular/cdk/overlay";
     RouterModule,
     MaterialModule,
     NgprimeModule,
-    OverlayModule
+    OverlayModule,
+    NgxModule,
   ],
   exports : [
     SidenavComponent,

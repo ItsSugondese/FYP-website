@@ -5,4 +5,5 @@ export interface User {
     id: number;
     fullName: string;
     userType : string;
+    isExternal: boolean;
   }

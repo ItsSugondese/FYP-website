@@ -17,11 +17,12 @@ import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model
 export class ManageUsersComponent extends CommonVariable implements OnInit, OnDestroy {
 
   userListPaginated !: PaginatedData<User>
-  @Output() sendUserId : EventEmitter<User> = new EventEmitter()
+  @Output() sendUserId : EventEmitter<User | null> = new EventEmitter()
   @Output() isInspectingEvent : EventEmitter<boolean> = new EventEmitter()
+  @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
 
   paginationJson: manageUserPagination = {
-    userType: 'USER',
+    userType: ['USER', 'EXTERNAL_USER'],
     page: 1,
     row: this.selectedRow
   }
@@ -39,6 +40,14 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
     this.getPaginatedData();
   }
 
+  selectedUserTypeToFilter(event: string | null){
+    this.manageUserService.selectedOption = event!
+    
+    
+    
+    this.getPaginatedData()
+  }
+  
   navigateToSingle(user: User) {
     this.sendUserId.emit(user);
     this.isInspectingEvent.emit(true)
@@ -46,6 +55,14 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
   }
 
   getPaginatedData() {
+    if(this.manageUserService.selectedOption == 'ALL'){
+      this.paginationJson.userType = ['USER', 'EXTERNAL_USER']
+    }else if(this.manageUserService.selectedOption == 'INTERNAL') {
+      this.paginationJson.userType = ['USER']
+    }else{
+    this.paginationJson.userType = ['EXTERNAL_USER']
+    }
+
     this.getUsersSubscriable$ = this.manageUserService.getData(
       this.paginationJson).subscribe(
         (response) => {

@@ -11,5 +11,7 @@ export const ManagementRouteConstant = {
     addStaff: 'admin/manage_staff/add_staff',
     onsiteOrderManagement: 'orders/manage_onsite_orders',
     onlineOrderManagement: 'orders/manage_online_orders',
+    announcement: 'admin/announcement',
+    report: 'admin/report',
 
   };

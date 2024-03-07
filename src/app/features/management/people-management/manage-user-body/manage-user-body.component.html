@@ -1,3 +1,9 @@
-<app-manage-users *ngIf="!manageUserService.isInspecting" (sendUserId)="getUserId($event)"
-(isInspectingEvent)="manageUserService.handleIsInspecting($event)"></app-manage-users>
-<app-user-inspect-body *ngIf="manageUserService.isInspecting" [user]="user!" (isInspectingEvent)="manageUserService.handleIsInspecting($event)" ></app-user-inspect-body>
+<div class="right-0  top-0 w-1/4 z-50  fixed bg-white overflow-y-auto h-full custom-scrollbar"
+    *ngIf="isOpenDrawer && !manageUserService.isInspecting">
+    <app-add-user (onOpeningDrawer)="onToggleDrawer($event)" [user]="user"></app-add-user>
+</div>
+
+<app-manage-users *ngIf="!manageUserService.isInspecting" (sendUserId)="getUserId($event!)"
+    (isInspectingEvent)="manageUserService.handleIsInspecting($event)" (onOpeningDrawer)="onToggleDrawer($event)"></app-manage-users>
+<app-user-inspect-body *ngIf="manageUserService.isInspecting" [user]="user!"
+    (isInspectingEvent)="manageUserService.handleIsInspecting($event)"></app-user-inspect-body>

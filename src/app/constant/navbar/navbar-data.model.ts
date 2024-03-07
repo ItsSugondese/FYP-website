@@ -33,6 +33,18 @@ export const  NavbarConstant = [
         icon: 'people',
         iconLibrary: "angular"
     },
+    {
+        routeLink: ManagementRouteConstant.report,
+        label: "Report",
+        icon: 'pie_chart',
+        iconLibrary: "angular"
+    },
+    {
+        routeLink: ManagementRouteConstant.announcement,
+        label: "Announcement",
+        icon: 'campaign',
+        iconLibrary: "angular"
+    },
     // {
     //     routeLink: ManagementRouteConstant.addStaff,
     //     label: "Staff Management",

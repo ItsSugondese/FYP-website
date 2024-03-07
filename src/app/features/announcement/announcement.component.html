@@ -1,23 +1,13 @@
 <div id="main-div" class="">
 
-    <div class="flex justify-between">
-
-        <div>
-            <food-filter-template [selectedKey]="manageUserService.selectedOption" [options]="manageUserService.options"
-      (optionSelected)="selectedUserTypeToFilter($event)"></food-filter-template>
-        </div>
-        
-        <div class="flex ">
-
-            <search-template (typedData)="typedUserToFilter($event)"></search-template>
-    
-            <div (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(null);">
-                <add-button-template [text]="'User'"></add-button-template>
-            </div>
-        </div>
+    <div class="flex justify-end">
+        <!-- <div class="top-right" (click)="visible = true">
+            <default-button-template [text]="'Make Announcement'"></default-button-template>
+      
+          </div> -->
     </div>
-    
-    
+    <!-- <search-template (typedData)="typedUserToFilter($event)"></search-template>
+
     <div *ngIf="manageUserService.loading; else loaded" [class]="centerItems">
         <mat-spinner style="color: red;"></mat-spinner>
     </div>
@@ -35,7 +25,6 @@
                         <tr class="text-customPrimary p-2 px-3 ">
                             <th style="padding: inherit;">Username</th>
                             <th>Email</th>
-                            <th>User Type</th>
                             <th>Account Status</th>
                             <th class="text-center">Action</th>
                         </tr>
@@ -53,7 +42,6 @@
                                 <td class="hidden">{{data.id}}</td>
                                 <td style="padding: inherit;">{{data.fullName}}</td>
                                 <td>{{data.email}}</td>
-                                <td>{{data.isExternal? 'External' : 'Internal'}}</td>
                                 <td class="pl-5">
 
 
@@ -67,28 +55,9 @@
                                 </td>
                                 <td align="center" class="h-full mt-2">
 
-
-                                    <div class="flex justify-center ">
-                                        <div *ngIf="data.isExternal; else isInternal">
-                                            <mat-icon class="hover:cursor-pointer h-full
-                                hover:text-customPrimary"
-                                                style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
-                                                (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(data);"
-                                                [class.text-gray-600]="!data.isExternal">edit</mat-icon>
-                                            </div>
-                                            <ng-template #isInternal>
-                                            <mat-icon class=" h-full"
-                                                style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
-                                                [class.text-gray-600]="!data.isExternal">edit_off</mat-icon>
-
-                                        </ng-template>
-                                        <div>
-                                            <mat-icon class="hover:cursor-pointer h-full
-                                hover:text-customPrimary"
-                                                style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
-                                                (click)="navigateToSingle(data)">visibility</mat-icon>
-                                        </div>
-                                    </div>
+                                    <mat-icon class="hover:cursor-pointer h-full"
+                                        style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
+                                        (click)="navigateToSingle(data)">visibility</mat-icon>
 
                                 </td>
 
@@ -119,5 +88,5 @@
         </div>
     </ng-template>
        
-    </ng-template>
+    </ng-template> -->
 </div>
