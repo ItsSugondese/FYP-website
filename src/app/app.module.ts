@@ -1,5 +1,5 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { Injectable, NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,7 +16,27 @@ import { FeaturesLayoutComponent } from './layouts/features-layout/features-layo
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { UserPageHolderModule } from './layouts/user-layout/user/user.module';
 import { ManagementLayoutComponent } from './layouts/management-layout/management-layout.component';
+import { GoogleChartsConfig, GoogleChartsModule } from 'angular-google-charts';
+import { ReplaySubject, take, Observable } from 'rxjs';
 
+@Injectable()
+export class GoogleChartsConfigService {
+  private configSubject = new ReplaySubject<GoogleChartsConfig>(1);
+  readonly config$ = this.configSubject.asObservable();
+
+  constructor(private http: HttpClient) {}
+
+  loadLazyConfigValues(): void {
+    this.http.post('https://special.config.api.com/getchartsconfig', {})
+      .pipe(take(1))
+      .subscribe(config => this.configSubject.next(config));
+  }
+}
+
+// Factory function that provides the config$ observable from your GoogleChartsConfigService
+export function googleChartsConfigFactory(configService: GoogleChartsConfigService): Observable<GoogleChartsConfig> {
+  return configService.config$;
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +54,7 @@ import { ManagementLayoutComponent } from './layouts/management-layout/managemen
     BrowserAnimationsModule,
     MatIconModule,
     TemplatesModule,
+    GoogleChartsModule
   ],
   providers: [
     {

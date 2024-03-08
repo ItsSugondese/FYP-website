@@ -6,6 +6,8 @@ import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.compo
 import { NgxModule } from '@shared/module/ngx.module';
 import { NgprimeModule } from '@shared/module/ngprime.module';
 import { FormModule } from '@shared/module/form.module';
+import { GoogleChartsModule } from 'angular-google-charts';
+import { MaterialModule } from '@shared/module/material.module';
 
 
 
@@ -19,7 +21,8 @@ import { FormModule } from '@shared/module/form.module';
     TemplatesModule,
     NgprimeModule,
     FormModule,
-    TemplatesModule
+    TemplatesModule,
+    MaterialModule
   ]
 })
 export class DashboardModule { }

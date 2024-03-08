@@ -1,0 +1,12 @@
+::ng-deep  .p-inputnumber-input {
+    background:red;
+    width: 40px;
+    text-align: center;
+    border: 0px;
+  }
+  
+::ng-deep  .p-inputnumber-input:focus {
+    border: 0px;
+    outline: none;
+    box-shadow: none;
+  }

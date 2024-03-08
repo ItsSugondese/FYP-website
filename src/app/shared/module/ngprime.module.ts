@@ -9,6 +9,8 @@ import { DataViewModule } from 'primeng/dataview';
 import { PanelModule } from 'primeng/panel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ChartModule } from 'primeng/chart';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 
@@ -26,8 +28,9 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     DataViewModule,
     PanelModule,
     AutoCompleteModule,
-    OverlayPanelModule
-
+    OverlayPanelModule,
+    ChartModule,
+    InputNumberModule
   ]
 })
 export class NgprimeModule { }
