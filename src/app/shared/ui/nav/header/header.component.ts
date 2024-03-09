@@ -54,19 +54,6 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
   notifications: NotificationModel[] = []
  
 
-  
-
-
-
-  
-
-
-
-
-
-
-
-
 
 
 

@@ -260,7 +260,7 @@ super()
     let foodList : foodOrderPayload[] = [] 
     let totalPrice = 0
     order.forEach(e => { 
-      totalPrice += e.selectedFoodMenu.cost;
+      totalPrice += e.selectedFoodMenu.cost * e.quantity;
        foodList.push({
       id:  e.id!,
       foodId : e.selectedFoodMenu.id,

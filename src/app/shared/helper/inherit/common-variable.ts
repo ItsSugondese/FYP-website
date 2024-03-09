@@ -5,6 +5,7 @@ import { MessageStatus } from "src/app/templates/snackbar/snackbar.template.comp
 
 export class CommonVariable {
 
+  currency : string = "Rs."
   showPopUp: boolean = false;
   centerItems: string = CenterItems()
   forChild: string = PassHeight()

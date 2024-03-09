@@ -9,7 +9,7 @@ import { User } from './model/user.model';
 import { Staff } from '../../../manage-staff-body/manage-staff/manage-staff-service/model/staff.model';
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
 
-enum UserFilter{
+export enum UserFilter{
   ALL = "All",
   INTERNAL = "Internal",
   EXTERNAL_USER = "External",

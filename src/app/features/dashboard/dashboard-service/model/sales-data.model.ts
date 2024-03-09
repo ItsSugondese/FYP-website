@@ -3,6 +3,7 @@ export interface SalesDataPayload{
     fromDate ?: string | null,
     toDate ?: string | null,
     filterType ?: string | null,
+    foodType ?: string | null
     
 }
 
@@ -13,6 +14,7 @@ export interface SalesData {
   salesData : number[],
   quantityData : number[];
   labels : string[];
+  totalMenu: number
 //   soldFood: SoldFood[];
 }
 

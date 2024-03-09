@@ -18,6 +18,8 @@ import { AreYouSureComponent } from './pop-up/are-you-sure.template.component';
 import { TextTypeCustomColorComponent } from './design/type-text/text-type-custom-color.template.component';
 import { AnnouncementPopUpComponent } from './pop-up/announcement.template.component';
 import { AnnouncementButtonComponent } from './buttons/announcement-button.template.component';
+import { DoughnutSalesComponent } from './chart/doughnut-sales.template.component';
+
 
 
 @NgModule({
@@ -36,7 +38,8 @@ import { AnnouncementButtonComponent } from './buttons/announcement-button.templ
   AreYouSureComponent,
   TextTypeCustomColorComponent,
   AnnouncementPopUpComponent,
-  AnnouncementButtonComponent
+  AnnouncementButtonComponent,
+  DoughnutSalesComponent
   ],
   imports: [
     CommonModule,
@@ -60,7 +63,8 @@ import { AnnouncementButtonComponent } from './buttons/announcement-button.templ
   AreYouSureComponent,
   TextTypeCustomColorComponent,
   AnnouncementPopUpComponent,
-  AnnouncementButtonComponent
+  AnnouncementButtonComponent,
+  DoughnutSalesComponent
   ]
 })
 export class TemplatesModule { }

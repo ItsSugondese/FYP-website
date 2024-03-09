@@ -14,6 +14,8 @@ export enum OrderNav{
 })
 export class ManageOrdersNavbarService extends ServiceCommonVariable {
 
+  timeDifference : number = 30
+  
   routes = ManagementRouteConstant;
   isOnsite = true;
   selectedNavbar = OrderNav.ONLINE

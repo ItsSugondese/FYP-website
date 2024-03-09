@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class GenerateReportComponent {
 
+  fromDate: string = "2024-01-01"
+            toDate: string = "2024-03-28"
 }

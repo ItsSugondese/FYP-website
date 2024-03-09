@@ -37,6 +37,13 @@ body {
   pointer-events: none;
   cursor: not-allowed;
 }
+.disabled-icon {
+  color: #ccc;
+}
+.disabled-div { /* You can adjust the opacity as needed */
+  pointer-events: none;
+  cursor: not-allowed;
+}
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
