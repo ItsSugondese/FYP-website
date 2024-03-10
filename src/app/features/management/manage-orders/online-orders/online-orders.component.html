@@ -1,11 +1,9 @@
 <div class="  flex-1 pt-3 flex flex-col">
-    <div class="flex items-center justify-between">
+    <!-- <div class="flex items-center justify-between">
         <div class="filter-header-right flex  items-center">
             <search-template (typedData)="typedOrderToFilter($event)"></search-template>
         </div>
-        <!-- <food-filter-template [selectedKey]="onsiteOrdersService.selectedOption" [options]="onsiteOrdersService.options"
-        (optionSelected)="selectedOrderTypeToFilter($event)"></food-filter-template> -->
-    </div>
+    </div> -->
 
     <div *ngIf="onlineOrdersService.loading; else loaded" [class]="centerItems">
         <mat-spinner style="color: red;"></mat-spinner>

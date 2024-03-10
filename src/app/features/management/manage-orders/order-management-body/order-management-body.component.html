@@ -1,13 +1,24 @@
 
 <div id="main-div">
+    <div class="flex items-center justify-between">
+        <div class="filter-header-right flex  items-center">
+          <search-template (typedData)="typedOrderToFilter($event)"></search-template>
+        </div>
+        <div *ngIf="managementNavbarService.selectedNavbar == managementNavbarService.inspecting.ONSITE">
+            
+            <food-filter-template [selectedKey]="onsiteOrdersService.selectedOption" [options]="onsiteOrdersService.options"
+            (optionSelected)="selectedOrderTypeToFilter($event!)"
+            ></food-filter-template>
+        </div>
+      </div>
     <div class="flex flex-col flex-1">
         
         <ng-container *ngIf="managementNavbarService.selectedNavbar == managementNavbarService.inspecting.ONLINE">
-            <app-online-orders [class]="forChild"></app-online-orders>
+            <app-online-orders [class]="forChild" [searchedText]="searchText"></app-online-orders>
         </ng-container>
 
         <ng-container *ngIf="managementNavbarService.selectedNavbar == managementNavbarService.inspecting.ONSITE" >
-            <app-onsite-orders [class]="forChild" ></app-onsite-orders>
+            <app-onsite-orders [class]="forChild" [searchedText]="searchText" [selectedFoodFilter]="updatedSelected" ></app-onsite-orders>
         </ng-container>
 
     </div>  

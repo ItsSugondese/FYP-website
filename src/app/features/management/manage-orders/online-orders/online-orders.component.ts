@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { OrderCommonVariable } from '@shared/helper/inherit/order/order-common-variable';
 import { Subscription } from 'rxjs';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
@@ -13,6 +13,7 @@ import { foodMenu } from '../../manage-food-body/manage-foods/manage-foods-servi
 import { foodOrderPayload, onlineOrderPayload } from 'src/app/payload.interface';
 import { DatePipe } from '@angular/common';
 import { orderedFood } from '../order.model';
+import { ManageOrdersNavbarService } from '../manage-orders-navbar/manage-orders-navbar-service/manage-orders-navbar.service';
 declare var $: any;
 
 @Component({
@@ -20,8 +21,9 @@ declare var $: any;
   templateUrl: './online-orders.component.html',
   styleUrls: ['./online-orders.component.scss']
 })
-export class OnlineOrdersComponent extends OrderCommonVariable implements OnInit, OnDestroy {
+export class OnlineOrdersComponent extends OrderCommonVariable implements OnInit, OnDestroy, OnChanges {
 
+  @Input() searchedText : string | undefined
   isChange : boolean = false
   addingOrder: boolean = false;
   editOrderPopUp: boolean = false
@@ -46,18 +48,9 @@ export class OnlineOrdersComponent extends OrderCommonVariable implements OnInit
     row: 10,
     filter: 'TODAY',
   }
-
-  quantity: number = 0
-
-
-  constructor(public onlineOrdersService: OnlineOrdersService, private foodService: ManageFoodsService,
-    private datePipe: DatePipe) {
-    super()
-  }
-
-
+  
   items: any[] | undefined;
-
+  
   selectedItem !: {
     name: string,
     photo: string
@@ -70,13 +63,43 @@ export class OnlineOrdersComponent extends OrderCommonVariable implements OnInit
   } | null
 
   suggestions !: any[];
+  quantity: number = 0
+
+
+  constructor(public onlineOrdersService: OnlineOrdersService, private foodService: ManageFoodsService,
+    private datePipe: DatePipe, private orderService: ManageOrdersNavbarService) {
+    super()
+  }
+  
+  
+ 
+  
+  ngOnInit(): void {
+    this.getPaginatedData();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.searchedText) {
+        if (!this.paginationJson) {
+          this.paginationJson = {
+            row: this.selectedRow,
+            page: 1,
+            minDifference : this.orderService.timeDifference,
+          }
+        }
+        this.paginationJson.name = changes.searchedText.currentValue;
+        this.getPaginatedData();
+      
+    }
+  }
+    
+
 
   search(event: AutoCompleteCompleteEvent) {
-    // this.suggestions = [...Array(10).keys()].map(item => event.query + '-' + item);
     this.foodMenuPagination.name = event.query
     this.getFoodMenu()
   }
-
+  
   selected(event: AutoCompleteOnSelectEvent) {
     this.selectedFood = {
       id: event.value.id,
@@ -98,15 +121,6 @@ export class OnlineOrdersComponent extends OrderCommonVariable implements OnInit
     this.selectedFood!.id = null
   }
 
-  ngOnInit(): void {
-    this.paginationJson = {
-      row: this.selectedRow,
-      page: 1,
-      fromTime: "00:00:00",
-      toTime: "23:59:59"
-    }
-    this.getPaginatedData();
-  }
 
   deleteOrderFood(orderedFood: orderedFood){
     this.deleteOrderFood$ = this.onlineOrdersService.deleteOrderFoodById(orderedFood.id).subscribe(

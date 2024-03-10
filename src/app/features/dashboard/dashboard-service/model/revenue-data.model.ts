@@ -7,5 +7,6 @@ export interface RevenueData {
     revenue: number;
     paidAmount: number;
     leftToPay: number;
+    deliveredOrder: number;
   }
   

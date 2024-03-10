@@ -1,4 +1,4 @@
-<div id="main-div" class="justify-between pb-2" *ngIf="(orderDataSubscription$ | async)?.data as order ">
+<div id="main-div" class="justify-between pb-2">
 
   <!-- {{getSalesData.totalSales}} -->
   <div class="top-side flex ">
@@ -25,7 +25,7 @@
         </div>
         
         <div class="paid-amount flex flex-col">
-          <span class="text-customPrimary text-3xl font-bold">{{order.onsiteOrder.delivered}}</span>
+          <span class="text-customPrimary text-3xl font-bold">{{revenue.deliveredOrder}}</span>
           <span class="text-customPrimary">Order Delivered</span>
         </div>
       </div>
@@ -42,9 +42,9 @@
     </div>
     <div class="flex flex-col w-full items-end justify-between ">
       <div class="w-5/6 flex flex-col justify-between  h-full" *ngIf="(usersDataSubscription$ | async)?.data as res">
-        <div>
+        <div *ngIf="(orderDataSubscription$ | async)?.data as order ">
           <div class=" text-end">
-            <span class="text-[#495057] font-semibold text-xl "><span class="text-sm ">({{orderService.timeDifference}} minutes)</span> Orders</span>
+            <span class="text-[#495057] font-semibold text-xl "><span class="text-sm ">({{orderService.timeDifference}} minutes)</span>Pending Orders</span>
           </div>
           <div class="divided flex w-full  justify-between bg-white p-4">
             <div class="flex items-center ">

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { OrderCommonVariable } from '@shared/helper/inherit/order/order-common-variable';
 import { PaymentPayload } from '@shared/service/payment-service/model/user-payment.model';
 import { PaymentService } from '@shared/service/payment-service/payment.service';
@@ -8,25 +8,24 @@ import { ManageFoodsService } from '../../manage-food-body/manage-foods/manage-f
 import { onsiteOrder } from './onsite-orders-service/model/onsite-order-interface';
 import { onsiteOrderPagination } from './onsite-orders-service/model/onsite-orders-payload.model';
 import { OnsiteOrdersService } from './onsite-orders-service/onsite-orders.service';
+import { ManageOrdersNavbarService } from '../manage-orders-navbar/manage-orders-navbar-service/manage-orders-navbar.service';
 
 @Component({
   selector: 'app-onsite-orders',
   templateUrl: './onsite-orders.component.html',
   styleUrls: ['./onsite-orders.component.scss']
 })
-export class OnsiteOrdersComponent extends OrderCommonVariable implements OnInit, OnDestroy {
+export class OnsiteOrdersComponent extends OrderCommonVariable implements OnInit, OnDestroy, OnChanges {
 
+  @Input() searchedText : string | undefined
+  @Input() selectedFoodFilter !: boolean
   payCashPopUp : boolean = false
   
   selectedOrderId !: number
   paidAmount : number = 0
   paginatedData !: PaginatedData<onsiteOrder>
 
-  paginationJson :  onsiteOrderPagination = {
-    page: 1,
-    row : 10,
-    onsiteOrderFilter: this.onsiteOrdersService.selectedOption
-  }
+  paginationJson !:  onsiteOrderPagination 
 
   getOrderSubscriable$ !: Subscription
   markAsReadSubscriable$ !: Subscription
@@ -39,12 +38,31 @@ export class OnsiteOrdersComponent extends OrderCommonVariable implements OnInit
   updateOrderSubscription$ !: Subscription
 
   constructor(public onsiteOrdersService : OnsiteOrdersService, private foodService: ManageFoodsService,
-    private paymentService: PaymentService) {
+    private paymentService: PaymentService, private orderService: ManageOrdersNavbarService) {
     super()
   }
   
   ngOnInit(): void {
+    
       this.getPaginatedData();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!this.paginationJson) {
+      this.paginationJson  = {
+        page: 1,
+        row : 10,
+        onsiteOrderFilter: this.onsiteOrdersService.selectedOption,
+        minuteRange : this.orderService.timeDifference
+      }
+    }
+    if (changes.searchedText) {
+        this.paginationJson.name = changes.searchedText.currentValue;
+    }
+    if (changes.selectedFoodFilter) {
+        this.paginationJson.onsiteOrderFilter = this.onsiteOrdersService.selectedOption;
+      }
+      this.getPaginatedData(); 
   }
 
   cancelOrder(id: number){
