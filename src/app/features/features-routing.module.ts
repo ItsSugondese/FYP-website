@@ -19,6 +19,7 @@ import { TestComponent } from './test/test.component';
 import { StaffDashboardComponent } from './dashboard/staff-dashboard/staff-dashboard.component';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { GenerateReportComponent } from './generate-report/generate-report.component';
+import { TableManagementBodyComponent } from './management/table-management-body/table-management-body.component';
 
 const routes: Routes = [
   {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  
@@ -44,6 +45,7 @@ const routes: Routes = [
   {path: ManagementRouteConstant.staffDashboard, component: StaffDashboardComponent},
   {path: ManagementRouteConstant.announcement, component: AnnouncementComponent},
   {path: ManagementRouteConstant.report, component: GenerateReportComponent},
+  {path: ManagementRouteConstant.tableManagement, component: TableManagementBodyComponent},
   // {path: 'feedback/:id', component: FeedbackComponent}
   {path: 'feedback/:id', component: FeedbackInspectComponent},
   {path: 'test', component: TestComponent}

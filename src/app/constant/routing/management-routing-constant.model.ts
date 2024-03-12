@@ -13,5 +13,6 @@ export const ManagementRouteConstant = {
     onlineOrderManagement: 'orders/manage_online_orders',
     announcement: 'admin/announcement',
     report: 'admin/report',
+    tableManagement: 'admin/table_management',
 
   };

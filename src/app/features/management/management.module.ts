@@ -29,6 +29,9 @@ import { UserInspectBodyComponent } from './people-management/manage-user-body/m
 import { StaffInspectBodyComponent } from './people-management/manage-staff-body/manage-staff/staff-inspect/staff-inspect-body.component';
 import { UserPaymentHistoryComponent } from './people-management/manage-user-body/manage-users/user-inspect/user-payment-history/user-payment-history.component';
 import { AddUserComponent } from './people-management/manage-user-body/manage-users/add-user/add-user.component';
+import { TableManagementBodyComponent } from './table-management-body/table-management-body.component';
+import { TableDrawerComponent } from './table-management-body/table-drawer/table-drawer.component';
+import { TableManagementComponent } from './table-management-body/table-management/table-management.component';
 
 
 
@@ -52,6 +55,9 @@ import { AddUserComponent } from './people-management/manage-user-body/manage-us
     StaffInspectBodyComponent,
     UserPaymentHistoryComponent,
     AddUserComponent,
+    TableManagementComponent,
+    TableDrawerComponent,
+    TableManagementBodyComponent,
   ],
   imports: [
     CommonModule,

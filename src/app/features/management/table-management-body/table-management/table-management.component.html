@@ -1,0 +1,61 @@
+<div id="main-div">
+    <div class="header flex justify-end" (click)="visible = true">
+        <add-button-template text="Table"></add-button-template>
+    </div>
+
+    <div class="flex flex-wrap">
+        <ng-container *ngIf="(tablesSubscription$ | async)?.data as res">
+            <ng-container *ngFor="let item of res">
+                <div class="flex items-center">
+                    <div class="bg-white p-2 text-center" (click)="selectingTable(item)">
+                        <span>Table Number: {{item.tableNumber}}</span>
+                    </div>
+                    <div>
+                        <default-button-template text="Delete"></default-button-template>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+
+
+</div>
+
+<p-dialog [(visible)]="qrVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false"
+    *ngIf="selectedTable" (onHide)="imageData = null">
+
+    <p-header>
+        Table Number: {{selectedTable.tableNumber}}
+    </p-header>
+    <div class="flex justify-end w-full items-center">
+        <div>
+            <default-button-template text="Download" [isDisabled]="tableService.qrLoading"></default-button-template>
+        </div>
+    </div>
+    <div class="flex justify-center" *ngIf="tableService.qrLoading; else loadedQr">
+        <mat-spinner></mat-spinner>
+    </div>
+    <ng-template #loadedQr>
+        <div>
+            <img [src]="imageData" />
+        </div>
+    </ng-template>
+
+
+
+
+</p-dialog>
+
+
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <p-header>
+        <span>Add new table</span>
+    </p-header>
+    <p class="m-0">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+    </p>
+</p-dialog>
