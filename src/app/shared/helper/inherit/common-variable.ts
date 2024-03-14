@@ -1,10 +1,11 @@
 import { EnumItem } from "@shared/model/enums/MapForEnum.model";
 import { PassHeight } from "src/app/constant/class/child-height-constant";
 import { CenterItems } from "src/app/constant/class/display-center.model";
+import { CalenderType } from "src/app/templates/calender/calender.template.componenet";
 import { MessageStatus } from "src/app/templates/snackbar/snackbar.template.component";
 
 export class CommonVariable {
-
+  enumCalenderType = CalenderType
   currency : string = "Rs."
   showPopUp: boolean = false;
   centerItems: string = CenterItems()

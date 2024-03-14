@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { OnsiteOrderOfUserPagination, onsiteOrderPagination } from './model/onsite-orders-payload.model';
+import { OnsiteOrderOfUserPagination, OrderHistoryPagination, onsiteOrderPagination } from './model/onsite-orders-payload.model';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
 import { onsiteOrder } from './model/onsite-order-interface';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
@@ -41,6 +41,14 @@ export class OnsiteOrdersService extends ServiceCommonVariable {
   getData(paginationRequest : onsiteOrderPagination){
     this.loading = true
      return this.httpClient.post<ResponseData<PaginatedData<onsiteOrder>>>(this.backendUrl + "onsite-order/paginated", paginationRequest)
+     .pipe(
+      this.handleError()
+     );
+  }
+
+  getOrderHistoryData(paginationRequest : OrderHistoryPagination){
+    this.loading = true
+     return this.httpClient.post<ResponseData<PaginatedData<onsiteOrder>>>(`${this.backendUrl}${this.moduleName}/order-history/paginated`, paginationRequest)
      .pipe(
       this.handleError()
      );

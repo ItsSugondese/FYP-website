@@ -7,6 +7,7 @@ import { UsersDataPayload, UsersData } from './model/user-data.model';
 import { OrderData, OrderDataPayload } from './model/order-data.model';
 import { RevenueData, RevenueDataPayload } from './model/revenue-data.model';
 import { FoodMenuData, FoodMenuDataPayload } from './model/food-menu-data.model';
+import { TableData, TableDataPayload } from './model/table-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,9 @@ export class DashboardService {
 
   getSalesData(payload: SalesDataPayload){
     return this.httpClient.post<ResponseData<SalesData>>(`${this.backendUrl}admin/${this.moduleName}/sales-data`, payload)
+  }
+  getTableData(payload: TableDataPayload){
+    return this.httpClient.post<ResponseData<TableData>>(`${this.backendUrl}admin/${this.moduleName}/table-data`, payload)
   }
 
   getUsersData(payload: UsersDataPayload){

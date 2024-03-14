@@ -1,4 +1,118 @@
-<div class="pt-20">
+<div id="main-div">
+    <p-table
+    [value]="users.content"
+    #dt1
+    [rows]="financeDataPayload.row"
+    [loading]="loading"
+ *ngIf="users">
+    <ng-template pTemplate="caption">
+        <div class="flex">
+            <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" ></button>
+            <span class="p-input-icon-left ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text"  placeholder="Search keyword" />
+            </span>
+            <p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                <ng-template pTemplate="header">
+                    <div class="px-3 pt-3 pb-0">
+                        <span class="font-bold">Agent Picker</span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                    <p-multiSelect [ngModel]="value" [options]="representatives" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+                        <ng-template let-option pTemplate="item">
+                            <div class="inline-block vertical-align-middle">
+                                <img [alt]="option.label" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ option.image }}" width="24" class="vertical-align-middle" />
+                                <span class="ml-1 mt-1">{{ option.name }}</span>
+                            </div>
+                        </ng-template>
+                    </p-multiSelect>
+                </ng-template>
+            </p-columnFilter>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="min-width:15rem">
+                <div class="flex align-items-center">
+                    S.No.
+                </div>
+            </th>
+            <th style="min-width:15rem">
+                <div class="flex align-items-center">
+                    Name
+                </div>
+            </th>
+            <th style="min-width:15rem">
+                <div class="flex align-items-center">
+                    Total Paid
+                    
+                </div>
+            </th>
+            <th style="min-width:10rem">
+                <div class="flex align-items-center">
+                    Total Due
+                    
+                </div>
+            </th>
+            <th style="min-width:10rem">
+                <div class="flex align-items-center">
+                    Total Transaction
+                    
+                </div>
+            </th>
 
-    fasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+          
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+        <tr>
+            <td>
+                {{ user.sno }}
+            </td>
+            <td>
+                <!-- <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" style="width: 20px" /> -->
+                <span class="ml-1 vertical-align-middle">{{ user.fullName }}</span>
+            </td>
+            <td>
+                <!-- <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" style="vertical-align: middle" /> -->
+                <span class="ml-1 vertical-align-middle">{{ user.totalPaid }}</span>
+            </td>
+            <td>
+                <!-- {{ customer.date | date: 'MM/dd/yyyy' }} -->
+                {{user.dueAmount}}
+            </td>
+            <td>
+                <!-- {{ customer.balance | currency: 'USD':'symbol' }} -->
+                {{user.totalTransaction}}
+            </td>
+            
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">No customers found.</td>
+        </tr>
+    </ng-template>
+</p-table>
+<tfoot class="flex justify-between   h-full mt-2 w-full "  *ngIf="users">
+    <ng-container *ngFor="let data of users.content | paginate: {
+        itemsPerPage : financeDataPayload.row,
+        currentPage : users.currentPageIndex,
+        totalItems : users.totalElements
+    }; let first= first;">
+    </ng-container>
+    <p>{{users.numberOfElements}} of {{users.totalElements}}
+        items</p>
+
+    <pagination-controls previousLabel="Prev" nextLabel="Next"
+        (pageChange)="onTableDataChange($event)" class="">
+    </pagination-controls>
+
+
+
+
+</tfoot>
+
 </div>

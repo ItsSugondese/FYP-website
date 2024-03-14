@@ -8,6 +8,7 @@ import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model
 import { User } from './model/user.model';
 import { Staff } from '../../../manage-staff-body/manage-staff/manage-staff-service/model/staff.model';
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
+import { UserFinanceData, UserFinancePaginationPayload } from 'src/app/features/dashboard/dashboard-service/model/user-finance-data.model';
 
 export enum UserFilter{
   ALL = "All",
@@ -33,6 +34,14 @@ export class ManageUsersService extends ServiceCommonVariable {
   getData(paginationRequest : manageUserPagination){
     this.loading = true
      return this.httpClient.post<ResponseData<PaginatedData<User | Staff>>>(this.backendUrl + this.moduleName + "/paginated", paginationRequest)
+     .pipe(
+      this.handleError()
+     );
+  }
+
+  getFinanceData(paginationRequest : UserFinancePaginationPayload){
+    this.loading = true
+     return this.httpClient.post<ResponseData<PaginatedData<UserFinanceData>>>(`${this.backendUrl}${this.moduleName}/finance/paginated`, paginationRequest)
      .pipe(
       this.handleError()
      );

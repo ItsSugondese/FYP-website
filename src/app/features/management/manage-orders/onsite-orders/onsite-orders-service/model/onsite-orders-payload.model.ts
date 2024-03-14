@@ -6,9 +6,14 @@ export interface onsiteOrderPagination extends paginationPayload{
     name ?: string;
 }
 
+export interface OrderHistoryPagination extends paginationPayload{
+    fromDate ?: string;
+    toDate ?: string;
+    name ?: string;
+}
+
 export interface OnsiteOrderOfUserPagination extends paginationPayload{
     payStatus ?: string;
     userId : number
-
 }
 

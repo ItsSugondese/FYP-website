@@ -22,7 +22,8 @@ import { MaterialModule } from '@shared/module/material.module';
     NgprimeModule,
     FormModule,
     TemplatesModule,
-    MaterialModule
+    MaterialModule,
+    NgxModule
   ]
 })
 export class DashboardModule { }

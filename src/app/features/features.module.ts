@@ -18,6 +18,7 @@ import { TemplatesModule } from '../templates/templates.module';
 import { FeaturesRoutingModule } from './features-routing.module';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { GenerateReportComponent } from './generate-report/generate-report.component';
+import { OrderHistoryComponent } from './order-history/order-history.component';
 
 
 
@@ -27,6 +28,7 @@ import { GenerateReportComponent } from './generate-report/generate-report.compo
     TestComponent,
     AnnouncementComponent,
     GenerateReportComponent,
+    OrderHistoryComponent,
   ],
   imports: [
     CommonModule,

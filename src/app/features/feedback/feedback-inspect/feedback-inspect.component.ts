@@ -24,9 +24,6 @@ import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
 export class FeedbackInspectComponent extends CommonVariable {
   @Input() foodId !: number ;
 
-
-  enumCalenderType = CalenderType
-
   paginatedData !: PaginatedData<Feedback>
   paginationNavigator: defaultPaginationNavigator = {
     currentPage: 1,

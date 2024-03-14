@@ -1,0 +1,90 @@
+<div id="main-div" class="" 
+infiniteScroll [infiniteScrollDistance]="0"
+[infiniteScrollThrottle]="0" (scrolled)="onScroll()">
+  
+  
+    <div class="mb-4">
+        <calender-template [dateFilterType]="enumCalenderType.WEEK"
+        (selectedDate)="onRangeSelect($event)"></calender-template>
+    </div>
+    
+  
+  <div *ngIf="orderService.loading && orderHistoryList.length ==0; else loaded" [class]="centerItems">
+    <mat-spinner style="color: red;"></mat-spinner>
+  </div>
+  <ng-template #loaded>
+
+
+
+    
+      <div class="overflow-x-hidden overflow-y-hidden" >
+      <div  fxLayout="row wrap overflow-x-hidden" [fxLayoutGap]="collapsed? '20px grid' : '32px grid'"  fxLayoutAlign="start">
+      <div [fxFlex]="collapsed? '25%' : '33%'" [fxFlex.xs]="'100%' " fxFlex.sm="50%" class="order-card" *ngFor="let content of orderHistoryList" 
+      >
+          <div class=" bg-white rounded-xl drop-shadow-xl" (click)="toggleOrderDetailsPopUp(content)" >
+              <div class="header flex  justify-between p-4 text-xl">
+                  <div class="left-header flex flex-col">
+                      <span class="font-bold">
+                          {{content.orderType}}
+                      </span>
+                      <span>
+                         {{content.orderedTime}}
+                      </span>
+                  </div>
+                  <div class="right-header">
+                      <div class="image-container">
+                          <div class="w-16 h-16 rounded-full overflow-hidden">
+                              <img src={{content.profileUrl}} alt="Your Image"
+                                  class="w-full h-full object-cover" />
+                          </div>
+                      </div>
+                  </div>
+              </div>
+  
+              <div class="order-content-with-line-break flex flex-col mt-10 first:mt-0" *ngFor="let item of content.orderFoodDetails.slice(0,1); let first= first; let last = last; let i=index" 
+              [class.mt-0]="first">
+  
+                  <div [class.mt-0]="first" class="order-content-details flex px-4">
+                      <div class="image-container">
+                          <div class="w-20 h-20   rounded-full overflow-hidden">
+                              <img [src]="imageDataMap[item.photoId]" class="w-full h-full object-cover">
+                          </div>
+                      </div>
+                      <div class="order-content-details w-full flex flex-col text-lg justify-between mb-4 ">
+                          <span class="font-semibold">{{item.foodName}}</span>
+                          <span class="text-[#58ABFF]">{{item.foodMenu.foodType}}</span>
+                          <div class="price-details justify-between flex w-ful  font-semibold">
+                              <span class="text-priceColor">Rs. {{item.totalPrice}}</span>
+                              <span>Qty: {{item.quantity}}</span>
+                          </div>
+                      </div>
+                      
+                  </div>
+                  
+                  <div class="flex items-center mx-4 ">
+                      <div class="border-t border-gray-500 flex-grow"></div>
+                      <div class="mx-1 text-sm text-[#5261E5]" *ngIf="content.orderFoodDetails.length > 1">View more</div>
+                      <div class="border-t border-gray-500 flex-grow"></div>
+                  </div>
+              </div>
+              
+              
+  
+  
+                  <div class="content-footer p-4  ">
+                      <div class="items-price-details flex flex-col items-end font-semibold">
+                          <span class="text-[#58ABFF] ">x2 Items</span>
+                          <span class="text-priceColor text-xl">$3.66</span>
+                      </div>
+                  </div>
+          </div>
+      </div>
+    </div>
+</div>
+<div class="py-5" *ngIf="orderService.loading && orderHistoryList.length > 0">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+      
+  </ng-template>
+  
+  </div>

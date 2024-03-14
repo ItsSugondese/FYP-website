@@ -26,10 +26,11 @@ import { CommonVariable } from '@shared/helper/inherit/common-variable';
       <div class="d-flex justify-content-between align-items-center">
         <div (click)="yesEvent.emit(selectedId)">
         <default-button-template [text]="positiveLabel" [isLoading]="isLoading"
-        [isDisabled]="isLoading"></default-button-template>
+        [isDisabled]="isLoading" [hasBorder]="true"></default-button-template>
         </div>
         <div (click)="this.visibleChange.emit(false);">
         <default-button-template [text]="negativeLabel" [background]="'white'" [color]="'customPrimary'"
+        [hasBorder]="true"
         [isDisabled]="isLoading" ></default-button-template>
 </div>
     </div>

@@ -10,7 +10,7 @@
                     <div class="bg-white p-2 text-center" (click)="selectingTable(item)">
                         <span>Table Number: {{item.tableNumber}}</span>
                     </div>
-                    <div>
+                    <div (click)="deleteVisible = true; selectedTable = item">
                         <default-button-template text="Delete"></default-button-template>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
     <p-header>
         Table Number: {{selectedTable.tableNumber}}
     </p-header>
-    <div class="flex justify-end w-full items-center">
+    <div class="flex hover:cursor-pointer justify-end w-full items-center" (click)="downloadImage(imageData!, selectedTable)">
         <div>
             <default-button-template text="Download" [isDisabled]="tableService.qrLoading"></default-button-template>
         </div>
@@ -36,8 +36,8 @@
         <mat-spinner></mat-spinner>
     </div>
     <ng-template #loadedQr>
-        <div>
-            <img [src]="imageData" />
+        <div class="flex justify-center">
+            <img [src]="imageData" width="500" height="500"/>
         </div>
     </ng-template>
 
@@ -51,11 +51,31 @@
     <p-header>
         <span>Add new table</span>
     </p-header>
-    <p class="m-0">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum.
-    </p>
+    <form class="my-4">
+        <div class="flex justify-center  ">
+          <div class="text-[#343A40] ">Table Number:</div>
+
+          <input class="ml-4 w-20 border-2 text-center p-0 border-[#CED4DA] focus:border-customPrimary  focus:outline-none" 
+          id="tableNumber" 
+          [(ngModel)]="tableNumberField" name="tableNum" type="number">
+
+        </div>
+      </form>
+
+    <div class="flex justify-center">
+      <button type="submit" data-dismiss="modal"
+      [ngClass]="{'disabled-button': tableNumberField == null || tableNumberField < 0 || tableService.loading}" (click)="addTable()"
+      class="text-white bg-customPrimary hover:cursor-pointer  items-center rounded px-2  py-1.5 text-base">
+      <span *ngIf="tableService.loading">
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    </span>
+    <span *ngIf="!tableService.loading">Add</span>
+    </button>
+      </div>
 </p-dialog>
+
+
+<are-you-sure-template [visible]="deleteVisible" header="Delete Table No. {{selectedTable.tableNumber}}"
+description="Are you sure you wanna remove this table?" positiveLabel="Yes" negativeLabel="No" *ngIf="selectedTable != null"
+[selectedId]="selectedTable.id" (visibleChange)="deleteVisible = false" (yesEvent)="deleteTable($event)" 
+[isLoading]="tableService.deleteLoading"></are-you-sure-template>

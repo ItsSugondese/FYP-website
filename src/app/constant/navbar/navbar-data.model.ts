@@ -22,6 +22,12 @@ export const  NavbarConstant = [
         iconLibrary: "angular"
     },
     {
+        routeLink: ManagementRouteConstant.orderHistory,
+        label: "Order History",
+        icon: 'history',
+        iconLibrary: "angular"
+    },
+    {
         routeLink: ManagementRouteConstant.staffManagement,
         label: "Staff Management",
         icon: 'person',
@@ -48,6 +54,12 @@ export const  NavbarConstant = [
     {
         routeLink: ManagementRouteConstant.announcement,
         label: "Announcement",
+        icon: 'campaign',
+        iconLibrary: "angular"
+    },
+    {
+        routeLink: ManagementRouteConstant.staffDashboard,
+        label: "Staff Dashboard",
         icon: 'campaign',
         iconLibrary: "angular"
     },

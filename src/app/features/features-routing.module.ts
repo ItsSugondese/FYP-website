@@ -20,6 +20,7 @@ import { StaffDashboardComponent } from './dashboard/staff-dashboard/staff-dashb
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { GenerateReportComponent } from './generate-report/generate-report.component';
 import { TableManagementBodyComponent } from './management/table-management-body/table-management-body.component';
+import { OrderHistoryComponent } from './order-history/order-history.component';
 
 const routes: Routes = [
   {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  
@@ -36,6 +37,7 @@ const routes: Routes = [
 },
   {path: ManagementRouteConstant.addStaff, component : AddStaffComponent,},
   {path: ManagementRouteConstant.orderManagement, component: OrderManagementBodyComponent},
+  {path: ManagementRouteConstant.orderHistory, component: OrderHistoryComponent},
   {path: ManagementRouteConstant.onlineOrderManagement, component: OnlineOrdersComponent},
   {path: ManagementRouteConstant.onsiteOrderManagement, component: OnsiteOrdersComponent},
   {path: ManagementRouteConstant.userManagement, component: ManageUserBodyComponent},

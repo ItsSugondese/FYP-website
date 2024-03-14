@@ -45,7 +45,6 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
   notificationPayload !: NotificationPagination
 
   notificationsSubscription$ !: Subscription
-  testList = [1, 2, 3, 4, 5, 6, 3, 3, 3, 43, 4, 4, 34, 24, 2, 4, 24, 24, 2, 3]
   isOpen = false;
 
 

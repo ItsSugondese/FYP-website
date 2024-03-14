@@ -6,6 +6,7 @@ export const ManagementRouteConstant = {
     adminDashboard: 'admin/dashboard',
     staffDashboard: 'staff/dashboard',
     orderManagement: 'orders',
+    orderHistory: 'orders/history',
     userManagement: 'manage_users',
     staffManagement: 'admin/manage_staff',
     addStaff: 'admin/manage_staff/add_staff',
