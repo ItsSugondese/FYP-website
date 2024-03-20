@@ -1,6 +1,6 @@
 <!-- <div *ngIf="feedbackStatusList && feedbackData"> -->
 
-<div id="main-div" class="flex flex-col">
+<div id="main-div" class="flex flex-col" >
     <div class="flex justify-end mb-4">
         <calender-template [dateFilterType]="enumCalenderType.DAY"
             (selectedDate)="onRangeSelect($event)"></calender-template>
@@ -11,7 +11,7 @@
       </div>
     <ng-template #loaded>
     <ng-template #noData>
-    <div [class]="centerItems" *ngIf="paginatedData.content.length ==0">
+    <div [class]="centerItems" *ngIf="paginatedData && paginatedData.content.length ==0">
         <no-content-template></no-content-template>
       </div>
     </ng-template>

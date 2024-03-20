@@ -56,13 +56,5 @@ export const  NavbarConstant = [
         label: "Announcement",
         icon: 'campaign',
         iconLibrary: "angular"
-    },
-    {
-        routeLink: ManagementRouteConstant.staffDashboard,
-        label: "Staff Dashboard",
-        icon: 'campaign',
-        iconLibrary: "angular"
-    },
-    
-    
+    },   
 ];

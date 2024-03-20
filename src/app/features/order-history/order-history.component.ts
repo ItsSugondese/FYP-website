@@ -16,19 +16,11 @@ import { ManageFoodsService } from '../management/manage-food-body/manage-foods/
 })
 export class OrderHistoryComponent extends CommonVariable implements OnInit, OnDestroy {
 
-
+  viewOrderPopUp: boolean = false;
+  selectedOrder !: onsiteOrder | null
   orderHistoryList : onsiteOrder[] = []
-  shownItems: onsiteOrder[] = []; // List to store items that have been previously shown
 
-  // Function to add new items to the shownItems list
-  updateShownItems(newItems: onsiteOrder[]) {
-    // Add only the new items to the shownItems list
-    for (const newItem of newItems) {
-      if (!this.shownItems.some(item => item.id === newItem.id)) {
-        this.shownItems.push(newItem);
-      }
-    }
-  }
+ 
   orderHistoryPaginatedPayload !: OrderHistoryPagination
   orderHistoryPaginatedData !: PaginatedData<onsiteOrder>
 
@@ -41,7 +33,6 @@ export class OrderHistoryComponent extends CommonVariable implements OnInit, OnD
 
   collapsed !: boolean;
 
-  loadMore : boolean = false;
 
   constructor(public orderService: OnsiteOrdersService, private sideNavService: SidenavService,
     private foodService: ManageFoodsService) {
@@ -49,7 +40,15 @@ export class OrderHistoryComponent extends CommonVariable implements OnInit, OnD
   }
 
   
-
+  typedOrderToFilter(event: string){
+    if(event.trim() == ''){
+      this.orderHistoryPaginatedPayload.name = undefined
+    }else{
+      this.orderHistoryPaginatedPayload.name = event
+    }
+    this.setPageAndListToRestart()
+    this.fetchOrderHistory() 
+  }
  
 
   ngOnInit(): void {
@@ -63,9 +62,21 @@ export class OrderHistoryComponent extends CommonVariable implements OnInit, OnD
     });
   }
 
+  selectedFromOrderFilter(event: string ){
+    this.orderService.selectedHistoryOption = event
+    if(event == 'ALL'){
+      this.orderHistoryPaginatedPayload.payStatus  = undefined
+    }else{
+      this.orderHistoryPaginatedPayload.payStatus = event
+    }
+
+    this.setPageAndListToRestart()
+
+    this.fetchOrderHistory()
+  }
+
   onScroll = () => {
-    if (this.orderHistoryPaginatedData.totalPages != this.orderHistoryPaginatedPayload.page
-      && !this.loadMore) {
+    if (this.orderHistoryPaginatedData.totalPages != this.orderHistoryPaginatedPayload.page) {
       this.orderHistoryPaginatedPayload.page++
       this.fetchOrderHistory()
     }
@@ -77,6 +88,11 @@ export class OrderHistoryComponent extends CommonVariable implements OnInit, OnD
 
   }
 
+  setPageAndListToRestart(){
+    this.orderHistoryList = []
+    this.orderHistoryPaginatedPayload.page = 1
+  }
+
   onRangeSelect(event: Date[]) {
     const fromDate = event[0];
     const toDate = event[event.length - 1];
@@ -86,6 +102,7 @@ export class OrderHistoryComponent extends CommonVariable implements OnInit, OnD
     this.orderHistoryPaginatedPayload.fromDate = fromDateString
     this.orderHistoryPaginatedPayload.toDate = toDateString
 
+    this.setPageAndListToRestart()
     this.fetchOrderHistory()
 }
   
@@ -96,7 +113,6 @@ export class OrderHistoryComponent extends CommonVariable implements OnInit, OnD
         this.orderHistorySubscription$.unsubscribe()
         this.orderHistoryPaginatedData = res.data
         this.orderHistoryList = [...this.orderHistoryList, ...this.orderHistoryPaginatedData.content]
-        console.log(this.orderHistoryList.length)
         this.orderHistoryPaginatedData.content.forEach((orderDetails) => {
           orderDetails.orderFoodDetails.forEach(
             (foodItem) => {

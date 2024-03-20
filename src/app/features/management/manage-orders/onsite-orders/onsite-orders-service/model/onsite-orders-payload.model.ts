@@ -10,6 +10,7 @@ export interface OrderHistoryPagination extends paginationPayload{
     fromDate ?: string;
     toDate ?: string;
     name ?: string;
+    payStatus ?: string
 }
 
 export interface OnsiteOrderOfUserPagination extends paginationPayload{

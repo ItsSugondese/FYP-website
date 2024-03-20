@@ -1,92 +1,73 @@
-<div id="main-div" class="">
+<div id="main-div" class="" infiniteScroll [infiniteScrollDistance]="0" [infiniteScrollThrottle]="0"
+    (scrolled)="onScroll()">
 
-    <div class="flex justify-end">
-        <!-- <div class="top-right" (click)="visible = true">
-            <default-button-template [text]="'Make Announcement'"></default-button-template>
-      
-          </div> -->
+
+
+    <div>
+        <div class="flex w-full justify-between items-center mb-3 bg-white p-2 rounded-lg">
+            <div>
+                <search-template (typedData)="typedOrderToFilter($event)"></search-template>
+            </div>
+
+            <div class="top-right flex items-center" (click)="visible = true">
+                <div class="mr-3">
+                    <calender-template [dateFilterType]="enumCalenderType.WEEK"
+                        (selectedDate)="onRangeSelect($event)"></calender-template>
+                </div>
+                <div>
+                    <default-button-template [text]="'Make Announcement'"></default-button-template>
+                </div>
+            </div>
+
+        </div>
+
     </div>
-    <!-- <search-template (typedData)="typedUserToFilter($event)"></search-template>
 
-    <div *ngIf="manageUserService.loading; else loaded" [class]="centerItems">
+
+    <div *ngIf="announcementService.announcementLoading && announcementList.length == 0; else loaded"
+        [class]="centerItems">
         <mat-spinner style="color: red;"></mat-spinner>
     </div>
 
-    
+    <div [class]="centerItems" *ngIf="announcementList.length == 0 && !announcementService.announcementLoading">
+        <no-content-template></no-content-template>
+      </div>
     <ng-template #loaded>
-        <div [class]="centerItems" *ngIf="userListPaginated.content.length == 0; else notEmpty">
-            <no-content-template></no-content-template>
-          </div>
-        <ng-template #notEmpty>
-        <div class="h-full mt-4" >
-            <div class=" ">
-                <table class="w-full rounded-lg">
-                    <thead class="bg-[#f5f5f5] border-2 border-transparent">
-                        <tr class="text-customPrimary p-2 px-3 ">
-                            <th style="padding: inherit;">Username</th>
-                            <th>Email</th>
-                            <th>Account Status</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <ng-container *ngFor="let data of userListPaginated.content | paginate: {
-                            itemsPerPage : paginationJson.row,
-                            currentPage : userListPaginated.currentPageIndex,
-                            totalItems : userListPaginated.totalElements
-                        }; let first= first;">
-                            <tr class="table-row-hover bg-white p-2 px-3 hover:bg-[#f5f5f5] h-full   border-2 border-[#F0F0F0]
-                            
-                        text-sm" [class.border-t-0]="first">
-                                <td class="hidden">{{data.id}}</td>
-                                <td style="padding: inherit;">{{data.fullName}}</td>
-                                <td>{{data.email}}</td>
-                                <td class="pl-5">
-
-
-                                    <text-type-template [text]="'Running'"
-                                        *ngIf="data.accountNonLocked; else disabled"></text-type-template>
-
-                                    <ng-template #disabled>
-                                        <text-type-template [text]="'Disabled'" [status]="false"></text-type-template>
-                                    </ng-template>
-
-                                </td>
-                                <td align="center" class="h-full mt-2">
-
-                                    <mat-icon class="hover:cursor-pointer h-full"
-                                        style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
-                                        (click)="navigateToSingle(data)">visibility</mat-icon>
-
-                                </td>
-
-                            </tr>
-                        </ng-container>
-                    </tbody>
-
-
-                </table>
-                <tfoot class="flex justify-between  w-full h-full mt-2">
-                    <p>{{userListPaginated.numberOfElements}} of {{userListPaginated.totalElements}} items</p>
-                    
-                        <pagination-controls previousLabel="Prev" nextLabel="Next"
-                            (pageChange)="onTableDataChange($event)" class="">
-                        </pagination-controls>
-                    
-                    
-                        <div class="bg-white w-fit pr-3">
-    
-                            <pagination-dropdown-template [data]="tableSizes" [defaultSelected]="paginationJson.row"
-                                (selectedDropdownOptionChange)="onSelectedDropdown($event)"></pagination-dropdown-template>
-                            <span>/page</span>
+        <div class="mb-4">
+        <ng-container *ngFor="let data of announcementList">
+            <div class=" bg-white rounded-xl  px-3 mt-4 py-2">
+                <div class="header flex  justify-between ">
+                    <div class="left-header flex ">
+                        <div class="image-container mr-1">
+                            <div class="w-12 h-12  rounded-full overflow-hidden">
+                                <img [src]="imageDataMap[data.userId] == null? 'assets/avatar/anon.jpg' : imageDataMap[data.userId]"
+                                    alt="Your Image" class="w-full h-full object-cover" />
+                            </div>
                         </div>
-                 
+                        <div class="feedback-details flex flex-col">
+                            <span class="text-xl font-semibold">{{data.postedBy}}</span>
+                            <span class="text-sm text-black font-extralight">{{data.date}}</span>
+                        </div>
+                    </div>
+                    <!-- <div class="right-header text-base">
+                <span class="text-[#15803D]"
+                    [class.text-yellow-600]="data.feedbackStatus.toLocaleLowerCase() == 'positive'"
+                    [class.text-red-600]="data.feedbackStatus.toLocaleLowerCase() == 'negative'">
+                    {{data.feedbackStatus}}
+                </span>
 
-                </tfoot>
+            </div> -->
+                </div>
+
+                <div class="feedback-content  text-base mt-2">
+                    {{data.message}}
+                </div>
             </div>
-        </div>
+        </ng-container>
+    </div>
     </ng-template>
-       
-    </ng-template> -->
+
+    <div class="pb-4" *ngIf="announcementService.announcementLoading && announcementList.length > 0">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
 </div>

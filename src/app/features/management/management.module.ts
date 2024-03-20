@@ -32,6 +32,7 @@ import { AddUserComponent } from './people-management/manage-user-body/manage-us
 import { TableManagementBodyComponent } from './table-management-body/table-management-body.component';
 import { TableDrawerComponent } from './table-management-body/table-drawer/table-drawer.component';
 import { TableManagementComponent } from './table-management-body/table-management/table-management.component';
+import { OverlayModule } from "@angular/cdk/overlay";
 
 
 
@@ -71,6 +72,7 @@ import { TableManagementComponent } from './table-management-body/table-manageme
     BsDatepickerModule.forRoot(),
     NgprimeModule,
     TemplatesModule,
+    OverlayModule
   ]
 })
 export class ManagementModule { }

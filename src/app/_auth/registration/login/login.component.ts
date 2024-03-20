@@ -111,7 +111,15 @@ export class LoginComponent implements OnInit {
           this.userService.setToken(result.data.jwtToken);
           this.userService.setRoles(result.data.roles);
           this.userService.setUsername(result.data.username);
+          const role = result.data.roles[0];
+          if(role == 'ADMIN'){
           this.router.navigate(['/' + ManagementRouteConstant.adminDashboard])
+        }else if(role == 'STAFF'){
+            this.router.navigate(['/' + ManagementRouteConstant.staffDashboard])
+          }else{
+            this.router.navigate(['/' + UserRouteConstant.homepage])
+
+          }
           
         }
       )

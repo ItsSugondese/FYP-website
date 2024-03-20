@@ -50,7 +50,10 @@
  *ngIf="users">
     <ng-template pTemplate="caption">
         <div class="flex items-center">
-            <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" ></button>
+            <!-- <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" ></button> -->
+            <div>
+              
+            </div>
             <span class="p-input-icon-left ml-auto">
               <div>
                 <search-template (typedData)="typedUserToFilter($event)"></search-template>

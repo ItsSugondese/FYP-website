@@ -13,9 +13,24 @@
 
 
       <div class="filter-header-right flex  items-center">
-        <search-template (typedData)="typedFoodToFilter($event)"></search-template>
+        <div>
+          <search-template (typedData)="typedFoodToFilter($event)"></search-template>
+          <div class="w-fit" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="isOpen = true">
+            Click here
+          </div>
+          <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
+                        [cdkConnectedOverlayOpen]="isOpen"  [cdkConnectedOverlayHasBackdrop]="true"
+                        [cdkConnectedOverlayBackdropClass]="'cdk-overlay-transparent-backdrop'"
+                        (overlayOutsideClick)="isOpen = false"
+                        [cdkConnectedOverlayPositions]="[{originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'top', 
+                                                    offsetY: 20}]">
+Hello content
+                       
+                    </ng-template>
+          
+        </div>
 
-        <div (click)="toggleFormToEdit(null); toggleDrawer(true)">
+        <div (click)="toggleFormToEdit(null); toggleDrawer(true)" *ngIf="userService.getSingleRole() != 'STAFF'">
           <add-button-template [text]="'Menu'"></add-button-template>
         </div>
       </div>

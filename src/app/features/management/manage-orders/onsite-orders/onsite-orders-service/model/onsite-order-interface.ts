@@ -15,5 +15,6 @@ export interface onsiteOrder {
     markAsRead: boolean;
     payStatus: string;
     payStatusCheck: string;
+    date: string;
 }
 

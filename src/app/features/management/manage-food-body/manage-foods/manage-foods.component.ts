@@ -16,6 +16,7 @@ import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
 import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
+import { UserService } from '@shared/service/user-service/user.service';
 
 @Component({
   selector: 'app-manage-foods',
@@ -26,8 +27,11 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
 
   @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
 
+  isOpen : boolean = false;
   // centerItems : string = CenterItems()
 
+  selectedColor !: string;
+  colors: string[] = ['Red', 'Green', 'Blue', 'Yellow'];
   
   toggleDrawer(isOopen : boolean){
     this.onOpeningDrawer.emit(isOopen)
@@ -56,7 +60,8 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
   constructor(public foodService : ManageFoodsService,
     private formBuilder : FormBuilder, private router: Router,
     private sideNavService: SidenavService, private enumService: EnumService,
-    private addFoodService: AddFoodService, private snackService: SnackbarService
+    private addFoodService: AddFoodService, private snackService: SnackbarService,
+    public userService: UserService
     ) {
       super()
     }

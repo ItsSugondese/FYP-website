@@ -17,6 +17,13 @@ enum OnsiteOrderFilter{
   CANCELED = "Canceled"
 }
 
+enum OrderHistoryPayFilter{
+  ALL = "All",
+  PAID = "Paid",
+  UNPAID = "Unpaid",
+  PARTIAL_PAID = "Partial Paid",
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,12 +32,19 @@ export class OnsiteOrdersService extends ServiceCommonVariable {
   moduleName = "onsite-order"
   updateOrderLoader : boolean = false
   onsiteFilterEnum = OnsiteOrderFilter
+  orderHistoryEnum = OrderHistoryPayFilter
+  
+  
+  options: EnumItem[] = this.enumToEnumItems(OnsiteOrderFilter)
+  selectedOption = Object.keys(OnsiteOrderFilter)[0]
+
+
+  historyOptions: EnumItem[] = this.enumToEnumItems(OrderHistoryPayFilter)
+  selectedHistoryOption = Object.keys(OrderHistoryPayFilter)[0]
+  
   constructor(private httpClient : HttpClient) {
     super()
    }
-
-   options: EnumItem[] = this.enumToEnumItems(OnsiteOrderFilter)
-   selectedOption = Object.keys(OnsiteOrderFilter)[0]
 
    public markingLoading = {
     status: false,

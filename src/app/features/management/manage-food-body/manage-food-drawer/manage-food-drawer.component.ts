@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { ManageFoodsService } from '../manage-foods/manage-foods-service/manage-foods.service';
 import { Subscription } from 'rxjs';
 import { FoodMenuWithImageData, foodMenu } from '../manage-foods/manage-foods-service/model/food-menu.model';
+import { UserService } from '@shared/service/user-service/user.service';
 
 @Component({
   selector: 'app-manage-food-drawer',
@@ -15,14 +16,24 @@ export class ManageFoodDrawerComponent implements OnInit, OnDestroy {
   
   editFoodIndex = 1
   feedbackIndex = 2
-  selectedNavbar : number = this.editFoodIndex;
+  selectedNavbar !: number
   navItem = 
     {[this.editFoodIndex]: "Food Details", [this.feedbackIndex]: "Feedback"}
     selectedFoodMenuSubscribable$ !: Subscription
   selectedFoodMenu !: FoodMenuWithImageData | null
+  userRole !: string
 
-    constructor(private foodService: ManageFoodsService,){}
+    constructor(private foodService: ManageFoodsService, private userService: UserService){}
+
     ngOnInit(): void {
+      this.userRole = this.userService.getSingleRole()
+
+      if(this.userRole == 'STAFF'){
+        this.selectedNavbar =   this.feedbackIndex;
+      }else{
+        this.selectedNavbar = this.editFoodIndex;
+      }
+
       this.selectedFoodMenuSubscribable$ = this.foodService.getSelectedFoodMenu().subscribe(
       (item) => {
         this.selectedFoodMenu = item == null? null :   item

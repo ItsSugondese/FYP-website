@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Customer, Representative } from './customer';
-import { Table } from '../../management/table-management-body/table-management/table-management-service/model/table.model';
-import { CustomerService } from './customerservice';
-import { ManageUsersService } from '../../management/people-management/manage-user-body/manage-users/manage-users-service/manage-users.service';
-import { Subscription } from 'rxjs';
-import { UserFinanceData, UserFinancePaginationPayload } from '../dashboard-service/model/user-finance-data.model';
-import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
-import { PaginatorState } from 'primeng/paginator';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonVariable } from '@shared/helper/inherit/common-variable';
+import { Observable } from 'rxjs';
+import { ResponseData } from 'src/app/constant/data/response-data.model';
+import { ManagementRouteConstant } from 'src/app/constant/routing/management-routing-constant.model';
+import { ManageOrdersNavbarService, OrderNav } from '../../management/manage-orders/manage-orders-navbar/manage-orders-navbar-service/manage-orders-navbar.service';
+import { ManageUsersService } from '../../management/people-management/manage-user-body/manage-users/manage-users-service/manage-users.service';
+import { DashboardService } from '../dashboard-service/dashboard.service';
+import { FoodMenuData, FoodMenuDataPayload } from '../dashboard-service/model/food-menu-data.model';
+import { OrderData, OrderDataPayload } from '../dashboard-service/model/order-data.model';
+import { RevenueData, RevenueDataPayload } from '../dashboard-service/model/revenue-data.model';
+import { UsersData, UsersDataPayload } from '../dashboard-service/model/user-data.model';
 
 interface PageEvent {
   first: number;
@@ -20,99 +23,60 @@ interface PageEvent {
   templateUrl: './staff-dashboard.component.html',
   styleUrls: ['./staff-dashboard.component.scss']
 })
-export class StaffDashboardComponent extends CommonVariable implements OnInit {
-  customers!: Customer[];
+export class StaffDashboardComponent 
 
-  representatives!: Representative[];
-  users!: PaginatedData<UserFinanceData>;
+extends CommonVariable implements OnInit, OnDestroy {
 
-  statuses!: any[];
 
-  loading: boolean = true;
+  orderDataSubscription$ !: Observable<ResponseData<OrderData>>
+  revenueDataSubscription$ !: Observable<ResponseData<RevenueData>>
+  foodMenuDataSubscription$ !: Observable<ResponseData<FoodMenuData>>
+  revenueDataPayload : RevenueDataPayload = {}
+  foodMenuDataPayload : FoodMenuDataPayload = {}
 
-  activityValues: number[] = [0, 100];
+  orderDataPayload !: OrderDataPayload
 
-  userDataSubscription$ !: Subscription
-  financeDataPayload : UserFinancePaginationPayload = {
-    row : 1,
-    page: 1,
-    fromDate: "2024-01-01",
-    toDate : "2024-04-01",
-  }
-  constructor(private customerService: CustomerService, private userService: ManageUsersService) {
+  constructor(private dashboardService: DashboardService, public orderService: ManageOrdersNavbarService,
+    private orderNavService: ManageOrdersNavbarService, private router: Router, private userService: ManageUsersService) {
     super()
   }
 
-  onTableDataChange(event: any) {
-    this.financeDataPayload.page = event
-    this.fetchData();
-  }
- 
-  onSelectedDropdown(event: any) {
-    if (this.financeDataPayload.row != event) {
-      this.financeDataPayload.row = event
-      this.financeDataPayload.page = 1
-      this.fetchData();
-    }
-  }
 
-fetchData(){
-this.userDataSubscription$ = this.userService.getFinanceData(this.financeDataPayload).subscribe(
-  (res) => {
-    this.users = res.data
-  }
-)
-}
   ngOnInit() {
-    this.fetchData()
-      this.customerService.getCustomersLarge().then((customers) => {
-          this.customers = customers;
-          this.loading = false;
+    this.orderDataPayload = {
+      timeDifference: this.orderService.timeDifference
+    }
+  
+  this.orderDataSubscription$ = this.dashboardService.getOrderData(this.orderDataPayload);
+  this.revenueDataSubscription$ = this.dashboardService.getRevenueData(this.revenueDataPayload);
+  this.foodMenuDataSubscription$ = this.dashboardService.getFoodMenuData(this.foodMenuDataPayload);
 
-          this.customers.forEach((customer) => (customer.date = new Date(<Date>customer.date)));
-      });
+  }
 
-      this.representatives = [
-          { name: 'Amy Elsner', image: 'amyelsner.png' },
-          { name: 'Anna Fali', image: 'annafali.png' },
-          { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-          { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-          { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-          { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-          { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-          { name: 'Onyama Limba', image: 'onyamalimba.png' },
-          { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-          { name: 'Xuxue Feng', image: 'xuxuefeng.png' }
-      ];
+  goToManageOrder(selected : string){
+    if(selected.toUpperCase() == "ONLINE".toUpperCase()){
+    this.orderNavService.selectedNavbar = OrderNav.ONLINE
+  }else{
+      this.orderNavService.selectedNavbar = OrderNav.ONSITE
+    }
+    this.router.navigate(['/' + ManagementRouteConstant.orderManagement]);
+  }
+  
+  navigateToFoodMenu(){
+    this.router.navigate(['/' + ManagementRouteConstant.foodManagement]);
+  }
 
-      this.statuses = [
-          { label: 'Unqualified', value: 'unqualified' },
-          { label: 'Qualified', value: 'qualified' },
-          { label: 'New', value: 'new' },
-          { label: 'Negotiation', value: 'negotiation' },
-          { label: 'Renewal', value: 'renewal' },
-          { label: 'Proposal', value: 'proposal' }
-      ];
+  navigateToStaffManagement(){
+    this.router.navigate(['/' + ManagementRouteConstant.staffManagement]);
+  }
+
+  
+
+
+  ngOnDestroy(): void {
+   
   }
 
 
 
-  getSeverity(status: string) : string {
-      switch (status.toLowerCase()) {
-          case 'unqualified':
-              return 'danger';
-
-          case 'qualified':
-              return 'success';
-
-          case 'new':
-              return 'info';
-
-          case 'negotiation':
-              return 'warning';
-
-              default: 
-              return 'success'
-      }
-  }
 }

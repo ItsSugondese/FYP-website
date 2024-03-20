@@ -1,8 +1,8 @@
 import { ManagementRouteConstant } from "../routing/management-routing-constant.model";
 
-export const  NavbarConstant = [
+export const  StaffNavbarConstant = [
     {
-        routeLink: ManagementRouteConstant.adminDashboard,
+        routeLink: ManagementRouteConstant.staffDashboard,
         label: "Dashboard",
         icon: 'dashboard',
         iconLibrary: "angular"
@@ -21,9 +21,9 @@ export const  NavbarConstant = [
         iconLibrary: "angular"
     },
     {
-        routeLink: ManagementRouteConstant.staffManagement,
-        label: "Staff Management",
-        icon: 'person',
+        routeLink: ManagementRouteConstant.orderHistory,
+        label: "Order History",
+        icon: 'history',
         iconLibrary: "angular"
     },
     {
@@ -32,11 +32,4 @@ export const  NavbarConstant = [
         icon: 'people',
         iconLibrary: "angular"
     },
-    {
-        routeLink: ManagementRouteConstant.addStaff,
-        label: "Staff Management",
-        icon: 'dining',
-        iconLibrary: "angular"
-    },
-    
 ];

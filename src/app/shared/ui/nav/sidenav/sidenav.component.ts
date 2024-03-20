@@ -3,6 +3,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { NavbarConstant } from 'src/app/constant/navbar/navbar-data.model';
 import { SidenavService } from './sidenav-service/sidenav.service';
+import { UserService } from '@shared/service/user-service/user.service';
+import { StaffNavbarConstant } from 'src/app/constant/navbar/staff-navbar-data.model';
 
 export interface SideNavToggle{
   screenWidth: number;
@@ -34,10 +36,11 @@ export class SidenavComponent implements OnInit {
     this.sidenavService.setScreenResize(this.screenWidth);
   }
 
-  constructor(private router: Router, public sidenavService: SidenavService) {}
+  constructor(private router: Router, public sidenavService: SidenavService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
+  this.labelData =  this.userService.getSingleRole() == 'ADMIN' ? NavbarConstant : StaffNavbarConstant
   }
 
 
