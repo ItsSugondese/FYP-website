@@ -95,48 +95,10 @@
   </ng-template>
   </ng-template>
    
+  <pay-cash-template [visible]="payCashPopUp" [max]="res.data" [min]="1" [userId]="userId" (visibleChange)="payCashPopUp = false"
+  (postStatus)="this.payCashPopUp = false; this.getPaginatedData(); amountToPayData()"></pay-cash-template>
 
-    <p-dialog [(visible)]="payCashPopUp" [closable]="true" [style]="{'width': '700px'}" [modal]="true">
-
-
-  <ng-container>
-    <div class="container-box">
-
-      <div class="item-description flex flex-col mt-2">
-
-
-        <div class="flex flex-col justify-center items-center">
-          <div class="text-xl">
-            Total To Pay: <span class="text-customPrimary ">Rs. {{res}}</span>
-          </div>
-        </div>
-      </div>
-
-
-
-
-      <form class="my-4">
-        <div class="flex justify-center  ">
-          <div class="text-[#343A40] ">Rs.</div>
-
-          <input
-            class="ml-4 w-20 border-2 text-center p-0 border-[#CED4DA] focus:border-customPrimary  focus:outline-none"
-            id="amount" [min]="0" [max]="res" [(ngModel)]="paidAmount" name="quantity">
-
-        </div>
-
-      </form>
-
-      <div class="flex justify-center">
-        <button type="submit" data-dismiss="modal"
-          [ngClass]="{'disabled-button': paidAmount == null  || paidAmount <= 0 || paidAmount >  res.data}"
-          (click)="postRemainingPayment(paidAmount)"
-          class="text-white bg-customPrimary hover:cursor-pointer  items-center rounded px-2  py-1.5 text-base">Select</button>
-
-      </div>
-    </div>
-  </ng-container>
-</p-dialog>
+  
 </div>
 
 

@@ -40,6 +40,12 @@ export const  NavbarConstant = [
         iconLibrary: "angular"
     },
     {
+        routeLink: ManagementRouteConstant.userManagementPayment,
+        label: "User Payment",
+        icon: 'payments',
+        iconLibrary: "angular"
+    },
+    {
         routeLink: ManagementRouteConstant.tableManagement,
         label: "Table Management",
         icon: 'table_restaurant',

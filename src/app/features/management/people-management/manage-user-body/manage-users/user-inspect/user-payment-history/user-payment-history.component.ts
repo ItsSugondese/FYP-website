@@ -44,10 +44,14 @@ export class UserPaymentHistoryComponent extends CommonVariable implements OnIni
 
   ngOnInit(): void {
     this.paginationJson.userId = this.userId
-    this.amountToPaySubscription$ = this.paymentService.getUserAmountToPay(this.userId)
+    this.amountToPayData()
     this.getPaginatedData()
   }
 
+  amountToPayData(){
+    this.amountToPaySubscription$ = this.paymentService.getUserAmountToPay(this.userId)
+
+  }
  
 
   inspectingOrder(data: onsiteOrder) {
@@ -56,20 +60,6 @@ export class UserPaymentHistoryComponent extends CommonVariable implements OnIni
     this.paymentHistoryOfOrderSubscription$ = this.paymentService.getUserPaymentHistory(this.selectedOrder.id);
   }
 
-  postRemainingPayment(amount: number) {
-    const payload: RemainingPaymentPayload = {
-      paidAmount: amount,
-      userId: this.userId
-    }
-    this.postRemainingPaymentSubscriable$ = this.paymentService.postRemainingPayment(payload).subscribe(
-      (res) => {
-        this.payCashPopUp = false;
-        this.getPaginatedData()
-        this.postRemainingPaymentSubscriable$.unsubscribe()
-
-      }
-    )
-  }
 
 
 

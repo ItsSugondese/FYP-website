@@ -21,6 +21,7 @@ import { AnnouncementComponent } from './announcement/announcement.component';
 import { GenerateReportComponent } from './generate-report/generate-report.component';
 import { TableManagementBodyComponent } from './management/table-management-body/table-management-body.component';
 import { OrderHistoryComponent } from './order-history/order-history.component';
+import { UserManagementPaymentComponent } from './management/people-management/user-management-payment/user-management-payment.component';
 
 const routes: Routes = [
   {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  
@@ -41,15 +42,12 @@ const routes: Routes = [
   {path: ManagementRouteConstant.onlineOrderManagement, component: OnlineOrdersComponent},
   {path: ManagementRouteConstant.onsiteOrderManagement, component: OnsiteOrdersComponent},
   {path: ManagementRouteConstant.userManagement, component: ManageUserBodyComponent},
-  {path: 'manage_users/:id', component: UserDetailsComponent},
-  {path: 'manage_users/:id/history', component: UserDisableHistoryComponent},
+  {path: ManagementRouteConstant.userManagementPayment, component: UserManagementPaymentComponent},
   {path: ManagementRouteConstant.adminDashboard, component: AdminDashboardComponent},
   {path: ManagementRouteConstant.staffDashboard, component: StaffDashboardComponent},
   {path: ManagementRouteConstant.announcement, component: AnnouncementComponent},
   {path: ManagementRouteConstant.report, component: GenerateReportComponent},
   {path: ManagementRouteConstant.tableManagement, component: TableManagementBodyComponent},
-  // {path: 'feedback/:id', component: FeedbackComponent}
-  {path: 'feedback/:id', component: FeedbackInspectComponent},
   {path: 'test', component: TestComponent}
 ];
 

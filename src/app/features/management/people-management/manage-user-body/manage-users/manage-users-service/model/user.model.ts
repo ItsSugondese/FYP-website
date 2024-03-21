@@ -6,4 +6,5 @@ export interface User {
     fullName: string;
     userType : string;
     isExternal: boolean;
+    remainingAmount: number;
   }

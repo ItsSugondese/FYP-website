@@ -18,6 +18,9 @@ import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.comp
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
 import { UserService } from '@shared/service/user-service/user.service';
 
+
+
+
 @Component({
   selector: 'app-manage-foods',
   templateUrl: './manage-foods.component.html',
@@ -27,17 +30,16 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
 
   @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
 
-  isOpen : boolean = false;
-  // centerItems : string = CenterItems()
 
-  selectedColor !: string;
-  colors: string[] = ['Red', 'Green', 'Blue', 'Yellow'];
+
+  mapValues: { [key: string]: boolean | null } = {
+    'All': null,
+    'Available': true,
+    'Not Available': false
+  };
+
   
-  toggleDrawer(isOopen : boolean){
-    this.onOpeningDrawer.emit(isOopen)
-  }
-
-
+  
   searchData!: string;
   navbarCollapse$ !: Subscription;
   collapsed !: boolean;
@@ -51,7 +53,6 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
   foodMenuPagination : FoodMenuPagination = {
     page: 1,
     row: 10,
-    filter: 'ALL'
   }
 
   
@@ -66,24 +67,27 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
       super()
     }
 
-   
+    
   ngOnInit(): void {
     this.addFoodService.setIsSaved(false)
     
     this.navbarCollapse$ =  this.sideNavService.getCollapsed().subscribe((collapsed) => {
       this.collapsed = collapsed;
     });
-
+    
     this.addFoodService.getIsSaved().subscribe(
       (result) => {
         this.getFoodMenu()
       }
-    )
-    this.getFoodMenu()
-  }
+      )
+      this.getFoodMenu()
+    }
+    
+    
+    
 
 
-  handleCheckboxChange(item: foodMenu, index: number, event: any){ 
+    handleCheckboxChange(item: foodMenu, index: number, event: any){ 
     const isChecked = event.target.checked;
     console.log(isChecked)
     this.toggleAvailableToday$ = this.foodService.toggleFoodMenu({
@@ -127,7 +131,16 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
       this.foodService.sendSelectedFoodMenu(val)
     }
     
-    
+    onInputChange(val: boolean | null){
+      this.foodMenuPagination.filter = val
+      this.getFoodMenu()
+    }
+  
+  
+
+    toggleDrawer(isOopen : boolean){
+      this.onOpeningDrawer.emit(isOopen)
+    }
 
 
    getFoodMenu(){

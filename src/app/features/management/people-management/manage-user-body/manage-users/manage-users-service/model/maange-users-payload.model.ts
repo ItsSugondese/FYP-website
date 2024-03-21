@@ -2,7 +2,8 @@ import { paginationPayload } from "src/app/shared/model/pagination/pagination.mo
 
 export interface manageUserPagination extends paginationPayload{
     userType : string[];
-    name ?: string | undefined
+    name ?: string | undefined;
+    payStatus ?: string | null
 }
 
 export interface disableUser {

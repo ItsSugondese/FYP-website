@@ -27,9 +27,9 @@ export const  StaffNavbarConstant = [
         iconLibrary: "angular"
     },
     {
-        routeLink: ManagementRouteConstant.userManagement,
-        label: "User Management",
-        icon: 'people',
+        routeLink: ManagementRouteConstant.userManagementPayment,
+        label: "User Payment",
+        icon: 'payments',
         iconLibrary: "angular"
     },
 ];

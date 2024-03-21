@@ -46,7 +46,7 @@ export class OnlineOrdersComponent extends OrderCommonVariable implements OnInit
   foodMenuPagination: FoodMenuPagination = {
     page: 1,
     row: 10,
-    filter: 'TODAY',
+    filter: true,
   }
   
   items: any[] | undefined;

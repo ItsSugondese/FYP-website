@@ -19,6 +19,10 @@ import { TextTypeCustomColorComponent } from './design/type-text/text-type-custo
 import { AnnouncementPopUpComponent } from './pop-up/announcement.template.component';
 import { AnnouncementButtonComponent } from './buttons/announcement-button.template.component';
 import { DoughnutSalesComponent } from './chart/doughnut-sales.template.component';
+import { SearchWithFilterTemplateComponent } from './search/search-with-filter.template.component';
+import { OverlayModule } from "@angular/cdk/overlay";
+import { PayCashComponent } from './pop-up/pay-cash.template.componenet';
+
 
 
 
@@ -39,14 +43,17 @@ import { DoughnutSalesComponent } from './chart/doughnut-sales.template.componen
   TextTypeCustomColorComponent,
   AnnouncementPopUpComponent,
   AnnouncementButtonComponent,
-  DoughnutSalesComponent
+  DoughnutSalesComponent,
+  SearchWithFilterTemplateComponent,
+  PayCashComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     NgprimeModule,
     FormModule,
-    MaterialModule
+    MaterialModule,
+    OverlayModule
   ],
   exports:[
     FoodFilterComponent,
@@ -64,7 +71,9 @@ import { DoughnutSalesComponent } from './chart/doughnut-sales.template.componen
   TextTypeCustomColorComponent,
   AnnouncementPopUpComponent,
   AnnouncementButtonComponent,
-  DoughnutSalesComponent
+  DoughnutSalesComponent,
+  SearchWithFilterTemplateComponent,
+  PayCashComponent
   ]
 })
 export class TemplatesModule { }

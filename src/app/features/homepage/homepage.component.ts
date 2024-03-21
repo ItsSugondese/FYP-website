@@ -48,7 +48,7 @@ export class HomepageComponent extends CommonVariable implements OnInit, OnDestr
   foodMenuPagination : FoodMenuPagination = {
     page: 1,
     row: 10,
-    filter:  'TODAY'
+    filter:  true
   }
   
   constructor(private homepageService: HomepageService,
