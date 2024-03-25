@@ -7,27 +7,30 @@
     [loading]="load"
  *ngIf="userListPaginated">
     <ng-template pTemplate="caption">
-        <div class="flex items-center">
+        <div class="flex items-center justify-between">
             
                 <div>
                     <food-filter-template [selectedKey]="userPaymentManagementService.selectedOption" [options]="userPaymentManagementService.options" (optionSelected)="selectedFromUserFilter($event!)"></food-filter-template>
                   </div>
             
-            <span class="p-input-icon-left ml-auto">
-              <div>
-                <search-template (typedData)="typedUserToFilter($event)"></search-template>
-              </div>
+                  <div>
 
-            </span>
-            <p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
-                <ng-template pTemplate="header">
-                    <div class="px-3 pt-3 pb-0">
-                        <span class="font-bold">Agent Picker</span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                </ng-template>
-            </p-columnFilter>
+                      <span class="p-input-icon-left ">
+                        <div>
+                          <search-template (typedData)="typedUserToFilter($event)"></search-template>
+                        </div>
+          
+                      </span>
+                      <p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                          <ng-template pTemplate="header">
+                              <div class="px-3 pt-3 pb-0">
+                                  <span class="font-bold">Agent Picker</span>
+                              </div>
+                          </ng-template>
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                          </ng-template>
+                      </p-columnFilter>
+                  </div>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -125,3 +128,7 @@
 
     <pay-cash-template [visible]="payCashPopUp" [max]="selectedUser.remainingAmount" [min]="1" [userId]="selectedUser.id" (visibleChange)="payCashPopUp = false"
       (postStatus)="this.payCashPopUp = false; this.getPaginatedData();" *ngIf="selectedUser"></pay-cash-template>
+      
+<!-- <div id="main-div">
+    <user-payment-management-table-template></user-payment-management-table-template>
+</div> -->

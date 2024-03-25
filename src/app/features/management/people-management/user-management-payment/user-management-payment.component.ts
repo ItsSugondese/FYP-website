@@ -65,6 +65,7 @@ export class UserManagementPaymentComponent extends CommonVariable implements On
       this.paginationJson.payStatus = event
     }
 
+    this.paginationJson.page = 1;
     this.getPaginatedData()
   }
 

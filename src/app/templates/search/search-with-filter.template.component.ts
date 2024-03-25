@@ -14,8 +14,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
           [cdkConnectedOverlayHasBackdrop]="true"
           [cdkConnectedOverlayBackdropClass]="'cdk-overlay-transparent-backdrop'" (overlayOutsideClick)="isOpen = false"
           [cdkConnectedOverlayPositions]="[{originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'top', 
-                                                    offsetY: 30}]">
-          <div class="bg-white p-3 border-gray-50 drop-shadow-lg">
+                                                    offsetY: 30}]" style="z-index: 9">
+          <div class="bg-white p-3 border-gray-50 drop-shadow-lg z-10">
             <ng-container *ngFor="let key of getMapKeys(); let last = last">
               <input class="hover:cursor-pointer" type="radio" name="value" [value]="filterDataList[key]" [(ngModel)]="selectedItem"
                 (change)="onInputChange(selectedItem)">
@@ -34,6 +34,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
         </div>
   `,
   styles: [
+    `
+    .cdk-overlay-container{
+  z-index:9; //lower then fixed header z-index so it goes behind it
+}
+    `
 ],
 })
 export class SearchWithFilterTemplateComponent implements OnInit{
@@ -43,7 +48,7 @@ export class SearchWithFilterTemplateComponent implements OnInit{
 @Input() selectedItem : any | null ;
   @Output() typedData : EventEmitter<string> = new EventEmitter();
   @Output() selectedFilter : EventEmitter<any | null> = new EventEmitter();
-  isOpen: boolean = false
+  @Input() isOpen: boolean = false
 
     constructor() { }
   

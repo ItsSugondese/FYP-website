@@ -16,6 +16,7 @@ import { NotificationService } from '@shared/service/notification-service/notifi
 import { NotificationPagination } from '@shared/service/notification-service/model/notification.payload';
 import { NotificationModel } from '@shared/service/notification-service/model/notification.model';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
+import { ManageStaffService } from 'src/app/features/management/people-management/manage-staff-body/manage-staff/manage-staff-service/manage-staff.service';
 
 enum HeaderNav {
   HOMEPAGE = "Homepage",
@@ -38,7 +39,9 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
   options: EnumItem[] = this.enumToEnumItems(HeaderNav);
   manageOrderOptions: EnumItem[] = this.enumToEnumItems(OrderNav)
   selectedNavbar = HeaderNav.HOMEPAGE
-  userSubscription$ !: Observable<ResponseData<User>>
+  userSubscription$ !: Subscription
+  userPictureSubscription$ !: Subscription
+  // userSubscription$ !: Observable<ResponseData<User>>
   notificationCountSubscription$ !: Observable<ResponseData<number>>
 
   notificationPaginatedData !: ResponseData<PaginatedData<NotificationModel>>
@@ -47,10 +50,11 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
   notificationsSubscription$ !: Subscription
   isOpen = false;
 
-
+  userData !: User
 
   private totalItems = 100;
   notifications: NotificationModel[] = []
+  imageMap : string | null = null
  
 
 
@@ -86,18 +90,42 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
 
   constructor(private userProfileService: UserProfileService, public userService: UserService,
     public router: Router, public sidenavService: SidenavService, public managementNavbarService: ManageOrdersNavbarService,
-    public notificationService: NotificationService) {
+    public notificationService: NotificationService, private staffService: ManageStaffService) {
     super()
   }
 
 
   ngOnInit(): void {
-    this.userSubscription$ = this.userProfileService.getUserProfile()
+    this.userSubscription$ = this.userProfileService.getUserProfile().subscribe(
+      (res) => {
+        this.userData = res.data
+
+        if(this.userData.userType == 'USER'){
+          this.imageMap = this.userData.profilePath
+        }else{
+        this.userPictureSubscription$ = this.staffService.getStaffPicture(this.userData.id).subscribe((imageBlob: Blob) => {
+    
+    
+          this.createImageFromBlob(imageBlob, this.userData.id)
+            .then((imageData) => {
+              this.imageMap = imageData;
+    
+            })
+            .catch((error) => {
+              console.log("error when trying to access")
+            });
+        }
+        );
+      }
+
+      }
+    )
     this.notificationCountSubscription$ = this.notificationService.getNewNotificationCount();
     this.notificationPayload = {
       page: 1,
       row: 6
     }
+
   }
 
   updateSelectedNavbar(value: string) {

@@ -1,4 +1,4 @@
-<div class="fixed w-full flex justify-between z-10  bg-white  items-end">
+<div class="fixed w-full flex justify-between z-20  bg-white  items-end">
     <div *ngIf="userService.getSingleRole() !='USER'; else logoHeader"></div>
     <ng-template #logoHeader>
         <div>
@@ -64,7 +64,7 @@
     <div class="dropdown">
 
 
-        <div class="pr-6   py-1" *ngIf="(userSubscription$ | async) as response">
+        <div class="pr-6   py-1" *ngIf="userData">
             <div class="header-right-content flex items-center justify-center">
                 <div class="hover:cursor-pointer notification h-full flex items-center text-xl"
                     (click)="isOpen = !isOpen; appendData()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
@@ -123,9 +123,9 @@
                 <button class="ml-6 flex items-center   dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <div class="imaage-content w-9 h-9  rounded-full overflow-hidden">
-                        <img src={{response.data.profilePath}} alt="Your Image" class="object-cover" />
+                        <img [src]="imageMap == null? 'assets/avatar/anon.jpg' : imageMap" alt="Your Image" class="w-full h-full object-cover" />
                     </div>
-                    <div class="ml-1  font-semibold" style="font-size: 17px;">{{response.data.fullName}}</div>
+                    <div class="ml-1  font-semibold" style="font-size: 17px;">{{userData.fullName}}</div>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item text-red-600" href="#"

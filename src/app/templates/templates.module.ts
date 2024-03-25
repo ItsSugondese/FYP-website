@@ -22,6 +22,8 @@ import { DoughnutSalesComponent } from './chart/doughnut-sales.template.componen
 import { SearchWithFilterTemplateComponent } from './search/search-with-filter.template.component';
 import { OverlayModule } from "@angular/cdk/overlay";
 import { PayCashComponent } from './pop-up/pay-cash.template.componenet';
+import { UserPaymentManagementTableComponent } from './tables/user-payment-management-table.template.component';
+import { NgxModule } from '@shared/module/ngx.module';
 
 
 
@@ -45,7 +47,8 @@ import { PayCashComponent } from './pop-up/pay-cash.template.componenet';
   AnnouncementButtonComponent,
   DoughnutSalesComponent,
   SearchWithFilterTemplateComponent,
-  PayCashComponent
+  PayCashComponent,
+  UserPaymentManagementTableComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +56,8 @@ import { PayCashComponent } from './pop-up/pay-cash.template.componenet';
     NgprimeModule,
     FormModule,
     MaterialModule,
-    OverlayModule
+    OverlayModule,
+    NgxModule
   ],
   exports:[
     FoodFilterComponent,
@@ -73,7 +77,8 @@ import { PayCashComponent } from './pop-up/pay-cash.template.componenet';
   AnnouncementButtonComponent,
   DoughnutSalesComponent,
   SearchWithFilterTemplateComponent,
-  PayCashComponent
+  PayCashComponent,
+  UserPaymentManagementTableComponent
   ]
 })
 export class TemplatesModule { }

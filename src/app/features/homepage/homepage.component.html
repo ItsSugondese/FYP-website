@@ -18,7 +18,45 @@
   </div>
 
   <ng-template #loaded>
-  <div fxLayout="row wrap" [fxLayoutGap]="'20px grid'" fxLayoutAlign="start" *ngIf="foodMenuList.length > 0">
+  <div fxLayout="row wrap" [fxLayoutGap]="'20px grid'" fxLayoutAlign="" *ngIf="foodMenuList.length > 0">
+    <div fxFlex="1 1 auto" [fxFlex.lg]="'25%'" [fxFlex.xs]="'100%'" [fxFlex.sm]="'50%'" [fxFlex.md]="'33%'"
+     class="card-deck w-1/5 "
+      *ngFor="let item of foodMenuList" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
+       fxLayout="column" fxLayoutAlign="start center">
+
+      <div class="group rounded  w-5/6  bg-white shadow-md hover:cursor-pointer hover:ring-2 hover:ring-blue-500" (click)="orderPopUp(item)">
+        <div class="w-full ">
+          <div >
+            <div
+              class="image-container w-full h-40  object-cover overflow-hidden rounded-sm flex justify-center ">
+              <img [src]="imageDataMap[item.photoId]" class="rounded-sm w-full object-cover">
+            </div>
+            <div class="px-1.5 mt-2">
+            <div class="header flex justify-between  font-bold text-lg group-hover:text-blue-500">
+              <h1 class="">{{item.name}}</h1>
+            </div>
+            
+            <div class="description   text-sm line-clamp-2">
+              {{item.description}}
+            </div>
+            <div class="w-full flex items-center text-sm font-semibold mt-2">
+
+
+              <div class="flex w-full  justify-between items-center   pb-3">
+                <div class="cost   font-semibold text-xl">
+                  <h1 class="">{{currency}} {{item.cost}}</h1>
+                </div>
+                <text-type-template text="{{item.foodType}}"></text-type-template>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- <div fxLayout="row wrap" [fxLayoutGap]="'20px grid'" fxLayoutAlign="start" *ngIf="foodMenuList.length > 0">
     <div fxFlex="1 1 auto" [fxFlex.lg]="'20%'" [fxFlex.xs]="'100%'" [fxFlex.sm]="'50%'" [fxFlex.md]="'33%'" class="card-deck"
       *ngFor="let item of foodMenuList" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">
 
@@ -54,7 +92,7 @@
       </div>
 
     </div>
-  </div>
+  </div> -->
 
   <div [class]="centerItems" *ngIf="foodMenuList.length == 0">
     <no-content-template></no-content-template>
@@ -74,7 +112,7 @@
       <div class="modal-content p-3 ">
         <div class="dialog-header flex justify-between items-center">
           <div class="title-combine">
-            <div class="top-level-header flex items-end">
+            <div class="top-level-header flex items-center">
               <div class="mr-3 font-semibold text-xl">{{selectedFoodMenu.name}}</div>
 
               <div class="rounded-lg text-[#1565C0] flex items-center  text-center p-0.5 px-2   text-sm bg-blue-200">

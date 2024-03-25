@@ -192,7 +192,7 @@ export class DoughnutSalesComponent extends CommonVariable implements OnInit, On
             plugins: {
 
                 legend: {
-                    position: 'bottom',
+                    position: 'right',
                     labels: {
 
                         // color: textColor

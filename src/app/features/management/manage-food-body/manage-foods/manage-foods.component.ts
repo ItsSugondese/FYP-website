@@ -30,6 +30,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
 
   @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
 
+  open : boolean = false;
 
 
   mapValues: { [key: string]: boolean | null } = {
@@ -56,7 +57,7 @@ export class ManageFoodsComponent extends CommonVariable implements OnInit, OnDe
   }
 
   
-  selectedFoodMenuType : string | null = "MEAL"
+  selectedFoodMenuType : string | null = "ALL"
 
   constructor(public foodService : ManageFoodsService,
     private formBuilder : FormBuilder, private router: Router,

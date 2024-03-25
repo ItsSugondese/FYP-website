@@ -11,6 +11,7 @@ import { FoodMenuData, FoodMenuDataPayload } from '../dashboard-service/model/fo
 import { OrderData, OrderDataPayload } from '../dashboard-service/model/order-data.model';
 import { RevenueData, RevenueDataPayload } from '../dashboard-service/model/revenue-data.model';
 import { UsersData, UsersDataPayload } from '../dashboard-service/model/user-data.model';
+import { UserManagementPaymentService } from '../../management/people-management/user-management-payment/user-management-payment-service/user-management-payment.service';
 
 interface PageEvent {
   first: number;
@@ -36,13 +37,17 @@ extends CommonVariable implements OnInit, OnDestroy {
 
   orderDataPayload !: OrderDataPayload
 
+  lastSelectedFilter !: string
   constructor(private dashboardService: DashboardService, public orderService: ManageOrdersNavbarService,
-    private orderNavService: ManageOrdersNavbarService, private router: Router, private userService: ManageUsersService) {
+    private orderNavService: ManageOrdersNavbarService, private router: Router, private userService: ManageUsersService,
+    public userPaymentManagementService: UserManagementPaymentService) {
     super()
   }
 
 
   ngOnInit() {
+    this.lastSelectedFilter = this.userPaymentManagementService.selectedOption
+    this.userPaymentManagementService.selectedOption = 'UNPAID';
     this.orderDataPayload = {
       timeDifference: this.orderService.timeDifference
     }
@@ -74,7 +79,7 @@ extends CommonVariable implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-   
+    this.userPaymentManagementService.selectedOption = this.lastSelectedFilter
   }
 
 

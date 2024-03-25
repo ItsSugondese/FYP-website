@@ -1,109 +1,115 @@
-<div id="main-div" class="justify-between pb-2">
+<div id="main-div" class="justify-between pb-2 space-y-5">
 
-    <div class="top-side flex ">
-      <div class="revenue-details w-full " *ngIf="(revenueDataSubscription$ | async)?.data as revenue">
-        <div class="flex justify-between items-center">
-          <div class="revenue-header flex flex-col mb-2">
-            <span class="text-[#495057] font-semibold text-xl">Total Revenue</span>
-            <span class="text-customPrimary text-3xl font-bold">{{currency + ' ' + revenue.revenue}}</span>
+
+ 
+      <div class=" flex  space-x-10 justify-between  h-full w-full" *ngIf="(revenueDataSubscription$ | async)?.data as revenue">
+        <div class="flex-1">
+          <div class="">
+            <span class="text-[#495057] font-semibold text-xl ">Today's sales data</span>
           </div>
-          <div class="flex ">
-            <announcement-button-template></announcement-button-template>
-          </div>
-  
-      </div>
-  
-        <div class="divided flex justify-around bg-white p-4">
-          <div class="paid-amount flex flex-col">
-            <span class="text-customPrimary text-3xl font-bold">{{currency + ' ' + revenue.paidAmount}}</span>
-            <span class="text-customPrimary">Paid Amount</span>
-          </div>
-          <div class="paid-amount flex flex-col">
-            <span class="text-customPrimary text-3xl font-bold">{{currency + ' ' + revenue.leftToPay}}</span>
-            <span class="text-customPrimary">Left to paid</span>
-          </div>
-          
-          <div class="paid-amount flex flex-col">
-            <span class="text-customPrimary text-3xl font-bold">{{revenue.deliveredOrder}}</span>
-            <span class="text-customPrimary">Order Delivered</span>
-          </div>
-        </div>
-      </div>
-  
-    </div>
-  
-  
-    <div class="flex justify-between ">
-      <div>
-        <sales-doughnut-template [counter]="3"
-        ></sales-doughnut-template>
-      </div>
-      <div class="flex flex-col w-full items-end justify-between ">
-        <div class="w-5/6 flex flex-col justify-between  h-full" >
-          <div *ngIf="(orderDataSubscription$ | async)?.data as order ">
-            <div class=" text-end">
-              <span class="text-[#495057] font-semibold text-xl "><span class="text-sm ">({{orderService.timeDifference}} minutes)</span>Pending Orders</span>
+          <div class="divided flex w-full  justify-between bg-white rounded-md shadow-none p-6 ">
+            <div class="flex  items-center justify-center flex-1">
+              <div class="paid-amount flex flex-col items-center ">
+                <span class=" text-2xl font-bold">{{currency}} {{revenue.paidAmount}}</span>
+                <span class="text-sm">Paid Amount </span>
+              </div>
             </div>
-            <div class="divided flex w-full  justify-between bg-white p-4">
-              <div class="flex items-center ">
-                <div class="paid-amount flex flex-col ml-2">
-                  <span class="text-customPrimary text-xl font-bold">{{order.totalPending}}</span>
-                  <span class="text-customPrimary">Total</span>
-                </div>
+            <div class="flex items-center hover:cursor-pointer justify-center flex-1" (click)="goToManageOrder('Onsite')">
+              <div class="paid-amount flex flex-col items-center">
+                <span class=" text-2xl font-bold">{{currency}} {{revenue.leftToPay}}</span>
+                <span class="text-sm">To Pay Later</span>
               </div>
-              <div class="flex items-center hover:cursor-pointer " (click)="goToManageOrder('Onsite')">
-                <i class="pi pi-qrcode"></i>
-                <div class="paid-amount flex flex-col ml-2">
-                  <span class="text-customPrimary text-xl font-bold">{{order.onsiteOrder.pending}}</span>
-                  <span class="text-customPrimary" >Onsite</span>
-                </div>
-              </div>
-              <div class="flex items-center hover:cursor-pointer  " (click)="goToManageOrder('Online')">
-                <i class="pi 
-          pi-globe"></i>
-                <div class="paid-amount flex flex-col ml-2" >
-                  <span class="text-customPrimary text-xl font-bold">{{order.onlineOrder.pending}}</span>
-                  <span class="text-customPrimary" >Online</span>
-                </div>
-              </div>
-  
-  
             </div>
-          </div>
-       
-  
-          
-          <div class="flex justify-between ">
-            
-            <div style="width: 40%;" *ngIf="(foodMenuDataSubscription$ | async)?.data as foodData">
-              <div class=" text-end">
-                <span class="text-[#495057] font-semibold text-xl ">Food</span>
-              </div>
-              <div class="divided flex w-full  justify-between bg-white p-4">
-                <div class="flex items-center hover:cursor-pointer " (click)="navigateToFoodMenu()">
-                  <div class="paid-amount flex flex-col ml-2">
-                    <span class="text-customPrimary text-xl font-bold">{{foodData.total}}</span>
-                    <span class="text-customPrimary">Total</span>
-                  </div>
-                </div>
-                <div class="flex items-center hover:cursor-pointer" (click)="navigateToFoodMenu()">
-                  <i class="pi pi-plus-circle"></i>
-                  <div class="paid-amount flex flex-col ml-2">
-                    <span class="text-customPrimary text-xl font-bold">{{foodData.latest}}</span>
-                    <span class="text-customPrimary">New</span>
-                  </div>
-                </div>
+            <div class="flex items-center hover:cursor-pointer  justify-center flex-1" (click)="goToManageOrder('Online')">
+              <div class="paid-amount flex flex-col items-center ">
+                <span class=" text-2xl font-bold">{{revenue.deliveredOrder}}</span>
+                <span class="text-sm">Delivered</span>
               </div>
             </div>
           </div>
         </div>
-  
       </div>
+
+
+      <div class=" flex  space-x-10 justify-between  h-full w-full" *ngIf="(revenueDataSubscription$ | async)?.data as revenue">
+        <div class="flex-1" *ngIf="(orderDataSubscription$ | async)?.data as order ">
+          <div class="">
+            <span class="text-[#495057] font-semibold text-xl ">Pending Orders<span class="text-sm ">({{orderService.timeDifference}}
+                minutes)</span></span>
+          </div>
+          <div class="divided flex w-full  justify-between bg-white rounded-md shadow-none p-6 ">
+            <div class="flex  items-center justify-center flex-1">
+              <div class="paid-amount flex flex-col items-center ">
+                <span class=" text-2xl font-bold">{{order.totalPending}}</span>
+                <span class="text-sm">Total</span>
+              </div>
+            </div>
+            <div class="flex items-center hover:cursor-pointer justify-center flex-1" (click)="goToManageOrder('Onsite')">
+              <div class="paid-amount flex flex-col items-center">
+                <span class=" text-2xl font-bold">{{order.onsiteOrder.pending}}</span>
+                <span class="text-sm">Onsite</span>
+              </div>
+            </div>
+            <div class="flex items-center hover:cursor-pointer  justify-center flex-1" (click)="goToManageOrder('Online')">
+              <div class="paid-amount flex flex-col items-center ">
+                <span class=" text-2xl font-bold">{{order.onlineOrder.pending}}</span>
+                <span class="text-sm">Online</span>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      <div class=" flex  space-x-10 justify-between  h-full w-full" *ngIf="(foodMenuDataSubscription$ | async)?.data as foodData">
+        <div class="flex-1" *ngIf="(orderDataSubscription$ | async)?.data as order ">
+          <div class="">
+            <span class="text-[#495057] font-semibold text-xl ">Food Menu</span>
+          </div>
+          <div class="divided flex w-full  justify-between bg-white rounded-md shadow-none p-6 ">
+            <div class="flex  items-center justify-center flex-1">
+              <div class="paid-amount flex flex-col items-center ">
+                <span class=" text-2xl font-bold">{{foodData.total}}</span>
+                <span class="text-sm">Total Menu</span>
+              </div>
+            </div>
+            <div class="flex items-center hover:cursor-pointer justify-center flex-1" (click)="goToManageOrder('Onsite')">
+              <div class="paid-amount flex flex-col items-center">
+                <span class=" text-2xl font-bold">{{foodData.today}}</span>
+                <span class="text-sm">Available</span>
+              </div>
+            </div>
+            <div class="flex items-center hover:cursor-pointer  justify-center flex-1" (click)="goToManageOrder('Online')">
+              <div class="paid-amount flex flex-col items-center ">
+                <span class=" text-2xl font-bold">{{foodData.notToday}}</span>
+                <span class="text-sm">Not Available</span>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+    
+ 
+
   
-  
+
+
+  <div>
+    <div class="">
+      <span class="text-[#495057] font-semibold text-xl ">Left to pay users</span>
     </div>
-  
-  
-  
-  
+    <user-payment-management-table-template [row]="3" [showFilter]="false" ></user-payment-management-table-template>
+
   </div>
+
+
+
+
+</div>
