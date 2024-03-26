@@ -23,7 +23,7 @@ export class UserOrderService extends ServiceCommonVariable {
 
   getData(paginationRequest : UserOrderHistoryPagination){
     this.loading = true
-    return this.httpClient.post<ResponseData<PaginatedData<UserOrderHistory>>>(this.backendUrl + "onsite-order/history/paginated", paginationRequest)
+    return this.httpClient.get<ResponseData<UserOrderHistory>>(this.backendUrl + "online-order/user-orders")
     .pipe(
       this.handleError()
     )

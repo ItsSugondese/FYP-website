@@ -19,6 +19,7 @@ import { FeaturesRoutingModule } from './features-routing.module';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { GenerateReportComponent } from './generate-report/generate-report.component';
 import { OrderHistoryComponent } from './order-history/order-history.component';
+import { UserOrderHistoryComponent } from './user-order/user-order-history/user-order-history.component';
 
 
 
@@ -29,6 +30,7 @@ import { OrderHistoryComponent } from './order-history/order-history.component';
     AnnouncementComponent,
     GenerateReportComponent,
     OrderHistoryComponent,
+    UserOrderHistoryComponent,
   ],
   imports: [
     CommonModule,

@@ -21,7 +21,7 @@ import { CommonVariable } from '@shared/helper/inherit/common-variable';
   styleUrls: ['./user-order.component.scss']
 })
 export class UserOrderComponent extends CommonVariable implements OnInit, OnDestroy {
-  paginatedData !: ResponseData<PaginatedData<UserOrderHistory>>
+  historyData !: UserOrderHistory[]
   collapsed !: boolean;
   getFoodPicture$!: Subscription
   getFoodMenu$!: Subscription
@@ -68,8 +68,8 @@ export class UserOrderComponent extends CommonVariable implements OnInit, OnDest
   getPaginatedData() {
     this.getOrderHistorySubscriable$ = this.userOrderService.getData(this.paginationJson).subscribe(
         (response) => {
-          this.paginatedData = response
-          this.paginatedData.data.content.forEach((orderDetails) => {
+          this.historyData = response.data
+          this.historyData.forEach((orderDetails) => {
             orderDetails.orderFoodDetails.forEach(
               (foodItem) => {
                 if(foodItem.photoId){

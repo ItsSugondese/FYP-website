@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { ChangePassword, ForgotPassword, LoginModel, ValidateToken } from './model/auth.model';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-serivce';
+import { catchError, finalize } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,9 @@ export class AuthService extends ServiceCommonVariable{
   private username = new BehaviorSubject<string>(localStorage.getItem('username')!)
   private path = environment.apiUrl
   moduleName: string = "auth"
+
+  isGoogleLogin : boolean = false;
+
 
   constructor(private httpClient: HttpClient) {
     super()
@@ -68,8 +72,16 @@ export class AuthService extends ServiceCommonVariable{
   }
 
   LoginWithGoogle(credentials: string): Observable<any> {
+    this.isGoogleLogin = true
     const header = new HttpHeaders().set('Content-type', 'application/json');
-    return this.httpClient.post(this.path + "auth/login-with-google", JSON.stringify(credentials), { headers: header, withCredentials: true });
+    return this.httpClient.post(this.path + "auth/login-with-google", JSON.stringify(credentials), { headers: header, withCredentials: true })
+    .pipe(
+      catchError(error => {
+        this.isGoogleLogin = false;
+        throw error;
+      }),
+      finalize(() => this.isGoogleLogin = false)
+    );
   }
 
   

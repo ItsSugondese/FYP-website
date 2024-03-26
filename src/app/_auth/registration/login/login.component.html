@@ -1,4 +1,8 @@
 <div class="main-div min-h-screen flex flex-col bg-white">
+  <div class="fixed z-10 bg-gray-600 w-screen h-screen bg-opacity-50 flex items-center justify-center"
+  *ngIf="isGoogleLogin == true">
+    <mat-spinner></mat-spinner>
+  </div>
   <div class="login-contents  flex-1 flex items-center justify-center" >
     <div class="contents-all flex flex-col justify-center items-center " >
     <div class="headers flex flex-col items-center mb-5">
@@ -60,6 +64,7 @@
   </div>
   </div>
   </div>
+  
 </div>
 
 <!-- <div class="container">

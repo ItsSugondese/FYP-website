@@ -1,4 +1,4 @@
-<div id="main-div" class="">
+<!-- <div id="main-div" class="">
   
   
   <div class="mb-4">
@@ -16,7 +16,6 @@
             <div class="header flex  justify-between p-4 text-xl">
                 <div class="left-header flex flex-col">
                     <span class="font-bold">
-                        <!-- Order #251 -->
                         {{content.orderType}}
                     </span>
                     <span>
@@ -39,7 +38,6 @@
                 <div [class.mt-0]="first" class="order-content-details flex px-4">
                     <div class="image-container">
                         <div class="w-20 h-20   rounded-full overflow-hidden">
-                            <!-- <img src="/assets/logo/samosa.jpg" /> -->
                             <img [src]="imageDataMap[item.photoId]" class="w-full h-full object-cover">
                         </div>
                     </div>
@@ -77,4 +75,141 @@
     
 </ng-template>
 
+</div> -->
+
+
+<div id="main-div" *ngIf="historyData">
+
+    <div class="space-y-10 " *ngIf="historyData.length > 0">
+        <ng-container *ngFor="let content of historyData; let first = first; let last = last; let i= index">
+  
+          <!-- <div class="order-list bg-white px-3 py-2 h-full flex flex-col  rounded-lg"> -->
+  
+  
+            
+  
+  
+              
+  
+              <div class="order-foods flex justify-center flex-wrap space-y-10  rounded-lg">
+                <div class="item-description flex flex-col  w-full  ">
+
+                    <div class="grid grid-cols-4 bg-white items-center pl-5  border-b-2 border-[#EBEBEB]">
+                        <div class="col-span-3  h-full  flex  items-center image-border-containers">
+                            <span class="text-xl">Order No. {{content.orderCode}}</span>
+                                    
+                        </div>
+                        <div class="bg-[#FCE642] pt-2 pb-3 text-2xl flex justify-center
+                        font-semibold  text-[#5C5D5C] items-end" ><span class="text-sm pr-1 font-light">Total</span> 
+                        <span>{{currency}} {{content.totalPrice}} </span></div>
+                      </div>
+                      <div class="bg-white">
+                    <div class="grid grid-cols-4 items-center bg-white">
+                        <ng-container *ngFor="let items of content.orderFoodDetails; let first= first;">
+                        <div class="col-span-3 pl-16 pt-4" [class.pt-3]="first">
+                            <div class="grid grid-cols-8 items-center ">
+                                
+                                <div class="image-container col-span-2 flex  items-center space-x-4">
+                                    <div class="hover:cursor-pointer w-fit h-fit " >
+                                        <mat-icon class="text-red-600 " >delete</mat-icon>
+                                    </div>
+                                    <div class="w-16 h-16 rounded-full overflow-hidden">
+                                        <img [src]="imageDataMap[items.photoId]"
+                                            class="w-full h-full object-cover" />
+                                        </div>
+                                        <div class="col-span-4">{{items.foodName}}</div> 
+                                </div>
+                        
+
+
+                            <div class="col-span-2 flex justify-center"> 
+                <text-type-template text="{{items.foodMenu.foodType}}"></text-type-template>
+                                </div>
+                            <div class="col-span-2 flex justify-center items-center"><span>{{currency}} </span> {{items.cost}} each</div>
+                            <div class="col-span-2 flex justify-center items-center"><span>Qty: </span> {{items.quantity}}</div>
+                            <!-- Rs. {{items.cost}}
+                           Rs. {{items.totalPrice}} -->
+                            </div>
+                           
+                                    
+                        </div>
+                        <div class="flex justify-center items-center h-full text-xl" >
+                            <span>{{currency}} {{items.totalPrice}}</span>
+                        </div>
+                        </ng-container>
+                    </div>
+                    <div class="border-t-2 mt-3 px-5 border-[#EBEBEB] flex justify-between">
+                        <div>
+Hello
+                            </div>
+
+                            <div>
+                                Sello
+                            </div>
+                    </div>
+                </div>
+                      
+                      
+                      
+                    <!-- <table class="w-full rounded-lg">
+                        <thead class="bg-[#f5f5f5] border-2 border-transparent rounded-lg">
+                            <tr class="text-customPrimary p-2 px-3 rounded-lg ">
+                                <th style="padding: inherit;" class="flex ">
+                                    <span class="text-xl">Order No. {{content.orderCode}}</span>
+                                    <span class="text-sm">Will arrive by: {{content.arrivalTime}}</span>
+                                </th>
+                                <th style="padding: inherit;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+    
+    
+                            <ng-container *ngFor="let items of content.orderFoodDetails; let first= first;">
+                                <tr class="table-row-hover bg-white p-2 px-3 hover:bg-[#f5f5f5] h-full   border-2 border-[#F0F0F0]
+                          
+                      text-sm" [class.border-t-0]="first">
+                                    <td>
+                                        <div class="hover:cursor-pointer w-fit h-fit" >
+                                            <mat-icon class="text-red-600 " >delete</mat-icon>
+                                        </div>
+                                  
+                                        <div class="image-container">
+                                            <div class="w-16 h-16 rounded-full overflow-hidden">
+                                                <img [src]="imageDataMap[items.photoId]"
+                                                    class="w-full h-full object-cover" />
+                                            </div>
+                                        </div>
+                                
+    
+    
+                                    {{items.foodName}}
+                                    Rs. {{items.cost}}
+                                    {{items.quantity}}
+                                   Rs. {{items.totalPrice}} 
+                                    </td>
+                                </tr>
+                            </ng-container>
+    
+    
+                            
+                        </tbody>
+                    </table>
+    
+                    <div class="flex flex-col justify-center items-center">
+                        <span>
+                            Total: Rs. {{content.totalPrice}}
+                        </span>
+                    </div> -->
+    
+                </div>
+              </div>
+  
+              
+          <!-- </div> -->
+        </ng-container>
+      </div>
+
+
+
+ 
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { loginFormHeader } from 'src/app/shared/model/design/login.model';
 import { ManagementRouteConstant } from 'src/app/constant/routing/management-routing-constant.model';
 import { UserRouteConstant } from 'src/app/constant/routing/user-routing-constant.model';
 import { LoginModel } from '../../auth-service/model/auth.model';
+import { Subscription } from 'rxjs';
 
 declare const FB: any;
 
@@ -19,7 +20,7 @@ declare const FB: any;
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -28,10 +29,11 @@ export class LoginComponent implements OnInit {
 
   private clientId = environment.clientId;
   formHeader !: loginFormHeader;
-
+  loginWithGoogleSubscription$ !: Subscription
+  isGoogleLogin: boolean = false;
   constructor(
     public router: Router,
-    private service: AuthService,
+    public service: AuthService,
     private _ngZone: NgZone,
     private fb: FormBuilder,
     private _snackBar: MatSnackBar,
@@ -44,10 +46,12 @@ export class LoginComponent implements OnInit {
 
     // @ts-ignore
     window.onGoogleLibraryLoad = () => {
+      this.isGoogleLogin = true;
       // @ts-ignore
       google.accounts.id.initialize({
         client_id: this.clientId,
         callback: this.handleCredentialResponse.bind(this),
+
         auto_select: false,
         cancel_on_tap_outside: true
       });
@@ -70,33 +74,35 @@ export class LoginComponent implements OnInit {
     };
   }
 
-  async handleCredentialResponse(response: CredentialResponse) {
-    await this.service.LoginWithGoogle(response.credential).subscribe(
-      (result: any) => {
-        this.formHeader = {
-          status: "Login Successful",
-          color: "Green"
+   handleCredentialResponse(response: CredentialResponse) {
+    this.isGoogleLogin = true;
+      this.loginWithGoogleSubscription$ = this.service.LoginWithGoogle(response.credential).subscribe(
+        (result) => {
+
+          this.formHeader = {
+            status: "Login Successful",
+            color: "Green"
+          };
+      
+          this.userService.setRoles(result.data.roles);
+          this.userService.setToken(result.data.jwtToken);
+          this.userService.setUsername(result.data.username);
+      
+          if (result.data.roles.includes('ADMIN'.toUpperCase())) {
+            this.router.navigate(['/admin/manage_staff']);
+          } else if (result.data.roles.includes('STAFF'.toUpperCase())) {
+            this.router.navigate(["/admin/manage_staff"]);
+          } else {
+            this.router.navigate(['', UserRouteConstant.homepage]);
+          }
         }
+      )
+      // const result: any = await this.service.LoginWithGoogle(response.credential).toPromise();
 
-
-        this.userService.setRoles(result.data.roles);
-        this.userService.setToken(result.data.jwtToken);
-        this.userService.setUsername(result.data.username);
-
-
-        if ((result.data.roles as string[]).includes('ADMIN'.toUpperCase())) {
-          this.router.navigate(['/admin/manage_staff'])
-        } else if ((result.data.roles).includes('STAFF'.toUpperCase)) {
-          this.router.navigate(["/admin/manage_staff"])
-        } else {
-          this.router.navigate(['',UserRouteConstant.homepage]);
-        }
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
+  
+    
   }
+  
 
    onSubmit() {
     //this.formSubmitAttempt = false;
@@ -130,6 +136,11 @@ export class LoginComponent implements OnInit {
     return this.form.get(name);
   }
 
+  ngOnDestroy(): void {
+      if(this.loginWithGoogleSubscription$){
+        this.loginWithGoogleSubscription$.unsubscribe()
+      }
+  }
 
 
 }

@@ -8,5 +8,8 @@ export interface UserOrderHistory {
     date: string;
     arrivalTime: string;
     profileUrl: string;
-    foodMenu: foodMenu[]
+    foodMenu: foodMenu[];
+    orderCode : number;
+    totalPrice : number;
+
 }
