@@ -1,6 +1,7 @@
 import { EnumItem } from "@shared/model/enums/MapForEnum.model";
 import { PassHeight } from "src/app/constant/class/child-height-constant";
 import { CenterItems } from "src/app/constant/class/display-center.model";
+import { UserRouteConstant } from "src/app/constant/routing/user-routing-constant.model";
 import { CalenderType } from "src/app/templates/calender/calender.template.componenet";
 import { MessageStatus } from "src/app/templates/snackbar/snackbar.template.component";
 
@@ -12,6 +13,7 @@ export class CommonVariable {
   forChild: string = PassHeight()
   messageStatus = MessageStatus
   selectedRow = 5
+  userRoute = UserRouteConstant
 
   createImageFromBlob(image: Blob, photoId: number): Promise<string> {
     return new Promise((resolve, reject) => {

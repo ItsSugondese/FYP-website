@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     // @ts-ignore
     window.onGoogleLibraryLoad = () => {
-      this.isGoogleLogin = true;
       // @ts-ignore
       google.accounts.id.initialize({
         client_id: this.clientId,
@@ -75,7 +74,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
    handleCredentialResponse(response: CredentialResponse) {
-    this.isGoogleLogin = true;
       this.loginWithGoogleSubscription$ = this.service.LoginWithGoogle(response.credential).subscribe(
         (result) => {
 

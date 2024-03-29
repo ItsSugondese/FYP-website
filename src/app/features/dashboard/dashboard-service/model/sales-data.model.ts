@@ -3,8 +3,7 @@ export interface SalesDataPayload{
     fromDate ?: string | null,
     toDate ?: string | null,
     filterType ?: string | null,
-    foodType ?: string | null
-    
+    foodType ?: string | null  
 }
 
 

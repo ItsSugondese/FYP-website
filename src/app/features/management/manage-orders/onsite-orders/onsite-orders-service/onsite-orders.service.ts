@@ -68,6 +68,14 @@ export class OnsiteOrdersService extends ServiceCommonVariable {
      );
   }
 
+  getUserAllOrderHistoryData(paginationRequest : OrderHistoryPagination){
+    this.loading = true
+     return this.httpClient.post<ResponseData<PaginatedData<onsiteOrder>>>(`${this.backendUrl}${this.moduleName}/history/paginated`, paginationRequest)
+     .pipe(
+      this.handleError()
+     );
+  }
+
   getUserOnsiteDataData(paginationRequest : OnsiteOrderOfUserPagination){
     this.loading = true
      return this.httpClient.post<ResponseData<PaginatedData<onsiteOrder>>>(this.backendUrl + "onsite-order/by-user/paginated", paginationRequest)
