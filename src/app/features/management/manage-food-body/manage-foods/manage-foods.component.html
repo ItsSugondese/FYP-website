@@ -50,7 +50,8 @@
                   <span class="h-full"> Available Today: </span>
                   <div class="form-check  form-switch flex items-center justify-end">
                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck{{item.id}}"
-                      [checked]="item.isAvailableToday" (change)="handleCheckboxChange(item, i, $event)">
+                      [checked]="item.isAvailableToday" (change)="handleCheckboxChange(item, i, $event)"
+                      [disabled]="item.isAuto">
                   </div>
                 </div>
                 <div class="px-3" (click)="toggleFormToEdit(item); toggleDrawer(true)">

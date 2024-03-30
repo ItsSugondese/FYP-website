@@ -7,7 +7,7 @@ import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
 import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
 import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
 import { ManageFoodsService } from '../../manage-foods/manage-foods-service/manage-foods.service';
-import { FoodMenuWithImageData } from '../../manage-foods/manage-foods-service/model/food-menu.model';
+import { FoodMenuWithImageData, foodMenu } from '../../manage-foods/manage-foods-service/model/food-menu.model';
 import { ManageFoodsComponent } from '../../manage-foods/manage-foods.component';
 import { AddFoodService } from './add-food-service/add-food.service';
 
@@ -36,7 +36,8 @@ export class AddFoodComponent implements OnInit, OnDestroy {
     description: new FormControl(''), // No validation for description
     cost: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]), // Validation added for cost
     photoId: new FormControl(),
-    foodType: new FormControl('', [Validators.required]) // Validation added for foodType
+    foodType: new FormControl('', [Validators.required]),
+    isAuto: new FormControl('', [Validators.required]) // Validation added for foodType
   });
   
 
@@ -65,7 +66,8 @@ export class AddFoodComponent implements OnInit, OnDestroy {
             description: this.item.foodMenu.description,
             cost: this.item.foodMenu.cost,
             photoId: null,
-            foodType: this.item.foodMenu.foodType
+            foodType: this.item.foodMenu.foodType,
+            isAuto: this.item.foodMenu.isAuto
           })
           this.imageUrl = this.item.image
         }else{
@@ -75,6 +77,7 @@ export class AddFoodComponent implements OnInit, OnDestroy {
       
   }
 
+ 
   
   selectedDropdownOption(option: string) {
     this.formValue("foodType")?.setValue(option);
@@ -122,7 +125,8 @@ export class AddFoodComponent implements OnInit, OnDestroy {
     if(this.item?.foodMenu.cost == this.formValue('cost')!.value &&
     this.item?.foodMenu.name.toUpperCase() == this.formValue('name')!.value.toUpperCase() &&
     this.item?.foodMenu.foodType.toUpperCase() == this.formValue('foodType')!.value.toUpperCase() &&
-    this.item?.foodMenu.description.toUpperCase() == this.formValue('description')!.value.toUpperCase()) {
+    this.item?.foodMenu.description.toUpperCase() == this.formValue('description')!.value.toUpperCase() &&
+    this.item?.foodMenu.isAuto == this.formValue('isAuto')!.value) {
       return true;
     }
     

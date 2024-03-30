@@ -12,11 +12,18 @@ import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.comp
 import { ServiceCommonVariable } from 'src/app/shared/helper/inherit/common-variable-serivce';
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
 
-export enum FoodFilterType {
+export enum FoodFilterHomepageType {
   ALL = 'All',
   MEAL = 'Meal',
   DRINKS = 'Drinks',
   MISC = 'Misc'
+}
+export enum FoodFilterType {
+  ALL = 'All',
+  MEAL = 'Meal',
+  DRINKS = 'Drinks',
+  MISC = 'Misc',
+  AUTO = 'Auto',
 }
 
 @Injectable({
@@ -24,6 +31,7 @@ export enum FoodFilterType {
 })
 export class ManageFoodsService extends ServiceCommonVariable {
 
+  filterOptionsHomepage : EnumItem[] = this.enumToEnumItems(FoodFilterHomepageType)
   filterOptions : EnumItem[] = this.enumToEnumItems(FoodFilterType)
   defaltFoodSelect : string = 'ALL'
   backendUrl = environment.apiUrl;

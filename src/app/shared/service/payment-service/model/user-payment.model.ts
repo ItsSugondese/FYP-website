@@ -19,4 +19,10 @@ export interface RemainingPaymentPayload {
     paidAmount: number;
     userId: number;
   }
+
+ export interface KhaltiPaymentForBackendPayload {
+    token: string;
+    amount: number;
+    onsiteOrderId: number;
+}
   

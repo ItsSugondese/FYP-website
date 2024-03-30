@@ -4,14 +4,13 @@ infiniteScroll [infiniteScrollDistance]="0"
   
   <div class="flex w-full justify-between items-center mb-3 bg-white p-2 rounded-lg">
       <div>
-        <food-filter-template [selectedKey]="selectedHistoryOption" [options]="orderService.historyOptions" (optionSelected)="selectedFromOrderFilter($event!)"></food-filter-template>
+        <food-filter-template [selectedKey]="selectedHistoryOption" [options]="orderService.historyForUserOptions" (optionSelected)="selectedFromOrderFilter($event!)"></food-filter-template>
       </div>
-      <div class="flex">
-            <search-template (typedData)="typedOrderToFilter($event)"></search-template>
-      <div class="ml-3">
+      <div >
+            
           <calender-template [dateFilterType]="enumCalenderType.WEEK"
           (selectedDate)="onRangeSelect($event)"></calender-template>
-      </div>
+ 
 
       </div>
 
@@ -51,10 +50,10 @@ infiniteScroll [infiniteScrollDistance]="0"
                                   class="w-full h-full object-cover" />
                           </div>
                       </div> -->
-                      <text-type-custom-template text="{{content.payStatus}}"
-                      border="{{content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : null}}"
-                      color="{{content.payStatusCheck == 'PAID'?  '[#1565C0]' : content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : 'red-700'}}"
-                      bgColor="{{content.payStatusCheck == 'PAID'?  'blue-200' : content.payStatusCheck == 'PARTIAL_PAID'? '[#F8F9FA]' : 'red-300'}}"></text-type-custom-template>
+                      <text-type-custom-template [text]="content.payStatus"
+                      [border]="content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : null"
+                      [color]="content.payStatusCheck == 'PAID'?  '[#1565C0]' : content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : 'red-700'"
+                      [bgColor]="content.payStatusCheck == 'PAID'?  'blue-200' : content.payStatusCheck == 'PARTIAL_PAID'? '[#F8F9FA]' : 'red-300'"></text-type-custom-template>
                 
                   </div>
               </div>

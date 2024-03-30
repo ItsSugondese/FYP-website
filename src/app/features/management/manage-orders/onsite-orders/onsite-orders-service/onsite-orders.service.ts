@@ -23,6 +23,11 @@ enum OrderHistoryPayFilter{
   UNPAID = "Unpaid",
   PARTIAL_PAID = "Partial Paid",
 }
+enum OrderHistoryUserPayFilter{
+  ALL = "All",
+  PAID = "Paid",
+  UNPAID = "Unpaid",
+}
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +45,8 @@ export class OnsiteOrdersService extends ServiceCommonVariable {
 
 
   historyOptions: EnumItem[] = this.enumToEnumItems(OrderHistoryPayFilter)
+
+  historyForUserOptions: EnumItem[] = this.enumToEnumItems(OrderHistoryUserPayFilter)
   selectedHistoryOption = Object.keys(OrderHistoryPayFilter)[0]
   
   constructor(private httpClient : HttpClient) {

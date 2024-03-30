@@ -33,12 +33,35 @@ export class UserOrderHistoryComponent extends CommonVariable implements OnInit,
 
 
   collapsed !: boolean;
+  selectedOrderToPay !: onsiteOrder;
 
+  paymentSuccessSubscription$ !: Subscription
 
   constructor(public orderService: OnsiteOrdersService, private sideNavService: SidenavService,
     private foodService: ManageFoodsService, private khaltiService: KhaltiCheckoutService) {
     super()
   }
+
+  ngOnInit(): void {
+    this.orderHistoryPaginatedPayload = {
+      row: 9,
+      page : 1
+    }
+
+    this.navbarCollapse$ =  this.sideNavService.getCollapsed().subscribe((collapsed) => {
+      this.collapsed = collapsed;
+    });
+
+    this.paymentSuccessSubscription$ = this.khaltiService.paymentSuccess$.subscribe(
+      (res) => {
+        if(this.selectedOrderToPay){
+          this.selectedOrderToPay.payStatus = "Paid";
+          this.selectedOrderToPay.payStatusCheck = 'PAID'
+        }
+      }
+    )
+  }
+  
 
   
   typedOrderToFilter(event: string){
@@ -52,16 +75,6 @@ export class UserOrderHistoryComponent extends CommonVariable implements OnInit,
   }
  
 
-  ngOnInit(): void {
-    this.orderHistoryPaginatedPayload = {
-      row: 9,
-      page : 1
-    }
-
-    this.navbarCollapse$ =  this.sideNavService.getCollapsed().subscribe((collapsed) => {
-      this.collapsed = collapsed;
-    });
-  }
 
   selectedFromOrderFilter(event: string ){
     this.selectedHistoryOption = event
@@ -146,7 +159,8 @@ export class UserOrderHistoryComponent extends CommonVariable implements OnInit,
   }
 
   payWithKhalti(order: onsiteOrder){
-    this.khaltiService.initCheckout(order.remainingAmount * 100);
+    this.selectedOrderToPay = order;
+    this.khaltiService.initCheckout(order);
   }
 
   ngOnDestroy(): void {

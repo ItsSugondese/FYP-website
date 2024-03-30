@@ -6,6 +6,7 @@ export interface foodMenu{
     photoId: number,
     isAvailableToday : boolean,
     foodType: string,
+    isAuto : boolean
   }
 
 
