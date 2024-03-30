@@ -22,20 +22,13 @@ import { GenerateReportComponent } from './generate-report/generate-report.compo
 import { TableManagementBodyComponent } from './management/table-management-body/table-management-body.component';
 import { OrderHistoryComponent } from './order-history/order-history.component';
 import { UserManagementPaymentComponent } from './management/people-management/user-management-payment/user-management-payment.component';
+import { InventoryManagementAdminComponent } from './management/inventory/inventory-management-admin/inventory-management-admin.component';
 
 const routes: Routes = [
   {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  
     // data: {roles:['ADMIN']}
   },
-  {path: ManagementRouteConstant.staffManagement, component : ManageStaffBodyComponent, 
-    // canActivate: [AuthGuard], data: {roles:['USER']}
-  },
-  {path: 'admin/manage_staff/:id', component : StaffDetailsComponent, 
-  // canActivate: [AuthGuard],  data: {roles:['USER']}
-},
-  {path: 'admin/manage_staff/:id/history', component : StaffDisableHistoryComponent, 
-  // canActivate: [AuthGuard], data: {roles:['USER']}
-},
+  {path: ManagementRouteConstant.inventoryManagement, component : InventoryManagementAdminComponent,},
   {path: ManagementRouteConstant.addStaff, component : AddStaffComponent,},
   {path: ManagementRouteConstant.orderManagement, component: OrderManagementBodyComponent},
   {path: ManagementRouteConstant.orderHistory, component: OrderHistoryComponent},

@@ -16,6 +16,12 @@ export const  NavbarConstant = [
         iconLibrary: "angular"
     },
     {
+        routeLink: ManagementRouteConstant.inventoryManagement,
+        label: "Inventory Management",
+        icon: 'inventory_2',
+        iconLibrary: "angular"
+    },
+    {
         routeLink: ManagementRouteConstant.orderManagement,
         label: "Order Management",
         icon: 'dining',
