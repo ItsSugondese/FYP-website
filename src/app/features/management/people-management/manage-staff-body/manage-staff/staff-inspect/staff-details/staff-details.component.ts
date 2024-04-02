@@ -1,12 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/attachment.handler';
-import { Staff } from '../../manage-staff-service/model/staff.model';
-import { ManageStaffService } from '../../manage-staff-service/manage-staff.service';
-import { disableUser } from '../../../../people-service/model/people-payload.model';
-import { PeopleService } from '../../../../people-service/people.service';
 import { CommonVariable } from '@shared/helper/inherit/common-variable';
+import { Subscription } from 'rxjs';
+import { ManageStaffService } from '../../manage-staff-service/manage-staff.service';
+import { Staff } from '../../manage-staff-service/model/staff.model';
 
 @Component({
   selector: 'app-staff-details',
@@ -18,7 +14,7 @@ export class StaffDetailsComponent extends CommonVariable implements OnInit, OnD
   imageId$ !: Subscription;
   @Input() staff !: Staff;
   remarks !: string
-  imageData !: string;
+  imageData : string | null = null;
   visible: boolean = false;
 
 
@@ -31,12 +27,12 @@ export class StaffDetailsComponent extends CommonVariable implements OnInit, OnD
       
 
             this.imageId$ = this.staffService.getStaffPicture(this.staff.id).subscribe((imageBlob: Blob) => {
-
-
-            createImageFromBlob(imageBlob, this.staff.id)
+              if(this.staff.profilePath){
+            this.createImageFromBlob(imageBlob, this.staff.id)
              .then((imageData) => {
               this.imageData = imageData;
           })
+        }
           });
        
  

@@ -37,9 +37,9 @@
         </div>
   
         <div id="pass-val" class="flex flex-col h-fit flex-1">
-            <ng-container *ngIf="userInspectService.selectedNavbar == userInspectService.inspecting.DETAIL">
+            <!-- <ng-container *ngIf="userInspectService.selectedNavbar == userInspectService.inspecting.DETAIL">
                 <app-user-details [user]="user" [class]="forChild"></app-user-details>
-            </ng-container>
+            </ng-container> -->
             <ng-container *ngIf="userInspectService.selectedNavbar == userInspectService.inspecting.PAYMENT" [class]="forChild">
                 <app-user-payment-history [userId]="user.id"></app-user-payment-history>
             </ng-container>

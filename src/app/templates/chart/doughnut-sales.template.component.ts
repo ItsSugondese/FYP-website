@@ -9,43 +9,52 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 @Component({
     selector: 'sales-doughnut-template',
     template: `
-  <div class=" flex flex-col w-fit items-center " *ngIf="getSalesData">
-      
+ <div class=" flex flex-col w-fit h-full" *ngIf="getSalesData">
+        
+        <div class="mt-1 mb-2 flex  space-x-3 items-center ">
+            <p class="text-[#6C757D] text-lg">Total {{salesDataPayload.filterType == 'SALES' || salesDataPayload.filterType == undefined ? 'Sales' : 'Quantity'}} Amount: </p>
+             <p class="text-customPrimary font-semibold text-2xl">  {{(['SALES', undefined, null].includes(salesDataPayload.filterType) ? (currency + ' ' +  getSalesData.totalSales) : getSalesData.totalQuantity)}}</p>
+          </div>
+  
+          <div class="flex space-x-1">
+            <div class="card flex h-full">
+                
+                <p-chart type="pie" [data]="data" [options]="options" [plugins]="plugins" width="500px" height="300px"></p-chart>
+              </div>
+            <div class="flex flex-col justify-between h-full space-y-10  " style="height: 300px;">
+  
+                <div class="">
+                    <p class=" ">Food Type</p>
+                  <p-dropdown styleClass="border-2 border-red" [options]="sortByFoodType" (onChange)="onSelectedFoodTypeDropdown($event)"
+                    [placeholder]="sortByFoodTypePlaceholder" [autoDisplayFirst]="false"></p-dropdown>
+                </div>
+        
+                <div class="w-5/6  flex justify-center ">
+                <div class="flex w-fit h-fit">
+                  <div class="text-sm hover:cursor-pointer flex items-center justify-center"
+                    (click)="counter != 0 ? counterAction(-1) : null" [class.disabled-div]="counter == 0">
+                    <mat-icon [class.disabled-icon]="counter==0">remove</mat-icon>
+                  </div>
+                  <span class="mx-2">{{counter}}</span>
+        
+                  <div class="text-3xl hover:cursor-pointer flex items-center justify-center"
+                    (click)="counter != getSalesData.totalMenu ? counterAction(1) : null">
+                    <mat-icon [class.disabled-icon]="counter == getSalesData.totalMenu">add</mat-icon>
+                  </div>
+                </div>
+                </div>
+        
+                <div class="">
+                    <p class=" ">Sort by</p>
     
-      <div class="flex items-center justify-between w-full ">
-
-        <div>
-          <p-dropdown styleClass="border-2 border-red" [options]="sortByFoodType" (onChange)="onSelectedFoodTypeDropdown($event)"
-            [placeholder]="sortByFoodTypePlaceholder" [autoDisplayFirst]="false"></p-dropdown>
+        <p-dropdown [options]="sortBy" (onChange)="onSelectedDropdown($event)" [placeholder]="sortByPlaceholder"
+          [autoDisplayFirst]="false" [virtualScroll]="true" appendTo="body" [style]="{'width':'100%','overflow':'visible'}" appendTo="body" ></p-dropdown>
         </div>
 
-        <div class="flex w-fit h-fit">
-          <div class="text-sm hover:cursor-pointer flex items-center justify-center"
-            (click)="counter != 0 ? counterAction(-1) : null" [class.disabled-div]="counter == 0">
-            <mat-icon [class.disabled-icon]="counter==0">remove</mat-icon>
+              </div>
+              
           </div>
-          <span class="mx-2">{{counter}}</span>
-
-          <div class="text-3xl hover:cursor-pointer flex items-center justify-center"
-            (click)="counter != getSalesData.totalMenu ? counterAction(1) : null">
-            <mat-icon [class.disabled-icon]="counter == getSalesData.totalMenu">add</mat-icon>
-          </div>
-        </div>
-
-        <div>
-          <p-dropdown [options]="sortBy" (onChange)="onSelectedDropdown($event)" [placeholder]="sortByPlaceholder"
-            [autoDisplayFirst]="false"></p-dropdown>
-        </div>
       </div>
-
-      <div class="card flex ">
-        <div class="pr-2 pl-2 mt-1 mb-2 flex  justify-between items-center w-full ">
-        <p class="text-[#6C757D] text-lg">Total {{salesDataPayload.filterType == 'SALES' || salesDataPayload.filterType == undefined ? 'Sales' : 'Quantity'}} Amount: </p>
-         <p class="text-customPrimary font-semibold text-2xl">  {{(['SALES', undefined, null].includes(salesDataPayload.filterType) ? (currency + ' ' +  getSalesData.totalSales) : getSalesData.totalQuantity)}}</p>
-      </div>
-        <p-chart type="pie" [data]="data" [options]="options" [plugins]="plugins"></p-chart>
-      </div>
-    </div>
  
   `,
     styles: [

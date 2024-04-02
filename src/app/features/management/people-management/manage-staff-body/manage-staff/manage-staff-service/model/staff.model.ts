@@ -4,7 +4,8 @@ export interface Staff {
     id: number;
     fullName: string;
     contactNumber : string;
-    startedWorkingOn : string
+    startedWorkingOn : string;
+    profilePath: string;
   }
 
 export interface StaffWithImageData {

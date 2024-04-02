@@ -9,6 +9,7 @@ import { User } from './model/user.model';
 import { Staff } from '../../../manage-staff-body/manage-staff/manage-staff-service/model/staff.model';
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
 import { UserFinanceData, UserFinancePaginationPayload } from 'src/app/features/dashboard/dashboard-service/model/user-finance-data.model';
+import { catchError, finalize } from 'rxjs';
 
 export enum UserFilter{
   ALL = "All",
@@ -23,6 +24,7 @@ export class ManageUsersService extends ServiceCommonVariable {
   backendUrl = environment.apiUrl;
   moduleName = "user"
   isInspecting : boolean = false;
+  pictureLoading = false
   
   options: EnumItem[] = this.enumToEnumItems(UserFilter)
    selectedOption = Object.keys(UserFilter)[0]
@@ -49,6 +51,18 @@ export class ManageUsersService extends ServiceCommonVariable {
 
   handleIsInspecting(event: boolean){
     this.isInspecting = event
+  }
+
+  getUserPicture(id: number) {
+    this.pictureLoading = true
+    return this.httpClient.get(this.backendUrl + 'staff/photo/' + id, { responseType: 'blob' })
+    .pipe(
+      catchError(error => {
+        this.pictureLoading = false;
+        throw error;
+      }),
+      finalize(() => this.pictureLoading = false)
+    );
   }
   
   

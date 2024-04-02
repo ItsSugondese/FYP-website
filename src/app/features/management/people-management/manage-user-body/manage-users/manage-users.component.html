@@ -1,4 +1,161 @@
-<div id="main-div" class="">
+<div id="main-div" class="space-y-5">
+    <div class="flex justify-between">
+
+        <div>
+            <food-filter-template [selectedKey]="manageUserService.selectedOption" [options]="manageUserService.options"
+      (optionSelected)="selectedUserTypeToFilter($event)"></food-filter-template>
+        </div>
+        
+        <div class="flex ">
+
+            <search-template (typedData)="typedUserToFilter($event)"></search-template>
+    
+            <div (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(null);">
+                <add-button-template [text]="'User'"></add-button-template>
+            </div>
+        </div>
+    </div>
+    <div class="" style="width: 100%;">
+        <p-table 
+        [value]="userListPaginated.content"
+        #dt1
+        [rows]="paginationJson.row"
+        [loading]="load"
+     *ngIf="userListPaginated">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="">
+                    <div class="flex align-items-center">
+                        
+                    </div>
+                </th>
+                <th style="">
+                    <div class="flex align-items-center">
+                        Username
+                    </div>
+                </th>
+                <th style="">
+                    <div class="flex align-items-center">
+                        Email
+                    </div>
+                </th>
+                <th style="">
+                    <div class="flex align-items-center justify-center">
+                        User Type
+                        
+                    </div>
+                </th>
+                <th style="">
+                    <div class="flex align-items-center justify-center">
+                        Account Status
+                        
+                    </div>
+                </th>
+                <th style="">
+                    <div class="flex align-items-center justify-center">
+                        Action
+                        
+                    </div>
+                </th>
+    
+    
+              
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+            <tr>
+                <td>
+                    <div class="image-container">
+                        <div class="w-16 h-16 rounded-full overflow-hidden">
+                            <img [src]="imageDataMap[user.id] == null? 'assets/avatar/anon.jpg' : imageDataMap[user.id]" alt='user Image'
+                                class="w-full h-full object-cover" />
+                        </div>
+                    </div>
+                </td>
+                <td>
+                  
+                    <span class=" vertical-align-middle">{{ user.fullName }}</span>
+                </td>
+                <td>
+                  
+                    <span class=" vertical-align-middle">{{ user.email }}</span>
+                </td>
+                <td>
+                    <div class="flex justify-center">
+
+                        {{user.isExternal? 'External' : 'Internal'}}
+                    </div>
+                </td>
+                <td>
+                    <div class="flex justify-center" >
+                        <text-type-template [text]="'Running'"
+                        *ngIf="user.accountNonLocked; else disabled"></text-type-template>
+                        
+                        <ng-template #disabled>
+                            <text-type-template [text]="'Disabled'" [status]="false"></text-type-template>
+                        </ng-template>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex justify-center ">
+                        <div *ngIf="user.isExternal; else isInternal">
+                            <mat-icon class="hover:cursor-pointer h-full
+                hover:text-customPrimary"
+                                style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
+                                (click)="onOpeningDrawer.emit(true); this.sendUserId.emit(user);"
+                                [class.text-gray-600]="!user.isExternal">edit</mat-icon>
+                            </div>
+                            <ng-template #isInternal>
+                            <mat-icon class=" h-full"
+                                style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
+                                [class.text-gray-600]="!user.isExternal">edit_off</mat-icon>
+
+                        </ng-template>
+                        <div>
+                            <mat-icon class="hover:cursor-pointer h-full
+                hover:text-customPrimary"
+                                style="font-size: 18px; display: flex; align-items: center; justify-content: center;"
+                                (click)="navigateToSingle(user)">visibility</mat-icon>
+                        </div>
+                    </div>
+                </td>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                    <div class="flex justify-center">
+                        No Users found.
+                        
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+    <tfoot class="flex justify-between   h-full mt-2"  *ngIf="userListPaginated">
+        <ng-container *ngFor="let data of userListPaginated.content | paginate: {
+            itemsPerPage : paginationJson.row,
+            currentPage : userListPaginated.currentPageIndex,
+            totalItems : userListPaginated.totalElements
+        }; let first= first;">
+        </ng-container>
+        <p>{{userListPaginated.numberOfElements}} of {{userListPaginated.totalElements}}
+            items</p>
+    
+        <pagination-controls previousLabel="Prev" nextLabel="Next"
+            (pageChange)="onTableDataChange($event)" class="">
+        </pagination-controls>
+    
+    
+    
+    
+    </tfoot>
+</div>
+
+
+<!-- <div id="main-div" class="">
 
     <div class="flex justify-between">
 
@@ -120,4 +277,6 @@
     </ng-template>
        
     </ng-template>
-</div>
+</div> -->
+
+

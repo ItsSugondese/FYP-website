@@ -1,9 +1,9 @@
-<div id="main-div" class="justify-between pb-2">
+<div id="main-div" class=" pb-2 space-y-10">
   <div class="top-side flex ">
     <div class="revenue-details w-full " *ngIf="(revenueDataSubscription$ | async)?.data as revenue">
       <div class="flex justify-between items-center">
-        <div class="revenue-header flex flex-col mb-2">
-          <span class="text-[#495057] font-semibold text-xl">Total Revenue</span>
+        <div class="revenue-header flex flex-col mb-2 ">
+          <span class="text-[#495057] font-semibold text-xl">Today's Revenue</span>
           <span class="text-customPrimary text-3xl font-bold">{{currency + ' ' + revenue.revenue}}</span>
         </div>
         <div class="flex ">
@@ -12,19 +12,19 @@
 
     </div>
 
-      <div class="divided flex justify-around bg-white p-4">
-        <div class="paid-amount flex flex-col">
-          <span class="text-customPrimary text-3xl font-bold">{{currency + ' ' + revenue.paidAmount}}</span>
-          <span class="text-customPrimary">Paid Amount</span>
+      <div class="divided flex justify-around bg-white p-4 rounded-lg">
+        <div class="paid-amount flex flex-col items-center">
+          <span class=" text-3xl font-bold">{{currency + ' ' + revenue.paidAmount}}</span>
+          <span class="">Paid Amount</span>
         </div>
-        <div class="paid-amount flex flex-col">
-          <span class="text-customPrimary text-3xl font-bold">{{currency + ' ' + revenue.leftToPay}}</span>
-          <span class="text-customPrimary">Left to paid</span>
+        <div class="paid-amount flex flex-col items-center">
+          <span class=" text-3xl font-bold">{{currency + ' ' + revenue.leftToPay}}</span>
+          <span class="">Left to paid</span>
         </div>
         
-        <div class="paid-amount flex flex-col">
-          <span class="text-customPrimary text-3xl font-bold">{{revenue.deliveredOrder}}</span>
-          <span class="text-customPrimary">Order Delivered</span>
+        <div class="paid-amount flex flex-col items-center">
+          <span class=" text-3xl font-bold">{{revenue.deliveredOrder}}</span>
+          <span class="">Order Delivered</span>
         </div>
       </div>
     </div>
@@ -38,32 +38,31 @@
       ></sales-doughnut-template>
        <!-- [fromDate]="'2024-01-01'" [toDate]="'2024-04-01'" -->
     </div>
-    <div class="flex flex-col w-full items-end justify-between ">
-      <div class="w-5/6 flex flex-col justify-between  h-full" *ngIf="(usersDataSubscription$ | async)?.data as res">
+    <div class="flex flex-col w-full items-end justify-center ">
+      <div class="w-5/6 flex flex-col justify-center space-y-5  h-full" >
         <div *ngIf="(orderDataSubscription$ | async)?.data as order ">
           <div class=" text-end">
             <span class="text-[#495057] font-semibold text-xl "><span class="text-sm ">({{orderService.timeDifference}} minutes)</span>Pending Orders</span>
           </div>
-          <div class="divided flex w-full  justify-between bg-white p-4">
+          <div class="divided flex w-full  justify-between bg-white p-4 rounded-lg">
             <div class="flex items-center ">
-              <div class="paid-amount flex flex-col ml-2">
-                <span class="text-customPrimary text-xl font-bold">{{order.totalPending}}</span>
-                <span class="text-customPrimary">Total</span>
+              <div class="paid-amount flex flex-col ml-2 items-center ">
+                <span class=" text-xl font-bold">{{order.totalPending}}</span>
+                <span class="">Total</span>
               </div>
             </div>
-            <div class="flex items-center hover:cursor-pointer " (click)="goToManageOrder('Onsite')">
-              <i class="pi pi-qrcode"></i>
-              <div class="paid-amount flex flex-col ml-2">
-                <span class="text-customPrimary text-xl font-bold">{{order.onsiteOrder.pending}}</span>
-                <span class="text-customPrimary" >Onsite</span>
+            <div class="flex items-center hover:cursor-pointer hover:text-customPrimary" (click)="goToManageOrder('Onsite')">
+              
+              <div class="paid-amount flex flex-col ml-2 items-center">
+                <span class=" text-xl font-bold">{{order.onsiteOrder.pending}}</span>
+                <span class="" >Onsite</span>
               </div>
             </div>
-            <div class="flex items-center hover:cursor-pointer  " (click)="goToManageOrder('Online')">
-              <i class="pi 
-        pi-globe"></i>
-              <div class="paid-amount flex flex-col ml-2" >
-                <span class="text-customPrimary text-xl font-bold">{{order.onlineOrder.pending}}</span>
-                <span class="text-customPrimary" >Online</span>
+            <div class="flex items-center hover:cursor-pointer  hover:text-customPrimary " (click)="goToManageOrder('Online')">
+              
+              <div class="paid-amount flex flex-col ml-2 items-center" >
+                <span class=" text-xl font-bold">{{order.onlineOrder.pending}}</span>
+                <span class="" >Online</span>
               </div>
             </div>
 
@@ -72,85 +71,39 @@
         </div>
      
 
-        <div>
+        <div *ngIf="userData">
           <div class=" text-end">
             <span class="text-[#495057] font-semibold text-xl ">Users</span>
           </div>
-          <div class="divided flex w-full  justify-between bg-white p-4">
-            <div class="flex items-center hover:cursor-pointer" (click)="navigateToUserManagement('ALL')">
-              <div class="paid-amount flex flex-col ml-2">
-                <span class="text-customPrimary text-xl font-bold">{{res.totalUser}}</span>
-                <span class="text-customPrimary">Total</span>
+          <div class="divided flex w-full  justify-between bg-white p-4 rounded-lg">
+            <div class="flex items-center hover:cursor-pointer hover:text-customPrimary" (click)="navigateToUserManagement('ALL')">
+              <div class="paid-amount flex flex-col ml-2 items-center">
+                <span class=" text-xl font-bold">{{userData.totalUser}}</span>
+                <span class="">Total</span>
               </div>
             </div>
-            <div class="flex items-center  hover:cursor-pointer" (click)="navigateToUserManagement('INTERNAL')">
-              <i class="pi pi-verified"></i>
-              <div class="paid-amount flex flex-col ml-2">
-                <span class="text-customPrimary text-xl font-bold">{{res.internal}}</span>
-                <span class="text-customPrimary">Internal</span>
+            <div class="flex items-center  hover:cursor-pointer hover:text-customPrimary" (click)="navigateToUserManagement('INTERNAL')">
+              
+              <div class="paid-amount flex flex-col ml-2 items-center">
+                <span class=" text-xl font-bold">{{userData.internal}}</span>
+                <span class="">Internal</span>
               </div>
             </div>
-            <div class="flex items-center  hover:cursor-pointer" (click)="navigateToUserManagement('EXTERNAL')">
-              <i class="pi 
-            pi-users"></i>
-              <div class="paid-amount flex flex-col ml-2">
-                <span class="text-customPrimary text-xl font-bold">{{res.external}}</span>
-                <span class="text-customPrimary">External</span>
+            <div class="flex items-center  hover:cursor-pointer hover:text-customPrimary" (click)="navigateToUserManagement('EXTERNAL')">
+             
+              <div class="paid-amount flex flex-col ml-2 items-center">
+                <span class=" text-xl font-bold">{{userData.external}}</span>
+                <span class="">External</span>
               </div>
             </div>
-            <div class="flex items-center  hover:cursor-pointer" (click)="navigateToUserManagement('ALL')">
-              <i class="pi pi-user-plus"></i>
-              <div class="paid-amount flex flex-col ml-2">
-                <span class="text-customPrimary text-xl font-bold">{{res.latestUser}}</span>
-                <span class="text-customPrimary">New Users</span>
-              </div>
-            </div>
+            
 
           </div>
 
         </div>
-        <div class="flex justify-between ">
-          <div style="width: 40%;">
-            <div class=" text-start">
-              <span class="text-[#495057] font-semibold text-xl ">Staff</span>
-            </div>
-            <div class="divided flex w-full  justify-between bg-white p-4 " >
-              <div class="flex items-center hover:cursor-pointer" (click)="navigateToStaffManagement()">
-                <div class="paid-amount flex flex-col ml-2">
-                  <span class="text-customPrimary text-xl font-bold">{{res.totalStaff}}</span>
-                  <span class="text-customPrimary">Total</span>
-                </div>
-              </div>
-              <div class="flex items-center  hover:cursor-pointer" (click)="navigateToStaffManagement()">
-                <i class="pi pi-user-plus"></i>
-                <div class="paid-amount flex flex-col ml-2">
-                  <span class="text-customPrimary text-xl font-bold">{{res.latestStaff}}</span>
-                  <span class="text-customPrimary">New</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div style="width: 40%;" *ngIf="(foodMenuDataSubscription$ | async)?.data as foodData">
-            <div class=" text-end">
-              <span class="text-[#495057] font-semibold text-xl ">Food</span>
-            </div>
-            <div class="divided flex w-full  justify-between bg-white p-4">
-              <div class="flex items-center hover:cursor-pointer " (click)="navigateToFoodMenu()">
-                <div class="paid-amount flex flex-col ml-2">
-                  <span class="text-customPrimary text-xl font-bold">{{foodData.total}}</span>
-                  <span class="text-customPrimary">Total</span>
-                </div>
-              </div>
-              <div class="flex items-center hover:cursor-pointer" (click)="navigateToFoodMenu()">
-                <i class="pi pi-plus-circle"></i>
-                <div class="paid-amount flex flex-col ml-2">
-                  <span class="text-customPrimary text-xl font-bold">{{foodData.latest}}</span>
-                  <span class="text-customPrimary">New</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
+
+        
       </div>
 
     </div>
@@ -158,6 +111,71 @@
 
   </div>
 
+
+  <div class="flex justify-between ">
+
+    <div style="width: 60%;" *ngIf="(foodMenuDataSubscription$ | async)?.data as foodData">
+      <div class=" text-start">
+        <span class="text-[#495057] font-semibold text-xl ">Food Menu</span>
+      </div>
+      <div class="divided flex w-full  justify-around bg-white p-4 rounded-lg">
+        <div class="flex items-center hover:cursor-pointer  hover:text-customPrimary" (click)="navigateToFoodMenu()">
+          <div class="paid-amount flex flex-col  items-center">
+            <span class=" text-xl font-bold">{{foodData.total}}</span>
+            <span class="">Total</span>
+          </div>
+        </div>
+        <div class="flex items-center hover:cursor-pointer  hover:text-customPrimary" (click)="navigateToFoodMenu()">
+          <div class="paid-amount flex flex-col items-center">
+            <span class=" text-xl font-bold">{{foodData.today}}</span>
+            <span class="">Available</span>
+          </div>
+        </div>
+        <div class="flex items-center hover:cursor-pointer hover:text-customPrimary" (click)="navigateToFoodMenu()">
+        
+          <div class="paid-amount flex flex-col  items-center">
+            <span class=" text-xl font-bold">{{foodData.notToday}}</span>
+            <span class="">Not Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div style="width: 10%;"  *ngIf="(tableDataSubscription$ | async)?.data as tableData">
+      <div class=" text-center">
+        <span class="text-[#495057] font-semibold text-xl ">Table</span>
+      </div>
+      <div class="divided flex w-full  justify-center bg-white p-4 " >
+        <div class="flex items-center justify-center hover:cursor-pointer hover:text-customPrimary" (click)="navigateToStaffManagement()">
+          <div class="paid-amount flex flex-col items-center justify-center">
+            <span class=" text-xl font-bold">{{tableData.total}}</span>
+            <span class="">Total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="width: 10%;">
+      <div class=" text-center">
+        <span class="text-[#495057] font-semibold text-xl ">Staff</span>
+      </div>
+      <div class="divided flex w-full  justify-center bg-white p-4  rounded-lg" >
+        <div class="flex items-center hover:cursor-pointer hover:text-customPrimary" (click)="navigateToStaffManagement()">
+          <div class="paid-amount flex flex-col items-center">
+            <span class=" text-xl font-bold">{{userData.totalStaff}}</span>
+            <span class="">Total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    
+
+
+    
+  </div>
 
 
 

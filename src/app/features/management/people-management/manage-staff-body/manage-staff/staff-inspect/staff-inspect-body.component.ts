@@ -9,7 +9,7 @@ import { PeopleService } from '../../../people-service/people.service';
 import { Staff } from '../manage-staff-service/model/staff.model';
 
 enum StaffInspectNav{
-  DETAIL = "Basic Information",
+  // DETAIL = "Basic Information",
    DISABLE = "Disable History"
 }
 
@@ -24,7 +24,7 @@ export class StaffInspectBodyComponent extends CommonVariable implements OnInit,
   @Output() isInspectingEvent : EventEmitter<boolean> = new EventEmitter()
   inspecting = StaffInspectNav
   options: EnumItem[] = Object.keys(StaffInspectNav).map(key => ({ key, value: StaffInspectNav[key as keyof typeof StaffInspectNav] }));
-  selectedNavbar = StaffInspectNav.DETAIL
+  selectedNavbar = StaffInspectNav.DISABLE
 
   remarks !: string
 

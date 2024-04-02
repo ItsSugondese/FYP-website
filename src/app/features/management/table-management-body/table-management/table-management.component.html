@@ -1,19 +1,38 @@
 <div id="main-div">
+
+    
+
     <div class="header flex justify-end" (click)="visible = true">
         <add-button-template text="Table"></add-button-template>
     </div>
 
-    <div class="flex flex-wrap">
+    <!-- <div class="flex flex-wrap "> -->
+    <div class="grid grid-cols-3 gap-4">
+    
         <ng-container *ngIf="(tablesSubscription$ | async)?.data as res">
             <ng-container *ngFor="let item of res">
-                <div class="flex items-center">
+                <!-- <div class="flex items-center bg-white">
                     <div class="bg-white p-2 text-center" (click)="selectingTable(item)">
                         <span>Table Number: {{item.tableNumber}}</span>
                     </div>
                     <div (click)="deleteVisible = true; selectedTable = item">
                         <default-button-template text="Delete"></default-button-template>
                     </div>
-                </div>
+                </div> -->
+                <div
+  class="bg-white shadow-sm w-full max-w-sm rounded-lg border p-4 flex justify-between items-center">
+  <h2 class="text-lg font-semibold">Table no. {{item.tableNumber}}</h2>
+  <div class="flex space-x-2">
+    <button class="bg-[#3B82F6] text-white inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+    (click)="selectingTable(item)">
+      View
+    </button>
+    <button class="bg-[#EF4444] text-white inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2"
+    (click)="deleteVisible = true; selectedTable = item">
+      Delete
+    </button>
+  </div>
+</div>
             </ng-container>
         </ng-container>
     </div>

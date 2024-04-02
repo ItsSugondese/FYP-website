@@ -3,13 +3,14 @@ import { ManageFoodsService } from '../manage-foods/manage-foods-service/manage-
 import { Subscription } from 'rxjs';
 import { FoodMenuWithImageData, foodMenu } from '../manage-foods/manage-foods-service/model/food-menu.model';
 import { UserService } from '@shared/service/user-service/user.service';
+import { CommonVariable } from '@shared/helper/inherit/common-variable';
 
 @Component({
   selector: 'app-manage-food-drawer',
   templateUrl: './manage-food-drawer.component.html',
   styleUrls: ['./manage-food-drawer.component.scss']
 })
-export class ManageFoodDrawerComponent implements OnInit, OnDestroy {
+export class ManageFoodDrawerComponent extends CommonVariable implements OnInit, OnDestroy {
 
   @Input() isOpenDrawer : boolean = false;
   @Output() onOpeningDrawer : EventEmitter<boolean> = new EventEmitter();
@@ -23,7 +24,9 @@ export class ManageFoodDrawerComponent implements OnInit, OnDestroy {
   selectedFoodMenu !: FoodMenuWithImageData | null
   userRole !: string
 
-    constructor(private foodService: ManageFoodsService, private userService: UserService){}
+    constructor(private foodService: ManageFoodsService, private userService: UserService){
+      super()
+    }
 
     ngOnInit(): void {
       this.userRole = this.userService.getSingleRole()
@@ -31,7 +34,7 @@ export class ManageFoodDrawerComponent implements OnInit, OnDestroy {
       if(this.userRole == 'STAFF'){
         this.selectedNavbar =   this.feedbackIndex;
       }else{
-        this.selectedNavbar = this.editFoodIndex;
+        this.selectedNavbar = this.feedbackIndex;
       }
 
       this.selectedFoodMenuSubscribable$ = this.foodService.getSelectedFoodMenu().subscribe(

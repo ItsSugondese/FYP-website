@@ -14,23 +14,51 @@ export enum CalenderType{
             selectionMode="range" [readonlyInput]="true"
           (onSelect)="onRangeSelect($event)">
 </p-calendar>
-
-        <mat-icon>expand_more</mat-icon>
     </div>
   `,
   styles: [`
   
-::ng-deep .p-datepicker table td > span {
-    background-color: orange;
+// ::ng-deep .p-datepicker table td > span {
+//     background-color: orange;
+//   }
+::ng-deep .p-datepicker  {
+    // background-color: orange;
+  }
+::ng-deep .p-datepicker-header  {
+    background-color: #A62A22;
+    color: white
   }
   
   ::ng-deep .p-datepicker table td.p-datepicker-today > span {
-    background-color: burlywood;
+    background-color: #B48885;
+    color: white;
+  }
+  ::ng-deep .p-datepicker table td.ng-tns-c3918063748-0 > span {
+    // background-color: #A62A22;
+    // color: white;
   }
 
+ 
+  
+  ::ng-deep .p-inputtext {
+    width: 200px;
+    
+  }
+  ::ng-deep .p-inputtext:hover {
+    width: 200px;
+    cursor: pointer;
+  }
+  
   ::ng-deep .p-inputtext:focus {
     outline: none !important;
     border: none !important;
+    position: none;
+  }
+  ::ng-deep .p-highlight {
+    outline: none !important;
+    border: none !important;
+    color: white !important;
+    background-color: #CD3125 !important;
     position: none;
   }
 

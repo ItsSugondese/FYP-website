@@ -3,7 +3,7 @@ import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-se
 import { EnumItem } from '@shared/model/enums/MapForEnum.model';
 
 enum UserInspectNav{
-  DETAIL = "Basic Information",
+  // DETAIL = "Basic Information",
    PAYMENT= "Payment History", 
    DISABLE = "Disable History"
 }

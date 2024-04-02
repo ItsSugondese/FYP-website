@@ -9,7 +9,7 @@ import { PeopleService } from '../../../people-service/people.service';
 import { UserInspectService } from './user-inspect-service/user-inspect.service';
 
 enum UserInspectNav{
-  DETAIL = "Basic Information",
+  // DETAIL = "Basic Information",
    PAYMENT= "Payment History", 
    DISABLE = "Disable History"
 }

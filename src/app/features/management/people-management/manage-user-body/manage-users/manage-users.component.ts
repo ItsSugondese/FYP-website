@@ -24,10 +24,13 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
   paginationJson: manageUserPagination = {
     userType: ['USER', 'EXTERNAL_USER'],
     page: 1,
-    row: this.selectedRow
+    row: 7
   }
   fromTime = new Date();
   getUsersSubscriable$ !: Subscription
+  load = true
+  imageId$ !: Subscription;
+  imageDataMap: { [key: number]: string } = {};
 
 
   
@@ -42,7 +45,7 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
 
   selectedUserTypeToFilter(event: string | null){
     this.manageUserService.selectedOption = event!
-    
+    this.load = true
     
     
     this.getPaginatedData()
@@ -67,7 +70,24 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
       this.paginationJson).subscribe(
         (response) => {
           this.userListPaginated = response.data
+          this.load = false
           this.getUsersSubscriable$.unsubscribe()
+
+          this.userListPaginated.content.forEach((user) => {
+            if(user.profilePath && user.isExternal){
+              this.imageId$ = this.manageUserService.getUserPicture(user.id).subscribe((imageBlob: Blob) => {
+               
+              this.createImageFromBlob(imageBlob, user.id)
+               .then((imageData) => {
+                this.imageDataMap[user.id] = imageData;
+            })
+          
+            });
+            }else if(!user.isExternal){
+              this.imageDataMap[user.id] = user.profilePath
+            }
+  
+          })
         }
       )
   }
@@ -79,6 +99,8 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
     }else{
       this.paginationJson.name = undefined
     }
+
+    this.load = true;
     this.getPaginatedData()
   }
 
@@ -88,13 +110,13 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
 
   }
 
-  onSelectedDropdown(event: any) {
-    if (this.paginationJson.row != event) {
-      this.paginationJson.row = event
-      this.paginationJson.page = 1
-      this.getPaginatedData();
-    }
-  }
+  // onSelectedDropdown(event: any) {
+  //   if (this.paginationJson.row != event) {
+  //     this.paginationJson.row = event
+  //     this.paginationJson.page = 1
+  //     this.getPaginatedData();
+  //   }
+  // }
 
 
   ngOnDestroy(): void {

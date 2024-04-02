@@ -1,22 +1,16 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { ManageFoodsService } from './manage-foods-service/manage-foods.service';
-import { Observable, Subscription } from 'rxjs';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { createImageFromBlob } from 'src/app/shared/helper/attachment-helper/attachment.handler';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SidenavService } from 'src/app/shared/ui/nav/sidenav/sidenav-service/sidenav.service';
-import { FoodFilter } from 'src/app/constant/filter/food-filter.model';
-import { FoodMenuWithImageData, foodMenu } from './manage-foods-service/model/food-menu.model';
-import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
-import { FoodMenuPagination } from './manage-foods-service/model/food-menu.payload';
-import { CenterItems } from 'src/app/constant/class/display-center.model';
-import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
-import { AddFoodService } from '../manage-food-drawer/add-food/add-food-service/add-food.service';
-import { ResponseData } from 'src/app/constant/data/response-data.model';
-import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
-import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
-import { EnumItem } from '@shared/model/enums/MapForEnum.model';
 import { UserService } from '@shared/service/user-service/user.service';
+import { Subscription } from 'rxjs';
+import { CommonVariable } from 'src/app/shared/helper/inherit/common-variable';
+import { EnumService } from 'src/app/shared/service/enum-service/enum.service';
+import { SidenavService } from 'src/app/shared/ui/nav/sidenav/sidenav-service/sidenav.service';
+import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
+import { AddFoodService } from '../manage-food-drawer/add-food/add-food-service/add-food.service';
+import { ManageFoodsService } from './manage-foods-service/manage-foods.service';
+import { FoodMenuWithImageData, foodMenu } from './manage-foods-service/model/food-menu.model';
+import { FoodMenuPagination } from './manage-foods-service/model/food-menu.payload';
 
 
 

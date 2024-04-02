@@ -19,7 +19,7 @@ export class UserDisableHistoryComponent extends CommonVariable implements OnIni
   disableHistoryPaginated !: PaginatedData<DisableHistory>
   paginationNavigator: defaultPaginationNavigator = {
     currentPage: 1,
-    row: this.selectedRow,
+    row: 10,
   }
   paginationJson !: disableUserHistoryPagination 
   fromTime = new Date();
@@ -37,7 +37,7 @@ super()
   ngOnInit(): void {
     this.paginationJson = {
       page: 1,
-      row: this.selectedRow,
+      row: 10,
       userId: this.user.id
     }
     this.getPaginatedData()

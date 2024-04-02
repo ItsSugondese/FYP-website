@@ -28,6 +28,7 @@ const routes: Routes = [
   {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  
     // data: {roles:['ADMIN']}
   },
+  {path: ManagementRouteConstant.staffManagement, component : ManageStaffBodyComponent,},
   {path: ManagementRouteConstant.inventoryManagement, component : InventoryManagementAdminComponent,},
   {path: ManagementRouteConstant.addStaff, component : AddStaffComponent,},
   {path: ManagementRouteConstant.orderManagement, component: OrderManagementBodyComponent},
@@ -41,7 +42,7 @@ const routes: Routes = [
   {path: ManagementRouteConstant.announcement, component: AnnouncementComponent},
   {path: ManagementRouteConstant.report, component: GenerateReportComponent},
   {path: ManagementRouteConstant.tableManagement, component: TableManagementBodyComponent},
-  {path: 'test', component: TestComponent}
+  {path: ManagementRouteConstant.test, component: TestComponent}
 ];
 
 @NgModule({

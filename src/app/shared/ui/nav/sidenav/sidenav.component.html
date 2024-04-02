@@ -29,7 +29,7 @@
       <li class="" *ngFor="let data of labelData; let firstItem = first; let lastItem = last" 
       [ngClass]="{'my-0': firstItem || lastItem, 'my-1': !firstItem && !lastItem}" >
 
-      <div [routerLink]="'/' + data.routeLink"   class="group p-1 rounded hover:bg-white hover:cursor-pointer text-white flex  items-center"  routerLinkActive="active"
+      <div [routerLink]="'/' + data.routeLink"   class="group p-1 rounded hover:bg-white hover:cursor-pointer text-white flex  items-center "  routerLinkActive="active"
       [routerLinkActiveOptions]="{exact:true} "
       [attr.data-toggle]="sidenavService.collapsed ? 'tooltip' : null" 
       title={{data.label}} >
@@ -42,7 +42,7 @@
         <i class="fas fa-{{ data.icon }}"></i>
       </ng-container>
 
-      <span class="text-lg ml-1 flex-1 group-hover:text-black" [class.hidden]="sidenavService.collapsed">{{data.label}}</span>
+      <span class="text ml-1 flex-1 group-hover:text-black line-clamp-1" [class.hidden]="sidenavService.collapsed">{{data.label}}</span>
 
     </div>
     </li>

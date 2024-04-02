@@ -23,7 +23,7 @@ export class UserPaymentHistoryComponent extends CommonVariable implements OnIni
   paymentHistoryOfOrderSubscription$ !: Observable<ResponseData<PaymentHistoryOfOrder[]>>
   paginationJson: OnsiteOrderOfUserPagination = {
     page: 1,
-    row: this.selectedRow,
+    row: 8,
     userId: this.userId
   }
   paginatedData !: PaginatedData<onsiteOrder>

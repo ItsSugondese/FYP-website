@@ -17,5 +17,6 @@ export const ManagementRouteConstant = {
     announcement: 'admin/announcement',
     report: 'admin/report',
     tableManagement: 'admin/table_management',
+    test: 'test',
 
   };

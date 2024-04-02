@@ -41,7 +41,7 @@ export class UserManagementPaymentComponent extends CommonVariable implements On
     this.paginationJson = {
       userType: ['USER', 'EXTERNAL_USER'],
       page: 1,
-      row: this.selectedRow,
+      row: 4,
       payStatus : this.userPaymentManagementService.selectedOption == 'ALL'? undefined : this.userPaymentManagementService.selectedOption
     }
 

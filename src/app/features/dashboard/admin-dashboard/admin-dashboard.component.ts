@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { ManagementRouteConstant } from 'src/app/constant/routing/management-routing-constant.model';
 import { ManageFoodsService } from '../../management/manage-food-body/manage-foods/manage-foods-service/manage-foods.service';
 import { ManageUsersService } from '../../management/people-management/manage-user-body/manage-users/manage-users-service/manage-users.service';
+import { TableData, TableDataPayload } from '../dashboard-service/model/table-data.model';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -24,14 +25,18 @@ import { ManageUsersService } from '../../management/people-management/manage-us
 export class AdminDashboardComponent extends CommonVariable implements OnInit, OnDestroy {
 
 
-  usersDataSubscription$ !: Observable<ResponseData<UsersData>>
+  userData !: UsersData
+  usersDataSubscription$ !: Subscription
+  // usersDataSubscription$ !: Observable<ResponseData<UsersData>>
   orderDataSubscription$ !: Observable<ResponseData<OrderData>>
   revenueDataSubscription$ !: Observable<ResponseData<RevenueData>>
   foodMenuDataSubscription$ !: Observable<ResponseData<FoodMenuData>>
+  tableDataSubscription$ !: Observable<ResponseData<TableData>>
 
   userDataPayload : UsersDataPayload = {}
   revenueDataPayload : RevenueDataPayload = {}
   foodMenuDataPayload : FoodMenuDataPayload = {}
+  tableDataPayload : TableDataPayload = {}
 
   orderDataPayload !: OrderDataPayload
 
@@ -45,11 +50,20 @@ export class AdminDashboardComponent extends CommonVariable implements OnInit, O
     this.orderDataPayload = {
       timeDifference: this.orderService.timeDifference
     }
-  this.usersDataSubscription$ = this.dashboardService.getUsersData(this.userDataPayload);
-  this.orderDataSubscription$ = this.dashboardService.getOrderData(this.orderDataPayload);
-  this.revenueDataSubscription$ = this.dashboardService.getRevenueData(this.revenueDataPayload);
-  this.foodMenuDataSubscription$ = this.dashboardService.getFoodMenuData(this.foodMenuDataPayload);
+  this.getData()
 
+  }
+
+  getData(){
+    this.orderDataSubscription$ = this.dashboardService.getOrderData(this.orderDataPayload);
+    this.revenueDataSubscription$ = this.dashboardService.getRevenueData(this.revenueDataPayload);
+    this.foodMenuDataSubscription$ = this.dashboardService.getFoodMenuData(this.foodMenuDataPayload);
+    this.tableDataSubscription$ = this.dashboardService.getTableData(this.tableDataPayload)
+    this.usersDataSubscription$ = this.dashboardService.getUsersData(this.userDataPayload).subscribe(
+      (res) => {
+        this.userData = res.data
+      }
+    );
   }
 
   goToManageOrder(selected : string){
@@ -68,6 +82,9 @@ export class AdminDashboardComponent extends CommonVariable implements OnInit, O
   navigateToStaffManagement(){
     this.router.navigate(['/' + ManagementRouteConstant.staffManagement]);
   }
+  navigateToTableManagement(){
+    this.router.navigate(['/' + ManagementRouteConstant.tableManagement]);
+  }
 
   navigateToUserManagement(val?: string){
 
@@ -85,7 +102,9 @@ export class AdminDashboardComponent extends CommonVariable implements OnInit, O
 
 
   ngOnDestroy(): void {
-   
+   if(this.usersDataSubscription$){
+    this.usersDataSubscription$.unsubscribe()
+   }
   }
 
 }

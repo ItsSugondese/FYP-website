@@ -39,9 +39,9 @@
         </div>
   
         <div id="pass-val" class="flex flex-col h-fit flex-1">
-            <ng-container *ngIf="selectedNavbar == inspecting.DETAIL">
+            <!-- <ng-container *ngIf="selectedNavbar == inspecting.DETAIL">
                 <app-staff-details [staff]="staff" [class]="forChild"></app-staff-details>
-            </ng-container>
+            </ng-container> -->
             <ng-container *ngIf="selectedNavbar == inspecting.DISABLE">
                 <app-staff-disable-history [staff]="staff"  [class]="forChild"></app-staff-disable-history>
             </ng-container>

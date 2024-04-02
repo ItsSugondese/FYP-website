@@ -104,7 +104,8 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
           this.imageMap = this.userData.profilePath
         }else{
         this.userPictureSubscription$ = this.staffService.getStaffPicture(this.userData.id).subscribe((imageBlob: Blob) => {
-    
+
+          if(this.userData.profilePath){
     
           this.createImageFromBlob(imageBlob, this.userData.id)
             .then((imageData) => {
@@ -114,6 +115,7 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
             .catch((error) => {
               console.log("error when trying to access")
             });
+          }
         }
         );
       }

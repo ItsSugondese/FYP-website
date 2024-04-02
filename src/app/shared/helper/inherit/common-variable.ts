@@ -7,7 +7,7 @@ import { MessageStatus } from "src/app/templates/snackbar/snackbar.template.comp
 
 export class CommonVariable {
   enumCalenderType = CalenderType
-  currency : string = "Rs."
+  currency : string = "Rs. "
   showPopUp: boolean = false;
   centerItems: string = CenterItems()
   forChild: string = PassHeight()

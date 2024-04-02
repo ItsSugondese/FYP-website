@@ -1,12 +1,36 @@
-<div id="main-div">
+<div id="main-div" class="space-y-5">
+    <div class="flex items-center justify-between">
+        
+            <div>
+                <food-filter-template [selectedKey]="userPaymentManagementService.selectedOption" [options]="userPaymentManagementService.options" (optionSelected)="selectedFromUserFilter($event!)"></food-filter-template>
+              </div>
+        
+              <div>
+    
+                  <span class="p-input-icon-left ">
+                    <div>
+                      <search-template (typedData)="typedUserToFilter($event)"></search-template>
+                    </div>
+      
+                  </span>
+                  <!-- <p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                      <ng-template pTemplate="header">
+                          <div class="px-3 pt-3 pb-0">
+                              <span class="font-bold">Agent Picker</span>
+                          </div>
+                      </ng-template>
+                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      </ng-template>
+                  </p-columnFilter> -->
+              </div>
+    </div>
     <div class="" style="width: 100%;">
     <p-table 
     [value]="userListPaginated.content"
     #dt1
     [rows]="paginationJson.row"
-    [loading]="load"
- *ngIf="userListPaginated">
-    <ng-template pTemplate="caption">
+    [loading]="load">
+    <!-- <ng-template pTemplate="caption">
         <div class="flex items-center justify-between">
             
                 <div>
@@ -32,7 +56,7 @@
                       </p-columnFilter>
                   </div>
         </div>
-    </ng-template>
+    </ng-template> -->
     <ng-template pTemplate="header">
         <tr>
             <th style="">
