@@ -14,7 +14,7 @@ import { CommonVariable } from '@shared/helper/inherit/common-variable';
           <span class="" *ngIf="!isLoading; else loaded">
             {{text}}
           </span>
-          <ng-template #loaded>
+        <ng-template #loaded>
           <div class="w-8 flex items-center">
           <div class="spinner-border" role="status">
   <span class="sr-only">Loading...</span>

@@ -1,0 +1,4 @@
+<app-inventory-management-admin *ngIf="!isInspecting" (sendInventory)="getInventory($event!)"
+    (isInspectingEvent)="handleIsInspecting($event)" ></app-inventory-management-admin>
+<app-inventory-log *ngIf="isInspecting" [inventory]="inventory!"
+    (isInspectingEvent)="handleIsInspecting($event)"></app-inventory-log>

@@ -34,143 +34,81 @@
   </div>
 
 
-  <div class="flex justify-between items-center space-x-10">
+  <div class="flex justify-between items-center  h-full ">
     <div>
       <sales-doughnut-template [counter]="3" [fromDate]="fromDate" [toDate]="toDate"
       ></sales-doughnut-template>
        <!-- [fromDate]="'2024-01-01'" [toDate]="'2024-04-01'" -->
     </div>
-    <div class="flex flex-col w-full">
-    <div class="" style="width: 100%;">
-    <p-table 
-    [value]="users.content"
-    #dt1
-    [rows]="financeDataPayload.row"
-    [loading]="load"
- *ngIf="users">
-    <ng-template pTemplate="caption">
-        <div class="flex items-center">
-            <!-- <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" ></button> -->
-            <div>
-              
-            </div>
-            <span class="p-input-icon-left ml-auto">
-              <div>
-                <search-template (typedData)="typedUserToFilter($event)"></search-template>
+
+    <div class=" w-full h-full space-y-6 ">
+      <div class="flex  justify-end space-x-10 h-full ">
+
+        <div >
+          <div class=" text-center">
+            <span class="text-[#495057] font-semibold text-xl ">User</span>
+          </div>
+          <div class="divided flex w-full  justify-center bg-white p-4  rounded-lg" >
+            <div class="flex items-center hover:cursor-pointer hover:text-customPrimary" (click)="navigateToStaffManagement()">
+              <div class="paid-amount flex flex-col items-center w-20">
+                <span class=" text-xl font-bold">{{userData.latestUser}}</span>
+                <span class="">Joined</span>
               </div>
-
-            </span>
-            <p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
-                <ng-template pTemplate="header">
-                    <div class="px-3 pt-3 pb-0">
-                        <span class="font-bold">Agent Picker</span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                    <!-- <p-multiSelect [ngModel]="value" 
-                    placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
-                        <ng-template let-option pTemplate="item">
-                            <div class="inline-block vertical-align-middle">
-                                <img [alt]="option.label" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ option.image }}" width="24" class="vertical-align-middle" />
-                                <span class="ml-1 mt-1">{{ option.name }}</span>
-                            </div>
-                        </ng-template>
-                    </p-multiSelect> -->
-                </ng-template>
-            </p-columnFilter>
+            </div>
+          </div>
         </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-        <tr>
-            <th style="">
-                <div class="flex align-items-center">
-                    S.No.
-                </div>
-            </th>
-            <th style="">
-                <div class="flex align-items-center">
-                    Name
-                </div>
-            </th>
-            <th style="">
-                <div class="flex align-items-center">
-                    Total Paid
-                    
-                </div>
-            </th>
-            <th style="">
-                <div class="flex align-items-center">
-                    Total Due
-                    
-                </div>
-            </th>
-            <th style="">
-                <div class="flex align-items-center">
-                    Total Transaction
-                    
-                </div>
-            </th>
+        <div >
+          <div class=" text-center">
+            <span class="text-[#495057] font-semibold text-xl ">Staff</span>
+          </div>
+          <div class="divided flex w-full  justify-center bg-white p-4  rounded-lg" >
+            <div class="flex items-center hover:cursor-pointer hover:text-customPrimary" (click)="navigateToStaffManagement()">
+              <div class="paid-amount flex flex-col items-center w-20">
+                <span class=" text-xl font-bold">{{userData.totalStaff}}</span>
+                <span class="">Total</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-10">
+        <div   *ngIf="(foodMenuDataSubscription$ | async)?.data as foodData">
+          <div class=" text-center">
+            <span class="text-[#495057] font-semibold text-xl ">Food Menu</span>
+          </div>
+          <div class="divided flex w-full  justify-center bg-white p-4 rounded-lg" >
+            <div class="flex items-center justify-center hover:cursor-pointer hover:text-customPrimary" (click)="navigateToStaffManagement()">
+              <div class="paid-amount flex flex-col items-center justify-center w-20">
+                <span class=" text-xl font-bold">{{foodData.latest}}</span>
+                <span class="">Added</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div   *ngIf="(tableDataSubscription$ | async)?.data as tableData">
+          <div class=" text-center">
+            <span class="text-[#495057] font-semibold text-xl ">Table</span>
+          </div>
+          <div class="divided flex w-full  justify-center bg-white p-4 rounded-lg" >
+            <div class="flex items-center justify-center hover:cursor-pointer hover:text-customPrimary" (click)="navigateToStaffManagement()">
+              <div class="paid-amount flex flex-col items-center justify-center w-20">
+                <span class=" text-xl font-bold">{{tableData.latest}}</span>
+                <span class="">Added</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-
-          
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-user>
-        <tr>
-            <td>
-                {{ user.sno }}
-            </td>
-            <td>
-                <!-- <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" style="width: 20px" /> -->
-                <span class="ml-1 vertical-align-middle">{{ user.fullName }}</span>
-            </td>
-            <td>
-                <!-- <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" style="vertical-align: middle" /> -->
-                <span class="ml-1 vertical-align-middle">{{ user.totalPaid }}</span>
-            </td>
-            <td>
-                <!-- {{ customer.date | date: 'MM/dd/yyyy' }} -->
-                {{user.dueAmount}}
-            </td>
-            <td>
-                <!-- {{ customer.balance | currency: 'USD':'symbol' }} -->
-                {{user.totalTransaction}}
-            </td>
-            
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-        <tr>
-            <td colspan="7">No customers found.</td>
-        </tr>
-    </ng-template>
-</p-table>
-</div>
-
-<tfoot class="flex justify-between   h-full mt-2"  *ngIf="users">
-    <ng-container *ngFor="let data of users.content | paginate: {
-        itemsPerPage : financeDataPayload.row,
-        currentPage : users.currentPageIndex,
-        totalItems : users.totalElements
-    }; let first= first;">
-    </ng-container>
-    <p>{{users.numberOfElements}} of {{users.totalElements}}
-        items</p>
-
-    <pagination-controls previousLabel="Prev" nextLabel="Next"
-        (pageChange)="onTableDataChange($event)" class="">
-    </pagination-controls>
-
-
-
-
-</tfoot>
-</div>
+      </div>
+  
+    </div>
+    
 
     
   </div>
 
-  <div class="flex flex-col w-full justify-between ">
+  <!-- <div class="flex flex-col w-full justify-between ">
     <div class=" flex flex-col justify-between  h-full" >
       
 
@@ -179,12 +117,12 @@
           <span class="text-[#495057] font-semibold text-xl ">Users</span>
         </div>
         <div class="divided flex w-full  justify-between bg-white p-4">
-          <ng-container *ngIf="(usersDataSubscription$ | async)?.data as res">
+          <ng-container *ngIf="userData">
           <div class="flex items-center  hover:cursor-pointer" (click)="navigateToUserManagement('INTERNAL')" >
             <i class="pi pi-verified"></i>
             <div class="paid-amount flex flex-col ml-2">
-              <span class="text-customPrimary text-xl font-bold">{{res.latestUser}}</span>
-              <span class="text-customPrimary">New Users</span>
+              <span class="text-customPrimary text-xl font-bold">{{userData.latestUser}}</span>
+              <span class="text-customPrimary">Joined</span>
             </div>
           </div>
           <div class="flex items-center  hover:cursor-pointer" (click)="navigateToUserManagement('EXTERNAL')">
@@ -218,5 +156,132 @@
   </div>
 
 
+</div> -->
+
+<div class="flex flex-col w-full">
+  <div class="" style="width: 100%;">
+  <p-table 
+  [value]="users.content"
+  #dt1
+  [rows]="financeDataPayload.row"
+  [loading]="load"
+*ngIf="users">
+  <ng-template pTemplate="caption">
+      <div class="flex items-center">
+          <!-- <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" ></button> -->
+          <div>
+            
+          </div>
+          <span class="p-input-icon-left ml-auto">
+            <div>
+              <search-template (typedData)="typedUserToFilter($event)"></search-template>
+            </div>
+
+          </span>
+          <p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+              <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                      <span class="font-bold">Agent Picker</span>
+                  </div>
+              </ng-template>
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <!-- <p-multiSelect [ngModel]="value" 
+                  placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+                      <ng-template let-option pTemplate="item">
+                          <div class="inline-block vertical-align-middle">
+                              <img [alt]="option.label" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ option.image }}" width="24" class="vertical-align-middle" />
+                              <span class="ml-1 mt-1">{{ option.name }}</span>
+                          </div>
+                      </ng-template>
+                  </p-multiSelect> -->
+              </ng-template>
+          </p-columnFilter>
+      </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+      <tr>
+          <th style="">
+              <div class="flex align-items-center">
+                  S.No.
+              </div>
+          </th>
+          <th style="">
+              <div class="flex align-items-center">
+                  Name
+              </div>
+          </th>
+          <th style="">
+              <div class="flex align-items-center">
+                  Total Paid
+                  
+              </div>
+          </th>
+          <th style="">
+              <div class="flex align-items-center">
+                  Total Due
+                  
+              </div>
+          </th>
+          <th style="">
+              <div class="flex align-items-center">
+                  Total Transaction
+                  
+              </div>
+          </th>
+
+
+        
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+      <tr>
+          <td>
+              {{ user.sno }}
+          </td>
+          <td>
+              <!-- <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" style="width: 20px" /> -->
+              <span class="ml-1 vertical-align-middle">{{ user.fullName }}</span>
+          </td>
+          <td>
+              <!-- <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" style="vertical-align: middle" /> -->
+              <span class="ml-1 vertical-align-middle">{{ user.totalPaid }}</span>
+          </td>
+          <td>
+              <!-- {{ customer.date | date: 'MM/dd/yyyy' }} -->
+              {{user.dueAmount}}
+          </td>
+          <td>
+              <!-- {{ customer.balance | currency: 'USD':'symbol' }} -->
+              {{user.totalTransaction}}
+          </td>
+          
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+      <tr>
+          <td colspan="7" class="text-center">No Users found.</td>
+      </tr>
+  </ng-template>
+</p-table>
+</div>
+
+<tfoot class="flex justify-between   h-full mt-2"  *ngIf="users">
+  <ng-container *ngFor="let data of users.content | paginate: {
+      itemsPerPage : financeDataPayload.row,
+      currentPage : users.currentPageIndex,
+      totalItems : users.totalElements
+  }; let first= first;">
+  </ng-container>
+  <p>{{users.numberOfElements}} of {{users.totalElements}}
+      items</p>
+
+  <pagination-controls previousLabel="Prev" nextLabel="Next"
+      (pageChange)="onTableDataChange($event)" class="">
+  </pagination-controls>
+
+
+
+
+</tfoot>
 </div>
 </div>

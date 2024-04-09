@@ -1,7 +1,12 @@
 <div id="main-div">
    
- <!-- component -->
-<!-- Create By Joker Banny -->
+  <div *ngIf="inventoryService.loading; else loaded" [class]="centerItems">
+    <mat-spinner style="color: red;"></mat-spinner>
+  </div>
+
+  <ng-template #loaded>
+
+  
 <div fxLayout="row wrap" [fxLayoutGap]="'20px grid'" fxLayoutAlign="" *ngIf="paginationData">
   <div fxFlex="1 1 auto" [fxFlex.lg]="'25%'" [fxFlex.xs]="'100%'" [fxFlex.sm]="'50%'" [fxFlex.md]="'33%'"
    class="card-deck w-1/5 "
@@ -9,7 +14,6 @@
      fxLayout="column" fxLayoutAlign="start center">
 
     <div class=" rounded  w-5/6  bg-white shadow-md hover:cursor-pointer ">
-       <!-- (click)="orderPopUp(item)"> -->
       <div class="w-full ">
         <div >
           <div
@@ -18,7 +22,7 @@
           </div>
           <div class=" px-1.5 mt-2">
             <div class="group">
-          <div class="header flex justify-between  font-bold text-lg group-hover:text-blue-500">
+          <div class="header flex justify-between  font-bold text-lg group-hover:text-blue-500" (click)="isInspectingEvent.emit(true); sendInventory.emit(item)">
             <h1 class="">{{item.name}}</h1>
           </div>
           
@@ -47,20 +51,9 @@
     </div>
 
 
-
-    
-
-  
-
-
-
-
-
-
-
-
   </div>
 </div>
+</ng-template>
 </div>
 
 
@@ -107,12 +100,155 @@
           </form>
    
         <div class="flex justify-center">
-          <button type="submit" data-dismiss="modal"
-          [ngClass]="{'disabled-button': quantity == null || quantity < 1}" (click)="addStock(quantity!)"
-          class="text-white bg-customPrimary hover:cursor-pointer  items-center rounded px-2  py-1.5 text-base">Select</button>
+          <default-button-template text="Select" (clicked)="addStock(quantity!)"
+          [attr.data-dismiss]="!inventoryService.posting ? 'modal' : null"
+          [isLoading]="inventoryService.posting"
+          [isDisabled]=" quantity == null || quantity < 1"></default-button-template>
+
       
 
         </div>
       </div>
     </div>
   </div>
+
+
+
+
+  <!-- <p-dialog [baseZIndex]="100" [(visible)]="isSelected" [closable]="true" [style]="{'width': '700px'}" [modal]="true"
+    *ngIf="selectedForLogging">
+
+    <p-header>
+        <div class="flex items-center">
+            <div class="image-container">
+                <div class="w-12 h-12 rounded-full overflow-hidden">
+                    <img [src]="imageDataMap[selectedForLogging.photoId]" alt="Your Image" class="w-full h-full object-cover" />
+                </div>
+            </div>
+            <div class="ml-2 flex flex-col">
+                <span class="text-xl">{{selectedForLogging.name}}</span>
+                <span class="text-sm">{{selectedForLogging.foodType}}</span>
+            </div>
+        </div>
+    </p-header>
+    <ng-container>
+        <div class="container-box">
+
+            <div class="item-description flex flex-col mt-2">
+
+                <table class="w-full rounded-lg">
+                    <thead class="bg-[#f5f5f5] border-2 border-transparent">
+                        <tr class="text-customPrimary p-2 px-3 ">
+                            <th style="padding: inherit;">Date</th>
+                            <th>Total Added</th>
+                            <th>Remaining</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <ng-container *ngFor="let items of selectedOrder.orderFoodDetails; let first= first;">
+                            <tr class="table-row-hover bg-white p-2 px-3 hover:bg-[#f5f5f5] h-full   border-2 border-[#F0F0F0]
+                      
+                  text-sm" [class.border-t-0]="first">
+                                <td align="center">
+                                    <div class="hover:cursor-pointer w-fit h-fit" (click)="deleteOrderFood(items)">
+                                        <mat-icon class="text-red-600 " >delete</mat-icon>
+                                    </div>
+                                </td>
+                                <td style="padding: inherit;">
+                                    <div class="image-container">
+                                        <div class="w-16 h-16 rounded-full overflow-hidden">
+                                            <img [src]="imageDataMap[items.photoId]"
+                                                class="w-full h-full object-cover" />
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                                <td>{{items.foodName}}</td>
+                                <td>Rs. {{items.cost}}</td>
+                                <td>{{items.quantity}}</td>
+                                <td>Rs. {{items.totalPrice}} </td>
+                            </tr>
+                        </ng-container>
+
+
+                        <tr class=" border-2 border-[#F0F0F0]">
+                            <td align="center" class="  " colspan="6">
+                                <div *ngIf="onlineOrdersService.postOnlineLoader; else posted">
+                                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                                </div>
+
+                                <ng-template #posted>
+                                    <div (click)="addingOrder = true" *ngIf="!addingOrder">
+                                        <default-button-template [text]="'Add Food'"></default-button-template>
+                                    </div>
+                                    <div class="flex items-start justify-between" (click)="addingOrder = true"
+                                        *ngIf="addingOrder">
+                                        <div>
+                                            Search Food:
+                                            <p-autoComplete [showClear]="true" class=" border-gray-50" #pdFront
+                                                [(ngModel)]="selectedItem" [suggestions]="suggestions"
+                                                (completeMethod)="search($event)" (onSelect)="selected($event)"
+                                                (onUnselect)="unSelect()" (onClear)="unSelect()"
+                                                (onKeyUp)="checkValue($event)" field="name"
+                                                styleClass="border-2 border-customPrimary rounded focus:border-transparent">
+                                                <ng-template let-item pTemplate="item">
+                                                    <div class="flex items-center">
+                                                        <div class="w-10 h-10 rounded-full overflow-hidden">
+                                                            <img [src]="item.photo"
+                                                                class="w-full h-full object-cover" />
+                                                        </div>
+                                                        <span>{{ item.name }}</span>
+                                                    </div>
+                                                </ng-template>
+                                            </p-autoComplete>
+                                        </div>
+
+
+
+                                        <div class="flex justify-center  ">
+                                            <div class="text-[#343A40] ">Quantity: </div>
+
+                                            <input
+                                                class="ml-4 w-20 border-2 text-center p-0 border-[#CED4DA] focus:border-customPrimary  focus:outline-none"
+                                                id="amount" [min]="0" [max]="selectedOrder.totalPrice"
+                                                [(ngModel)]="quantity" name="quantity">
+
+                                        </div>
+
+
+
+                                        <div class="flex justify-center h-fit">
+                                            <button type="submit" data-dismiss="modal"
+                                                [ngClass]="{'disabled-button': selectedItem == null  || quantity <= 0 || selectedFood == null || selectedFood.id == null }"
+                                                (click)="addFood()"
+                                                class="text-white bg-customPrimary hover:cursor-pointer  items-center rounded px-2  py-1.5 text-base">Add</button>
+
+                                        </div>
+                                    </div>
+                                </ng-template>
+
+
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flex flex-col justify-center items-center">
+                    <span>
+                        Total: Rs. {{selectedOrder.totalPrice}}
+                    </span>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+    </ng-container>
+</p-dialog> -->

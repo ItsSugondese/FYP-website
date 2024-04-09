@@ -47,8 +47,8 @@ export class AreYouSureComponent extends CommonVariable implements OnChanges  {
     @Input() visible !: boolean
     @Input() header !: string
     @Input() description !: string
-    @Input() positiveLabel !: string
-    @Input() negativeLabel !: string
+    @Input() positiveLabel : string = "Yes"
+    @Input() negativeLabel : string = "No"
     @Input() isLoading : boolean = false
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
     @Output() yesEvent: EventEmitter<number> = new EventEmitter();

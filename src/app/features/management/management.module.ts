@@ -35,6 +35,8 @@ import { TableManagementComponent } from './table-management-body/table-manageme
 import { OverlayModule } from "@angular/cdk/overlay";
 import { UserManagementPaymentComponent } from './people-management/user-management-payment/user-management-payment.component';
 import { InventoryManagementAdminComponent } from './inventory/inventory-management-admin/inventory-management-admin.component';
+import { InventoryManagementBodyComponent } from './inventory/inventory-management-body/inventory-management-body.component';
+import { InventoryLogComponent } from './inventory/inventory-log/inventory-log.component';
 
 
 
@@ -63,6 +65,8 @@ import { InventoryManagementAdminComponent } from './inventory/inventory-managem
     TableManagementBodyComponent,
     UserManagementPaymentComponent,
     InventoryManagementAdminComponent,
+    InventoryManagementBodyComponent,
+    InventoryLogComponent,
   ],
   imports: [
     CommonModule,

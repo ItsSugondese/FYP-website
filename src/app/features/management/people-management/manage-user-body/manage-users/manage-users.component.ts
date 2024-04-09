@@ -107,7 +107,6 @@ export class ManageUsersComponent extends CommonVariable implements OnInit, OnDe
   onTableDataChange(event: any) {
     this.paginationJson.page = event
     this.getPaginatedData();
-
   }
 
   // onSelectedDropdown(event: any) {

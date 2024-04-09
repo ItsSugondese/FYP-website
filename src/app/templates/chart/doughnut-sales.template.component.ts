@@ -48,7 +48,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
                     <p class=" ">Sort by</p>
     
         <p-dropdown [options]="sortBy" (onChange)="onSelectedDropdown($event)" [placeholder]="sortByPlaceholder"
-          [autoDisplayFirst]="false" [virtualScroll]="true" appendTo="body" [style]="{'width':'100%','overflow':'visible'}" appendTo="body" ></p-dropdown>
+          [autoDisplayFirst]="false" [virtualScroll]="true"></p-dropdown>
         </div>
 
               </div>

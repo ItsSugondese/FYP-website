@@ -28,11 +28,14 @@ export class GenerateReportComponent extends CommonVariable implements OnInit, O
   ]
 
   revenueData !: RevenueData
+  userData !: UsersData
 
-  usersDataSubscription$ !: Observable<ResponseData<UsersData>>
+  // usersDataSubscription$ !: Observable<ResponseData<UsersData>>
   orderDataSubscription$ !: Observable<ResponseData<OrderData>>
   // revenueDataSubscription$ !: Observable<ResponseData<RevenueData>>
   revenueDataSubscription$ !: Subscription
+  usersDataSubscription$ !: Subscription
+
   foodMenuDataSubscription$ !: Observable<ResponseData<FoodMenuData>>
   tableDataSubscription$ !: Observable<ResponseData<TableData>>
 
@@ -94,7 +97,7 @@ this.userDataSubscription$ = this.userService.getFinanceData(this.financeDataPay
 }
 
   fetchApi(){
-    this.usersDataSubscription$ = this.dashboardService.getUsersData(this.userDataPayload);
+    // this.usersDataSubscription$ = this.dashboardService.getUsersData(this.userDataPayload);
   this.orderDataSubscription$ = this.dashboardService.getOrderData(this.orderDataPayload);
   this.foodMenuDataSubscription$ = this.dashboardService.getFoodMenuData(this.foodMenuDataPayload);
   this.tableDataSubscription$ = this.dashboardService.getTableData(this.tableDataPayload);
@@ -104,6 +107,11 @@ this.userDataSubscription$ = this.userService.getFinanceData(this.financeDataPay
       this.revenueDataSubscription$.unsubscribe()
     }
   )
+  this.usersDataSubscription$ = this.dashboardService.getUsersData(this.userDataPayload).subscribe(
+    (res) => {
+      this.userData = res.data
+    }
+  );
   this.fetchData()
   }
 

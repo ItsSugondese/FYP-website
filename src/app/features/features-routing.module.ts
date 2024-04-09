@@ -23,13 +23,14 @@ import { TableManagementBodyComponent } from './management/table-management-body
 import { OrderHistoryComponent } from './order-history/order-history.component';
 import { UserManagementPaymentComponent } from './management/people-management/user-management-payment/user-management-payment.component';
 import { InventoryManagementAdminComponent } from './management/inventory/inventory-management-admin/inventory-management-admin.component';
+import { InventoryManagementBodyComponent } from './management/inventory/inventory-management-body/inventory-management-body.component';
 
 const routes: Routes = [
   {path: ManagementRouteConstant.foodManagement, component: ManageFoodBodyComponent,  
     // data: {roles:['ADMIN']}
   },
   {path: ManagementRouteConstant.staffManagement, component : ManageStaffBodyComponent,},
-  {path: ManagementRouteConstant.inventoryManagement, component : InventoryManagementAdminComponent,},
+  {path: ManagementRouteConstant.inventoryManagement, component : InventoryManagementBodyComponent,},
   {path: ManagementRouteConstant.addStaff, component : AddStaffComponent,},
   {path: ManagementRouteConstant.orderManagement, component: OrderManagementBodyComponent},
   {path: ManagementRouteConstant.orderHistory, component: OrderHistoryComponent},

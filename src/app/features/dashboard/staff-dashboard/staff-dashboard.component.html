@@ -1,32 +1,43 @@
 <div id="main-div" class="justify-between pb-2 space-y-5">
 
 
+
+
+
+
+
+
+
+
  
       <div class=" flex  space-x-10 justify-between  h-full w-full" *ngIf="(revenueDataSubscription$ | async)?.data as revenue">
         <div class="flex-1">
-          <div class="">
-            <span class="text-[#495057] font-semibold text-xl ">Today's sales data</span>
-          </div>
-          <div class="divided flex w-full  justify-between bg-white rounded-md shadow-none p-6 ">
-            <div class="flex  items-center justify-center flex-1">
-              <div class="paid-amount flex flex-col items-center ">
-                <span class=" text-2xl font-bold">{{currency}} {{revenue.paidAmount}}</span>
-                <span class="text-sm">Paid Amount </span>
-              </div>
+          <div class="container mx-auto py-8">
+            <div class="">
+              <span class="text-[#495057] font-semibold text-xl ">Today's sales data</span>
             </div>
-            <div class="flex items-center hover:cursor-pointer justify-center flex-1" (click)="goToManageOrder('Onsite')">
-              <div class="paid-amount flex flex-col items-center">
-                <span class=" text-2xl font-bold">{{currency}} {{revenue.leftToPay}}</span>
-                <span class="text-sm">To Pay Later</span>
-              </div>
+            
+            <!-- Grid for the cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Total Paid Amount Card -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-semibold text-center text-gray-800 mb-2">Total Paid Amount</h2>
+                    <p class="text-3xl font-bold text-center text-red-700">{{currency}} {{revenue.paidAmount}}</p>
+                </div>
+        
+                <!-- Left to Pay Card -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-semibold text-center text-gray-800 mb-2">Left to Pay</h2>
+                    <p class="text-3xl font-bold text-center text-red-700">{{currency}} {{revenue.leftToPay}}</p>
+                </div>
+        
+                <!-- Orders Delivered Card -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-semibold text-center text-gray-800 mb-2">Orders Delivered</h2>
+                    <p class="text-3xl font-bold text-center text-red-700">{{revenue.deliveredOrder}}</p>
+                </div>
             </div>
-            <div class="flex items-center hover:cursor-pointer  justify-center flex-1" (click)="goToManageOrder('Online')">
-              <div class="paid-amount flex flex-col items-center ">
-                <span class=" text-2xl font-bold">{{revenue.deliveredOrder}}</span>
-                <span class="text-sm">Delivered</span>
-              </div>
-            </div>
-          </div>
+        </div>
         </div>
       </div>
 
@@ -37,20 +48,24 @@
             <span class="text-[#495057] font-semibold text-xl ">Pending Orders<span class="text-sm ">({{orderService.timeDifference}}
                 minutes)</span></span>
           </div>
-          <div class="divided flex w-full  justify-between bg-white rounded-md shadow-none p-6 ">
-            <div class="flex  items-center justify-center flex-1">
+
+          
+
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="flex  items-center justify-center flex-1 bg-white shadow-md rounded-lg py-3">
               <div class="paid-amount flex flex-col items-center ">
                 <span class=" text-2xl font-bold">{{order.totalPending}}</span>
                 <span class="text-sm">Total</span>
               </div>
             </div>
-            <div class="flex items-center hover:cursor-pointer justify-center flex-1" (click)="goToManageOrder('Onsite')">
+            <div class="flex items-center hover:cursor-pointer justify-center flex-1 bg-white shadow-md rounded-lg py-3" >
               <div class="paid-amount flex flex-col items-center">
                 <span class=" text-2xl font-bold">{{order.onsiteOrder.pending}}</span>
                 <span class="text-sm">Onsite</span>
               </div>
             </div>
-            <div class="flex items-center hover:cursor-pointer  justify-center flex-1" (click)="goToManageOrder('Online')">
+            <div class="flex items-center hover:cursor-pointer  justify-center flex-1 bg-white shadow-md rounded-lg py-3" (click)="goToManageOrder('Online')">
               <div class="paid-amount flex flex-col items-center ">
                 <span class=" text-2xl font-bold">{{order.onlineOrder.pending}}</span>
                 <span class="text-sm">Online</span>
@@ -59,6 +74,8 @@
 
 
           </div>
+
+
         </div>
       </div>
       
@@ -69,20 +86,23 @@
           <div class="">
             <span class="text-[#495057] font-semibold text-xl ">Food Menu</span>
           </div>
-          <div class="divided flex w-full  justify-between bg-white rounded-md shadow-none p-6 ">
-            <div class="flex  items-center justify-center flex-1">
+
+         
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="flex  items-center justify-center flex-1 bg-white shadow-md rounded-lg py-3">
               <div class="paid-amount flex flex-col items-center ">
                 <span class=" text-2xl font-bold">{{foodData.total}}</span>
                 <span class="text-sm">Total Menu</span>
               </div>
             </div>
-            <div class="flex items-center hover:cursor-pointer justify-center flex-1" (click)="goToManageOrder('Onsite')">
+            <div class="flex items-center hover:cursor-pointer justify-center flex-1 bg-white shadow-md rounded-lg py-3" >
               <div class="paid-amount flex flex-col items-center">
                 <span class=" text-2xl font-bold">{{foodData.today}}</span>
                 <span class="text-sm">Available</span>
               </div>
             </div>
-            <div class="flex items-center hover:cursor-pointer  justify-center flex-1" (click)="goToManageOrder('Online')">
+            <div class="flex items-center hover:cursor-pointer  justify-center flex-1 bg-white shadow-md rounded-lg py-3" (click)="goToManageOrder('Online')">
               <div class="paid-amount flex flex-col items-center ">
                 <span class=" text-2xl font-bold">{{foodData.notToday}}</span>
                 <span class="text-sm">Not Available</span>

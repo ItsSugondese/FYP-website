@@ -24,6 +24,7 @@ import { OverlayModule } from "@angular/cdk/overlay";
 import { PayCashComponent } from './pop-up/pay-cash.template.componenet';
 import { UserPaymentManagementTableComponent } from './tables/user-payment-management-table.template.component';
 import { NgxModule } from '@shared/module/ngx.module';
+import { CleanButtonComponent } from './buttons/clean-button.template.component';
 
 
 
@@ -48,7 +49,8 @@ import { NgxModule } from '@shared/module/ngx.module';
   DoughnutSalesComponent,
   SearchWithFilterTemplateComponent,
   PayCashComponent,
-  UserPaymentManagementTableComponent
+  UserPaymentManagementTableComponent,
+  CleanButtonComponent
   ],
   imports: [
     CommonModule,
@@ -78,7 +80,8 @@ import { NgxModule } from '@shared/module/ngx.module';
   DoughnutSalesComponent,
   SearchWithFilterTemplateComponent,
   PayCashComponent,
-  UserPaymentManagementTableComponent
+  UserPaymentManagementTableComponent,
+  CleanButtonComponent
   ]
 })
 export class TemplatesModule { }
