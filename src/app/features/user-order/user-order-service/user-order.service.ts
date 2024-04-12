@@ -19,7 +19,7 @@ export class UserOrderService extends ServiceCommonVariable {
     super()
    }
 
-  orderMade !: UserOrderHistory
+  orderMade ?: UserOrderHistory  
 
   getData(paginationRequest : UserOrderHistoryPagination){
     this.loading = true

@@ -4,3 +4,9 @@ export interface onlineOrderPagination extends paginationPayload{
     minDifference: number;
     name ?: string
 }
+
+
+export interface SummaryPayload{
+    fromTime: string;
+    toTime : string
+}

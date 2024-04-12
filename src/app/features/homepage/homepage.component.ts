@@ -33,7 +33,6 @@ export class HomepageComponent extends CommonVariable implements OnInit, OnDestr
   finalPopUp = false;
   quantity ?:number;
 
-  isPostButtonActive = true;
   isOrderSuccessful = false;
 
   quantityControl = new FormControl(1, Validators.min(1));
@@ -51,7 +50,7 @@ export class HomepageComponent extends CommonVariable implements OnInit, OnDestr
     filter:  true
   }
   
-  constructor(private homepageService: HomepageService,
+  constructor(public homepageService: HomepageService,
     public foodService: ManageFoodsService, private userOrderService: UserOrderService,
     private router: Router
   ) {
@@ -66,7 +65,7 @@ super()
   ngOnInit(): void {
     this.orderHistory = this.userOrderService.getOrderedMade();
     if(this.orderHistory != null){
-      this.arrivalTime = this.orderHistory.arrivalTime
+      this.arrivalTime = this.orderHistory.arrivalTime24
       this.orderHistory.orderFoodDetails.map(
         e => {
           this.foodOrderList.push({
@@ -126,7 +125,7 @@ super()
 
   cancelEdit(){
     this.comingToEdit = false;
-    this.router.navigate(['/' + UserRouteConstant.userOrder])
+    this.navigateToUserOrder()
   }
 
   selectedNum = 1;
@@ -254,7 +253,6 @@ super()
 
   //hitting backend
   postOrder(order : foodOrdering[], time : string){
-    this.isPostButtonActive = false;
 
 
     let foodList : foodOrderPayload[] = [] 
@@ -288,9 +286,25 @@ super()
 
 
   reloadPage(){
-    window.location.reload()
+    // window.location.reload()
+    const modal = document.getElementById('finalPopUpModal'); // Replace 'your-modal-id' with the actual ID of your modal
+      if (modal) {
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        const modalBackdrop = document.getElementsByClassName('modal-backdrop');
+        for (let i = 0; i < modalBackdrop.length; i++) {
+          document.body.removeChild(modalBackdrop[i]);
+        }
+      }
+    this.navigateToUserOrder()
+
   }
 
+  navigateToUserOrder(){
+    this.router.navigate(['/' + UserRouteConstant.userOrder])
+
+  }
   //others
   loadFoodMenusAndImage() {
     return this.homepageService.getFoodMenu().subscribe(
@@ -320,8 +334,10 @@ super()
       this.foodMenuFetch$.unsubscribe();
     }
 
+    this.comingToEdit = false
     // this.reloadPage()
-    this.foodOrderList = []
+    this.userOrderService.orderMade = undefined
+    console.log("Here")
     
     
   }

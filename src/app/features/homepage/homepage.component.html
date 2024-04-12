@@ -179,8 +179,11 @@
         </div>
       </li>
     </ol>
-    <clean-button-template text="Cancel" bg="[#EF4444]" (click)="cancelEdit()" ></clean-button-template>
-    <clean-button-template text="Order" (clicked)="orderItemScreen(foodOrderList)" data-toggle="modal" data-target="#finalPopUpModal" data-whatever="@mdo"></clean-button-template>
+    <div class="space-x-5">
+
+      <clean-button-template text="Order" (clicked)="orderItemScreen(foodOrderList)" data-toggle="modal" data-target="#finalPopUpModal" data-whatever="@mdo"></clean-button-template>
+      <clean-button-template text="Cancel" bg="[#EF4444]" (click)="cancelEdit()" ></clean-button-template>
+    </div>
     <!-- <button class="btn-danger" type="text" data-toggle="modal" data-target="#finalPopUpModal" data-whatever="@mdo"
       (click)="orderItemScreen(foodOrderList)"> Order</button>
     <button class="btn-danger" type="text" data-toggle="modal" data-target="#finalPopUpModal" data-whatever="@mdo"
@@ -195,7 +198,7 @@
   <!-- For ordering at the end with arrival time -->
   <div class="modal " id="finalPopUpModal" data-backdrop="static" data-keyboard="false" [ngClass]="{'show': finalPopUp}"
     *ngIf="foodOrderList.length > 0">
-    <div class="modal-dialog hidden" role="document" [ngClass]="{'hidden' : isOrderSuccessful}">
+    <div class="modal-dialog hidden" role="document" [ngClass]="{'hidden' : isOrderSuccessful}" style="max-width: 50%;">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Order foods</h5>
@@ -207,18 +210,16 @@
           <table id="example" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th></th>
                 <th>FoodName</th>
-                <th>Quanity Ordered</th>
+                <th class="text-center">Quanity Ordered</th>
                 <th>Total Price</th>
-                <th></th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of foodOrderList; let i = index">
-                <td><img [src]="data.imageSrc" width="50" height="50" alt="Food Picture"></td>
                 <td>{{data.selectedFoodMenu.name}}</td>
-                <td><input type="number" [(ngModel)]="data.quantity" [ngClass]="{ 'is-invalid': data.quantity<1}"
+                <td class="text-center"><input style="width: 50px;" type="number" [(ngModel)]="data.quantity" [ngClass]="{ 'is-invalid': data.quantity<1}"
                     (keyup.enter)="onEnterPress($event, i)" (blur)="onInputBlur(i)" #quantityInput></td>
                 <td>{{data.selectedFoodMenu.cost * data.quantity}} ({{data.selectedFoodMenu.cost}} each)</td>
                 <td><button class="btn btn-outline-secondary" type="button" data-dismiss="modal"
@@ -229,14 +230,19 @@
             </tbody>
           </table>
 
-          <input type="time" [(ngModel)]="arrivalTime">
+          <div class="flex w-full justify-center space-x-5">
+            <span>Arrival Time: </span>
+            <input type="time" [(ngModel)]="arrivalTime">
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          <clean-button-template text="Close" bg="[#EF4444]" (click)="toggleFinalPopUp()" data-dismiss="modal"></clean-button-template>
+          <clean-button-template text="Order" (clicked)="postOrder(foodOrderList, arrivalTime)" [isDisabled]="foodOrderList.length < 1 || arrivalTime == '' || homepageService.loading"></clean-button-template>
+          <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal"
             (click)="toggleFinalPopUp()">Close</button>
           <button type="button" class="btn btn-primary"
             [ngClass]="{'disabled-button': foodOrderList.length < 1 || arrivalTime == '' || !isPostButtonActive}"
-            (click)="postOrder(foodOrderList, arrivalTime)">Send message</button>
+            (click)="postOrder(foodOrderList, arrivalTime)">Send message</button> -->
 
 
         </div>

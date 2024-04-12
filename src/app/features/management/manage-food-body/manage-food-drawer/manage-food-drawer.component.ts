@@ -34,7 +34,7 @@ export class ManageFoodDrawerComponent extends CommonVariable implements OnInit,
       if(this.userRole == 'STAFF'){
         this.selectedNavbar =   this.feedbackIndex;
       }else{
-        this.selectedNavbar = this.feedbackIndex;
+        this.selectedNavbar = this.editFoodIndex;
       }
 
       this.selectedFoodMenuSubscribable$ = this.foodService.getSelectedFoodMenu().subscribe(

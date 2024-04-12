@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { onlineOrderPagination } from './model/online-orders-payload.model';
+import { SummaryPayload, onlineOrderPagination } from './model/online-orders-payload.model';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
-import { onlineOrder } from './model/online-order-interface';
+import { SummaryData, onlineOrder } from './model/online-order-interface';
 import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-serivce';
 import { onlineOrderPayload } from 'src/app/payload.interface';
 import { catchError, finalize } from 'rxjs';
@@ -17,6 +17,7 @@ export class OnlineOrdersService extends ServiceCommonVariable {
   moduleName = "online-order"
 
   postOnlineLoader: boolean = false;
+  summaryLoader = false
 
   constructor(private httpClient : HttpClient) {
     super()
@@ -52,6 +53,17 @@ export class OnlineOrdersService extends ServiceCommonVariable {
         throw error;
       }),
       finalize(() => this.postOnlineLoader = false)
+    );
+   }
+
+  summarize(payload: SummaryPayload){
+    this.summaryLoader = true
+    return this.httpClient.get<ResponseData<SummaryData[]>>(`${this.backendUrl}${this.moduleName}/summary/${payload.fromTime}/${payload.toTime}`)
+    .pipe(
+      catchError(error => {
+        throw error;
+      }),
+      finalize(() => this.summaryLoader = false)
     );
    }
 

@@ -10,13 +10,14 @@ import { ManageFoodsService } from '../../manage-foods/manage-foods-service/mana
 import { FoodMenuWithImageData, foodMenu } from '../../manage-foods/manage-foods-service/model/food-menu.model';
 import { ManageFoodsComponent } from '../../manage-foods/manage-foods.component';
 import { AddFoodService } from './add-food-service/add-food.service';
+import { CommonVariable } from '@shared/helper/inherit/common-variable';
 
 @Component({
   selector: 'app-add-food',
   templateUrl: './add-food.component.html',
   styleUrls: ['./add-food.component.scss']
 })
-export class AddFoodComponent implements OnInit, OnDestroy {
+export class AddFoodComponent extends CommonVariable implements OnInit, OnDestroy {
 
 
   @Output() onOpeningDrawer: EventEmitter<boolean> = new EventEmitter();
@@ -29,6 +30,7 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   imageUrl!: string | null;
   postFoodMenu$ !: Subscription;
   foodTypeSubscribable$ !: Subscription
+  deleteMenuSubscription$ !: Subscription
 
   foodForm : FormGroup = this.formBuilder.group({
     id: new FormControl(),
@@ -47,7 +49,9 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   constructor(public foodService: ManageFoodsService,
     private formBuilder: FormBuilder, private enumService: EnumService, private snackbarService: SnackbarService,
      private addFoodService: AddFoodService
-  ) { }
+  ) { 
+    super()
+  }
 
 
   ngOnInit(): void {
@@ -90,6 +94,17 @@ export class AddFoodComponent implements OnInit, OnDestroy {
     } else {
       this.imageUrl = null;
     }
+  }
+
+  deleteMenu(){
+    this.deleteMenuSubscription$ = this.foodService.deleteMenu(this.item?.foodMenu.id!).subscribe(
+      res => {
+        this.deleteMenuSubscription$.unsubscribe()
+        this.showPopUp = false
+        this.toggleDrawer(false)
+          this.addFoodService.setIsSaved(true)
+      }
+    )
   }
   
 
@@ -148,6 +163,9 @@ export class AddFoodComponent implements OnInit, OnDestroy {
 
     if (this.foodTypeSubscribable$) {
       this.foodTypeSubscribable$.unsubscribe()
+    }
+    if(this.deleteMenuSubscription$){
+      this.deleteMenuSubscription$.unsubscribe()
     }
   }
 }

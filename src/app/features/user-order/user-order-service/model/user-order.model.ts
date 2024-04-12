@@ -7,6 +7,7 @@ export interface UserOrderHistory {
     orderFoodDetails : orderedFood[]
     date: string;
     arrivalTime: string;
+    arrivalTime24: string;
     profileUrl: string;
     foodMenu: foodMenu[];
     orderCode : number;

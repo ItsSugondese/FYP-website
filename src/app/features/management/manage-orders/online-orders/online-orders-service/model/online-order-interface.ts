@@ -17,3 +17,10 @@ export interface onlineOrder {
     profileUrl : string;
     totalPrice: number
 }
+
+export interface SummaryData {
+    id: number;
+    quantity: number;
+    foodName: string;
+    photoId: number
+}

@@ -7,6 +7,17 @@
       (optionSelected)="selectedOrderTypeToFilter($event)"></food-filter-template>
   </div> -->
 
+  <div class="flex justify-end">
+
+    <div
+    class="p-1 px-2 w-28 bg-white mt-1  rounded-md shadow-sm flex border-2 border-[#CED4DA] focus-within:border-customPrimary ">
+    <input type="text" id="time" name="time" class="block w-full sm:text-sm  focus:outline-none"
+      placeholder="Time"  [(ngModel)]="timeGave" (keydown.enter)="onTimeChange()">
+      <!-- (keyup.enter)="searchData($event)"> -->
+    <span>Minutes</span>
+  </div>
+  </div>
+
   <div *ngIf="onsiteOrdersService.loading; else loaded" [class]="centerItems">
     <mat-spinner style="color: red;"></mat-spinner>
   </div>
@@ -113,29 +124,27 @@
                             <ng-container *ngIf="onsiteOrdersService.selectedOption == 'VIEWED'">
                               <div class=" footer-order flex justify-between " [class]="buttonCss()">
                 
-                                <div (click)="updateOrder(content.id, 'DELIVERED')">
-                
-                                  <default-button-template [text]="'Deliver'"></default-button-template>
-                                </div>
-                                <span class="text-priceColor font-semibold text-base">Rs. {{content.totalPrice}}</span>
                                 <div (click)="showPopUp = true; selectedOrderId = content.id">
                                   <default-button-template [text]="'Cancel Order'" [background]="'white'"
                                     [color]="'customPrimary'" [hasBorder]="true" ></default-button-template>
+                                </div>
+                                <div (click)="updateOrder(content.id, 'DELIVERED')">
+                
+                                  <default-button-template [text]="'Deliver'"></default-button-template>
                                 </div>
                               </div>
                             </ng-container>
                             <ng-container *ngIf="onsiteOrdersService.selectedOption == 'DELIVERED'">
                               <div class="mt-2  footer-order flex justify-between  " [class]="buttonCss()">
                 
-                                <div>
+                                <!-- <div>
                 
                                   <text-type-custom-template text="{{content.payStatus}}"
                                     border="{{content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : null}}"
                                     color="{{content.payStatusCheck == 'PAID'?  '[#1565C0]' : content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : 'red-700'}}"
                                     bgColor="{{content.payStatusCheck == 'PAID'?  'blue-200' : content.payStatusCheck == 'PARTIAL_PAID'? '[#F8F9FA]' : 'red-300'}}"></text-type-custom-template>
                 
-                                </div>
-                                <span class="text-priceColor font-semibold text-base">Rs. {{content.totalPrice}}</span>
+                                </div> -->
                                 <div (click)="selectedOrder = content; payCashPopUp = true">
                                   <default-button-template [text]="'Pay'" [background]="'customPrimary'"
                                     [color]="'white'"></default-button-template>
@@ -152,7 +161,7 @@
                                     color="{{content.payStatusCheck == 'PAID'?  '[#1565C0]' : content.payStatusCheck == 'PARTIAL_PAID'? 'primary' : 'red-700'}}"
                                     bgColor="{{content.payStatusCheck == 'PAID'?  'blue-200' : content.payStatusCheck == 'PARTIAL_PAID'? '[#F8F9FA]' : 'red-300'}}"></text-type-custom-template>
                                 </div>
-                                <span class="text-priceColor font-semibold text-base">Rs. {{content.totalPrice}}</span>
+                                
                 
                               </div>
                             </ng-container>

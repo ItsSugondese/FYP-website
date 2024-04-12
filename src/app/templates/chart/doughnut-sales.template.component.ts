@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonVariable } from '@shared/helper/inherit/common-variable';
 import { Subscription } from 'rxjs';
 import { DashboardService } from 'src/app/features/dashboard/dashboard-service/dashboard.service';
 import { SalesData, SalesDataPayload } from 'src/app/features/dashboard/dashboard-service/model/sales-data.model';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { ReportService } from 'src/app/features/dashboard/report-service/report.service';
 
 
 @Component({
@@ -14,6 +15,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
         <div class="mt-1 mb-2 flex  space-x-3 items-center ">
             <p class="text-[#6C757D] text-lg">Total {{salesDataPayload.filterType == 'SALES' || salesDataPayload.filterType == undefined ? 'Sales' : 'Quantity'}} Amount: </p>
              <p class="text-customPrimary font-semibold text-2xl">  {{(['SALES', undefined, null].includes(salesDataPayload.filterType) ? (currency + ' ' +  getSalesData.totalSales) : getSalesData.totalQuantity)}}</p>
+             <default-button-template text="Download" (clicked)="downloadSales()" *ngIf="!isDashboard"></default-button-template>
           </div>
   
           <div class="flex space-x-1">
@@ -65,7 +67,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
         `
     ],
 })
-export class DoughnutSalesComponent extends CommonVariable implements OnInit, OnDestroy {
+export class DoughnutSalesComponent extends CommonVariable implements OnInit, OnChanges, OnDestroy {
 
     sortByPlaceholder = "Sales"
     sortByFoodTypePlaceholder = "All"
@@ -88,6 +90,9 @@ export class DoughnutSalesComponent extends CommonVariable implements OnInit, On
     @Input() counter: number = 5
     @Input() fromDate?: string = undefined
     @Input() toDate?: string = undefined
+    @Input() isDashboard : boolean = false;
+  salesDataDownloadSubscription$ !: Subscription
+
 
     sortBy: any[] = [
         { label: "Sales" },
@@ -105,9 +110,55 @@ export class DoughnutSalesComponent extends CommonVariable implements OnInit, On
 
 
 
-    constructor(private dashboardService: DashboardService) {
+    constructor(private dashboardService: DashboardService, private reportService: ReportService) {
         super()
     }
+
+    
+    ngOnInit() {
+
+        if(this.isDashboard){
+
+            this.salesDataPayload = {
+                limit: this.counter,
+                fromDate: this.fromDate,
+                toDate: this.toDate,
+            }
+    
+            this.createChart()
+            this.updateSalesData()
+        }
+
+
+
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.fromDate || changes.toDate) {
+            this.salesDataPayload = {
+                limit: this.counter,
+                fromDate: this.fromDate,
+                toDate: this.toDate,
+            }
+    
+            this.createChart()
+            this.updateSalesData()
+          }
+    }
+    
+
+    downloadSales(){
+        this.salesDataDownloadSubscription$ = this.reportService.getSalesData(this.salesDataPayload).subscribe(
+          (res : any) => {
+            this.salesDataDownloadSubscription$.unsubscribe()
+            const blob = new Blob([res], { type: 'application/octet-stream' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'sales_data.xlsx'; // Set your desired file name here
+            link.click();
+          }
+        )
+      }
 
     onSelectedDropdown(event: any) {
         this.salesDataPayload.filterType = event.value.label.toUpperCase()
@@ -119,22 +170,6 @@ export class DoughnutSalesComponent extends CommonVariable implements OnInit, On
         this.generatedColors = []
         this.updateSalesData()
     }
-
-    ngOnInit() {
-
-        this.salesDataPayload = {
-            limit: this.counter,
-            fromDate: this.fromDate,
-            toDate: this.toDate,
-        }
-
-        this.createChart()
-        this.updateSalesData()
-
-
-
-    }
-
     counterAction(val: number) {
         if ((this.counter > 0 || val == 1) && (this.counter < this.getSalesData.totalMenu || val == -1)) {
             if (val == -1) {
@@ -267,6 +302,9 @@ export class DoughnutSalesComponent extends CommonVariable implements OnInit, On
     ngOnDestroy(): void {
         if (this.getSalesDataSubscription$) {
             this.getSalesDataSubscription$.unsubscribe()
+        }
+        if(this.salesDataDownloadSubscription$){
+            this.salesDataDownloadSubscription$.unsubscribe()
         }
     }
 

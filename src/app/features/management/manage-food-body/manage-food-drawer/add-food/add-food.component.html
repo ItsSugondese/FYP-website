@@ -69,17 +69,27 @@
 
 
 
-        <div class="flex justify-end mt-3">
-          <div (click)="toggleDrawer(false)"
-            class="w-fit mr-2  hover:cursor-pointer items-center text-customPrimary border-2 border-customPrimary rounded-lg pr-2 pl-1 py-1.5 text-base">
-            Cancel</div>
-          <button type="submit" [disabled]="foodForm.invalid"
-            class=" hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg px-2  py-1.5 text-base"
-            [class.disabled-button]="foodForm.invalid || (item == null ?  imageId == null : compareFormAndMenu() && imageId ==null)">Save</button>
-        </div>
+        <div class="flex justify-between mt-3">
+          <div>
+            <default-button-template text="Delete" (clicked)="showPopUp = true"></default-button-template>
+          </div>
+          <div class="flex space-x-2">
+
+            <div (click)="toggleDrawer(false)"
+              class="w-fit  hover:cursor-pointer items-center text-customPrimary border-2 border-customPrimary rounded-lg pr-2 pl-1 py-1.5 text-base">
+              Cancel</div>
+            <button type="submit" [disabled]="foodForm.invalid"
+              class=" hover:cursor-pointer bg-customPrimary items-center text-white rounded-lg px-2  py-1.5 text-base"
+              [class.disabled-button]="foodForm.invalid || (item == null ?  imageId == null : compareFormAndMenu() && imageId ==null)">Save</button>
+          </div>
+          </div>
       </form>
     </div>
 
   </div>
 </div>
+
+<are-you-sure-template header="Delete Menu" positiveLabel="Yes" negativeLabel="No" [visible]="showPopUp"
+(yesEvent)="deleteMenu()" description="Are you sure you want to delete this menu"
+(visibleChange)="showPopUp = false" [isLoading]="foodService.deleteLoading"></are-you-sure-template>
 <!-- <p-messages [(value)]="endMessage" [enableService]="false" [closable]="false"></p-messages> -->

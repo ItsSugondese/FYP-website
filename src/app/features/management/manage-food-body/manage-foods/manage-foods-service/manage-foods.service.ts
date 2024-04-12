@@ -38,6 +38,7 @@ export class ManageFoodsService extends ServiceCommonVariable {
   moduleName : string = "food-menu"
   private selectedMenuSubject = new BehaviorSubject<FoodMenuWithImageData | null>(null);
 pictureLoading = false
+deleteLoading = false
 public toggleLoading = {
   status: false,
   index: -1
@@ -105,6 +106,18 @@ public toggleLoading = {
 
   getFoodPicture(id: number) {
     return this.httpClient.get(this.backendUrl +'food-menu/photo/' + id, { responseType: 'blob' });
+  }
+
+
+  deleteMenu(id: number) {
+    this.deleteLoading = true
+    return this.httpClient.delete(`${this.backendUrl}${this.moduleName}/${id}`)
+    .pipe(
+      catchError(error => {
+        throw error;
+      }),
+      finalize(() => this.deleteLoading=false
+      ));;
   }
 
   

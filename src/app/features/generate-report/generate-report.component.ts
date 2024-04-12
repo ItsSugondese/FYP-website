@@ -16,6 +16,7 @@ import { TableData, TableDataPayload } from '../dashboard/dashboard-service/mode
 import { setDate } from 'ngx-bootstrap/chronos/utils/date-setters';
 import { UserFinanceData, UserFinancePaginationPayload } from '../dashboard/dashboard-service/model/user-finance-data.model';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
+import { ReportService } from '../dashboard/report-service/report.service';
 
 @Component({
   selector: 'app-generate-report',
@@ -34,6 +35,7 @@ export class GenerateReportComponent extends CommonVariable implements OnInit, O
   orderDataSubscription$ !: Observable<ResponseData<OrderData>>
   // revenueDataSubscription$ !: Observable<ResponseData<RevenueData>>
   revenueDataSubscription$ !: Subscription
+  revenueDataDownloadSubscription$ !: Subscription
   usersDataSubscription$ !: Subscription
 
   foodMenuDataSubscription$ !: Observable<ResponseData<FoodMenuData>>
@@ -56,7 +58,8 @@ export class GenerateReportComponent extends CommonVariable implements OnInit, O
 
   
   constructor(private dashboardService: DashboardService, public orderService: ManageOrdersNavbarService,
-    private orderNavService: ManageOrdersNavbarService, private router: Router, private userService: ManageUsersService,) {
+    private orderNavService: ManageOrdersNavbarService, private router: Router, private userService: ManageUsersService,
+  private reportService: ReportService) {
     super()
   }
 
@@ -171,10 +174,39 @@ this.userDataSubscription$ = this.userService.getFinanceData(this.financeDataPay
     this.router.navigate(['/' + ManagementRouteConstant.userManagement]);
   }
 
+  downloadRevenue(){
+    this.revenueDataDownloadSubscription$ = this.reportService.getRevenueData(this.revenueDataPayload).subscribe(
+      (res : any) => {
+        this.revenueDataDownloadSubscription$.unsubscribe()
+        const blob = new Blob([res], { type: 'application/octet-stream' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'revenue_data.xlsx'; // Set your desired file name here
+        link.click();
+      }
+    )
+  }
+  
+  downloadFinance(){
+    this.revenueDataDownloadSubscription$ = this.reportService.getFinanceData(this.financeDataPayload).subscribe(
+      (res : any) => {
+        this.revenueDataDownloadSubscription$.unsubscribe()
+        const blob = new Blob([res], { type: 'application/octet-stream' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'user_expense.xlsx'; // Set your desired file name here
+        link.click();
+      }
+    )
+  }
+
 
   ngOnDestroy(): void {
     if(this.revenueDataSubscription$){
       this.revenueDataSubscription$.unsubscribe()
+    }
+    if(this.revenueDataDownloadSubscription$){
+      this.revenueDataDownloadSubscription$.unsubscribe()
     }
   }
 

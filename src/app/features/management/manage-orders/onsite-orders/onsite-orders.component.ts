@@ -36,14 +36,15 @@ export class OnsiteOrdersComponent extends OrderCommonVariable implements OnInit
   paymentPayload!: PaymentPayload
   imageDataMap: { [key: number]: string } = {};
   updateOrderSubscription$ !: Subscription
+  timeGave : any;
 
   constructor(public onsiteOrdersService : OnsiteOrdersService, private foodService: ManageFoodsService,
-    private paymentService: PaymentService, private orderService: ManageOrdersNavbarService) {
+    private paymentService: PaymentService, public orderService: ManageOrdersNavbarService) {
     super()
   }
   
   ngOnInit(): void {
-    
+    this.timeGave = this.orderService.timeDifference
       this.getPaginatedData();
   }
 
@@ -108,6 +109,14 @@ export class OnsiteOrdersComponent extends OrderCommonVariable implements OnInit
     this.getPaginatedData()
   }
 
+  onTimeChange(){
+    if(this.timeGave.trim() != ''){
+      this.orderService.timeDifference = this.timeGave
+      this.paginationJson.minuteRange = this.orderService.timeDifference
+      this.getPaginatedData()
+    }
+
+  }
   
   
 

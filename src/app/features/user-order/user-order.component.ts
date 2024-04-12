@@ -56,14 +56,13 @@ export class UserOrderComponent extends CommonVariable implements OnInit, OnDest
   
  
   toggleOrderDetailsPopUp(orderDetails: UserOrderHistory){
-    if(orderDetails.orderType == 'ONLINE_ORDER'){
-   
-    
     this.userOrderService.setOrderedFood(orderDetails)
     this.router.navigate(['/' + UserRouteConstant.homepage]);
-    }
   }
 
+  cancelOrder(){
+    
+  }
 
   getPaginatedData() {
     this.getOrderHistorySubscriable$ = this.userOrderService.getData(this.paginationJson).subscribe(
@@ -93,6 +92,7 @@ export class UserOrderComponent extends CommonVariable implements OnInit, OnDest
         }
       )
   }
+
 
 
 
