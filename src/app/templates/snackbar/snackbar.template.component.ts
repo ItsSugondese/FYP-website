@@ -17,7 +17,7 @@ export enum MessageStatus {
   selector: 'snackbar-template',
   template: `
    <div 
-  class="snackbar fixed top-0 z-50 left-1/2 transform -translate-x-1/2 opacity-0 transition-all duration-300 ease-in-out
+  class="snackbar fixed top-0 z-[9999] left-1/2 transform -translate-x-1/2 opacity-0 transition-all duration-300 ease-in-out
   shadow-lg p-2 bg-white rounded border-2 border-gray-300 flex "
   [class.opacity-100]="snackbarService.isVisible"
   [class.translate-y-2]="snackbarService.isVisible"

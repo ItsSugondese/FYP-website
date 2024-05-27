@@ -5,6 +5,7 @@ import { DashboardService } from 'src/app/features/dashboard/dashboard-service/d
 import { SalesData, SalesDataPayload } from 'src/app/features/dashboard/dashboard-service/model/sales-data.model';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ReportService } from 'src/app/features/dashboard/report-service/report.service';
+import { SocketService } from '@shared/service/socket-servie/socket.service';
 
 
 @Component({
@@ -92,6 +93,7 @@ export class DoughnutSalesComponent extends CommonVariable implements OnInit, On
     @Input() toDate?: string = undefined
     @Input() isDashboard : boolean = false;
   salesDataDownloadSubscription$ !: Subscription
+  salesDataSocket$ !: Subscription
 
 
     sortBy: any[] = [
@@ -110,13 +112,26 @@ export class DoughnutSalesComponent extends CommonVariable implements OnInit, On
 
 
 
-    constructor(private dashboardService: DashboardService, private reportService: ReportService) {
+    constructor(private dashboardService: DashboardService, private reportService: ReportService,
+        private socketService: SocketService
+    ) {
         super()
     }
 
     
     ngOnInit() {
+        this.salesDataSocket$ = this.socketService.salesDataSubject.subscribe(
+            (res) => {
+              this.fetchChart()
+            }
+          )
+        this.fetchChart();
 
+
+
+    }
+
+    fetchChart(){
         if(this.isDashboard){
 
             this.salesDataPayload = {
@@ -128,9 +143,6 @@ export class DoughnutSalesComponent extends CommonVariable implements OnInit, On
             this.createChart()
             this.updateSalesData()
         }
-
-
-
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -305,6 +317,9 @@ export class DoughnutSalesComponent extends CommonVariable implements OnInit, On
         }
         if(this.salesDataDownloadSubscription$){
             this.salesDataDownloadSubscription$.unsubscribe()
+        }
+        if(this.salesDataSocket$){
+            this.salesDataSocket$.unsubscribe()
         }
     }
 

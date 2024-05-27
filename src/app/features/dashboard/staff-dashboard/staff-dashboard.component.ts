@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonVariable } from '@shared/helper/inherit/common-variable';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { ManagementRouteConstant } from 'src/app/constant/routing/management-routing-constant.model';
 import { ManageOrdersNavbarService, OrderNav } from '../../management/manage-orders/manage-orders-navbar/manage-orders-navbar-service/manage-orders-navbar.service';
@@ -12,6 +12,7 @@ import { OrderData, OrderDataPayload } from '../dashboard-service/model/order-da
 import { RevenueData, RevenueDataPayload } from '../dashboard-service/model/revenue-data.model';
 import { UsersData, UsersDataPayload } from '../dashboard-service/model/user-data.model';
 import { UserManagementPaymentService } from '../../management/people-management/user-management-payment/user-management-payment-service/user-management-payment.service';
+import { SocketService } from '@shared/service/socket-servie/socket.service';
 
 interface PageEvent {
   first: number;
@@ -28,10 +29,17 @@ export class StaffDashboardComponent
 
 extends CommonVariable implements OnInit, OnDestroy {
 
+  orderSocket$ !: Subscription
+  revenueSocket$ !: Subscription
+  foodMenuSocket$ !: Subscription
 
-  orderDataSubscription$ !: Observable<ResponseData<OrderData>>
-  revenueDataSubscription$ !: Observable<ResponseData<RevenueData>>
-  foodMenuDataSubscription$ !: Observable<ResponseData<FoodMenuData>>
+  orderData !: OrderData
+revenueData !: RevenueData
+foodMenuData !: FoodMenuData
+
+  orderDataSubscription$ !: Subscription
+  revenueDataSubscription$ !: Subscription
+  foodMenuDataSubscription$ !: Subscription
   revenueDataPayload : RevenueDataPayload = {}
   foodMenuDataPayload : FoodMenuDataPayload = {}
 
@@ -40,22 +48,65 @@ extends CommonVariable implements OnInit, OnDestroy {
   lastSelectedFilter !: string
   constructor(private dashboardService: DashboardService, public orderService: ManageOrdersNavbarService,
     private orderNavService: ManageOrdersNavbarService, private router: Router, private userService: ManageUsersService,
-    public userPaymentManagementService: UserManagementPaymentService) {
+    public userPaymentManagementService: UserManagementPaymentService, private socketService: SocketService) {
     super()
   }
 
 
   ngOnInit() {
+
+    this.orderSocket$ = this.socketService.orderSubject.subscribe(
+      (res) => {
+        this.fetchOrderData()
+      }
+    )
+    this.revenueSocket$ = this.socketService.revenueSubject.subscribe(
+      (res) => {
+        this.revenueData = res
+      }
+    )
+    this.foodMenuSocket$ = this.socketService.foodMenuSubject.subscribe(
+      (res) => {
+        this.foodMenuData = res
+      }
+    )
+
+
     this.lastSelectedFilter = this.userPaymentManagementService.selectedOption
     this.userPaymentManagementService.selectedOption = 'UNPAID';
     this.orderDataPayload = {
       timeDifference: this.orderService.timeDifference
     }
   
-  this.orderDataSubscription$ = this.dashboardService.getOrderData(this.orderDataPayload);
-  this.revenueDataSubscription$ = this.dashboardService.getRevenueData(this.revenueDataPayload);
-  this.foodMenuDataSubscription$ = this.dashboardService.getFoodMenuData(this.foodMenuDataPayload);
+    this.fetchRevenueData()
+    this.fetchOrderData()
+    this.fetchFoodMenuData()
 
+  }
+
+  fetchRevenueData(){
+    this.revenueDataSubscription$ = this.dashboardService.getRevenueData(this.revenueDataPayload).subscribe(
+      (res) => {
+        this.revenueData = res.data
+      }
+    )
+
+  }
+
+  fetchOrderData(){
+    this.orderDataSubscription$ = this.dashboardService.getOrderData(this.orderDataPayload).subscribe(
+      (res) => {
+        this.orderData = res.data
+      }
+    );
+  }
+
+  fetchFoodMenuData(){
+    this.foodMenuDataSubscription$ = this.dashboardService.getFoodMenuData(this.foodMenuDataPayload).subscribe(
+      (res) => {
+        this.foodMenuData = res.data
+      }
+    );
   }
 
   goToManageOrder(selected : string){
@@ -80,6 +131,26 @@ extends CommonVariable implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userPaymentManagementService.selectedOption = this.lastSelectedFilter
+
+    if (this.orderSocket$) {
+      this.orderSocket$.unsubscribe();
+    }
+    if (this.revenueSocket$) {
+      this.revenueSocket$.unsubscribe();
+    }
+    if (this.foodMenuSocket$) {
+      this.foodMenuSocket$.unsubscribe();
+    }
+
+    if (this.orderDataSubscription$) {
+      this.orderDataSubscription$.unsubscribe();
+    }
+    if (this.revenueDataSubscription$) {
+      this.revenueDataSubscription$.unsubscribe();
+    }
+    if (this.foodMenuDataSubscription$) {
+      this.foodMenuDataSubscription$.unsubscribe();
+    }
   }
 
 

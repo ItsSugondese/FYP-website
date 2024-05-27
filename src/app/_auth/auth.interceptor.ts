@@ -8,6 +8,7 @@ import { SnackbarService } from "../templates/snackbar/snackbar-service/snackbar
 import { MessageStatus } from "../templates/snackbar/snackbar.template.component";
 import { ResponseData } from "../constant/data/response-data.model";
 import { Crud } from "src/enums/backend/curd.enums";
+import { ManagementRouteConstant } from "../constant/routing/management-routing-constant.model";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor, OnInit {
@@ -38,9 +39,14 @@ export class AuthInterceptor implements HttpInterceptor, OnInit {
         return next.handle(req).pipe(
             
             catchError(
-
                 (err: HttpErrorResponse) => {
-                    if (err.error.message) {
+                    if(err.status == 401 || err.status == 403){
+                        this.snackService.showMessage({
+                            label: "Must be login first",
+                            status: MessageStatus.FAIL
+                        });
+                        this.router.navigate([ManagementRouteConstant.login])
+                    } else if (err.error.message) {
                         this.snackService.showMessage({
                             // label : error.error.message,
                             label: err.error.message,
@@ -54,7 +60,7 @@ export class AuthInterceptor implements HttpInterceptor, OnInit {
                         }
                         this.router.navigate(['/login'])
                     } else if (err.status == 403) {
-                        this.router.navigate(['/forbidden'])
+                        this.router.navigate(['/auth/login'])
                     } else if (err.status == 0) {
                         this.snackService.showMessage({
                             label: "Connection with server failed",
@@ -66,7 +72,7 @@ export class AuthInterceptor implements HttpInterceptor, OnInit {
                             status: MessageStatus.FAIL
                         });
                     }
-                    return throwError("Something is wrong")
+                    return throwError(err)
                 }
             ),
             map(event => {

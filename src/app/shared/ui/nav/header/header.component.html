@@ -116,8 +116,7 @@
                     <div
                         class="absolute translate-x-3 -translate-y-2 bg-red-600 w-5 h-5 rounded-full flex items-center justify-center">
                         <span
-                            class="text-sm font-semibold h-auto text-white"><ng-container></ng-container>{{(notificationCountSubscription$
-                            | async)?.data}}</span>
+                            class="text-sm font-semibold h-auto text-white"><ng-container></ng-container>{{notificationCount}}</span>
                     </div>
                 </div>
                 <button class="ml-6 flex items-center   dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
@@ -129,7 +128,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item hover:cursor-pointer" 
-                        (click)="router.navigate([userRoute.userOrderHistory])">Order History</a>
+                        (click)="router.navigate([userRoute.userOrderHistory])" *ngIf="userService.getSingleRole() =='USER'">Order History</a>
                     <a class="dropdown-item text-red-600 hover:cursor-pointer"  href="/auth/login"
                        >Logout</a>
                 </div>

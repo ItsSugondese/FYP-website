@@ -58,6 +58,7 @@ export class AnnouncementPopUpComponent implements OnInit,OnDestroy {
     @Input() visible: boolean = false;
 
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
+    @Output() posted: EventEmitter<void> = new EventEmitter();
 
     postAnnouncementSubscription$ !: Subscription
 
@@ -70,9 +71,14 @@ export class AnnouncementPopUpComponent implements OnInit,OnDestroy {
         let val: AnnouncementPayload = {
             message: this.message!
         }
-        this.postAnnouncementSubscription$ = this.announcementService.postAnnouncement(val).subscribe({
-            next: res => this.visible =  false
-        })
+        this.postAnnouncementSubscription$ = this.announcementService.postAnnouncement(val).subscribe(
+          (res) => {
+            this.visible =  false
+            this.posted.emit()
+          })
+        // this.postAnnouncementSubscription$ = this.announcementService.postAnnouncement(val).subscribe({
+        //     next: res => this.visible =  false
+        // })
     }
 
     afterHide() {

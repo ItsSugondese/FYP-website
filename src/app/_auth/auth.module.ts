@@ -8,6 +8,8 @@ import { UiModule } from '../shared/ui/ui.module';
 import { AuthRoutingModule } from './auth-routing.module';
 import { PasswordResetComponent } from './registration/password-reset/password-reset.component';
 import { ForgotPasswordComponent } from './registration/forgot-password/forgot-password.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { PathDeciderComponent } from './path-decider/path-decider.component';
 
 
 
@@ -17,6 +19,8 @@ import { ForgotPasswordComponent } from './registration/forgot-password/forgot-p
     LogoutComponent,
     PasswordResetComponent,
     ForgotPasswordComponent,
+    ForbiddenComponent,
+    PathDeciderComponent,
   ],
   imports: [
     CommonModule,

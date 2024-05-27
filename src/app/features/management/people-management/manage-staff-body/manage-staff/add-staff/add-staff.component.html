@@ -50,8 +50,12 @@
 
       <div class="form-group mt-2">
         <label for="contact">Contact Number <span class="text-red-600 text-xl">*</span></label>
-        <textarea class="form-control border-2 focus:ring-0" id="contact" aria-describedby="emailHelp"
-          placeholder="Enter Contact Number" formControlName="contactNumber"></textarea>
+        <input class="form-control border-2 focus:ring-0" id="contact" aria-describedby="emailHelp"
+          placeholder="Enter Contact Number" formControlName="contactNumber">
+          <mat-error *ngIf="formValue('contactNumber')?.touched && formValue('contactNumber')?.invalid" class="bg-blak">
+            Contact number must start with 9 and be 10 digits long.
+            </mat-error>
+          
       </div>
 
       <div class="form-group mt-2 h-fit">

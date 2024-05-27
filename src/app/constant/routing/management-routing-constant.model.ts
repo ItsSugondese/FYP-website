@@ -18,5 +18,6 @@ export const ManagementRouteConstant = {
     report: 'admin/report',
     tableManagement: 'admin/table_management',
     test: 'test',
+    forbidden: 'forbidden',
 
   };

@@ -1,10 +1,10 @@
 <div id="main-div" class=" pb-2 space-y-10">
   <div class="top-side flex ">
-    <div class="revenue-details w-full " *ngIf="(revenueDataSubscription$ | async)?.data as revenue">
+    <div class="revenue-details w-full " *ngIf="revenueData">
       <div class="flex justify-between items-center">
         <div class="revenue-header flex flex-col mb-2 ">
           <span class="text-[#495057] font-semibold text-xl">Today's Revenue</span>
-          <span class="text-3xl font-bold">{{currency + ' ' + revenue.revenue}}</span>
+          <span class="text-3xl font-bold">{{currency + ' ' + revenueData.revenue}}</span>
         </div>
         <div class="flex ">
           <announcement-button-template></announcement-button-template>
@@ -14,16 +14,16 @@
 
       <div class="divided flex justify-around bg-white p-4 rounded-lg">
         <div class="paid-amount flex flex-col items-center">
-          <span class=" text-3xl font-bold">{{currency + ' ' + revenue.paidAmount}}</span>
+          <span class=" text-3xl font-bold">{{currency + ' ' + revenueData.paidAmount}}</span>
           <span class="">Paid Amount</span>
         </div>
         <div class="paid-amount flex flex-col items-center">
-          <span class=" text-3xl font-bold">{{currency + ' ' + revenue.leftToPay}}</span>
+          <span class=" text-3xl font-bold">{{currency + ' ' + revenueData.leftToPay}}</span>
           <span class="">Left to paid</span>
         </div>
         
         <div class="paid-amount flex flex-col items-center">
-          <span class=" text-3xl font-bold">{{revenue.deliveredOrder}}</span>
+          <span class=" text-3xl font-bold">{{revenueData.deliveredOrder}}</span>
           <span class="">Order Delivered</span>
         </div>
       </div>
@@ -40,28 +40,28 @@
     </div>
     <div class="flex flex-col w-full items-end justify-center ">
       <div class="w-5/6 flex flex-col justify-center space-y-5  h-full" >
-        <div *ngIf="(orderDataSubscription$ | async)?.data as order ">
+        <div *ngIf="orderData">
           <div class=" text-end">
             <span class="text-[#495057] font-semibold text-xl "><span class="text-sm ">({{orderService.timeDifference}} minutes)</span>Pending Orders</span>
           </div>
           <div class="divided flex w-full  justify-between bg-white p-4 rounded-lg">
             <div class="flex items-center ">
               <div class="paid-amount flex flex-col ml-2 items-center ">
-                <span class=" text-xl font-bold">{{order.totalPending}}</span>
+                <span class=" text-xl font-bold">{{orderData.totalPending}}</span>
                 <span class="">Total</span>
               </div>
             </div>
             <div class="flex items-center hover:cursor-pointer hover:text-customPrimary" (click)="goToManageOrder('Onsite')">
               
               <div class="paid-amount flex flex-col ml-2 items-center">
-                <span class=" text-xl font-bold">{{order.onsiteOrder.pending}}</span>
+                <span class=" text-xl font-bold">{{orderData.onsiteOrder.pending}}</span>
                 <span class="" >Onsite</span>
               </div>
             </div>
             <div class="flex items-center hover:cursor-pointer  hover:text-customPrimary " (click)="goToManageOrder('Online')">
               
               <div class="paid-amount flex flex-col ml-2 items-center" >
-                <span class=" text-xl font-bold">{{order.onlineOrder.pending}}</span>
+                <span class=" text-xl font-bold">{{orderData.onlineOrder.pending}}</span>
                 <span class="" >Online</span>
               </div>
             </div>
@@ -114,27 +114,27 @@
 
   <div class="flex justify-between ">
 
-    <div style="width: 60%;" *ngIf="(foodMenuDataSubscription$ | async)?.data as foodData">
+    <div style="width: 60%;" *ngIf="foodMenuData">
       <div class=" text-start">
         <span class="text-[#495057] font-semibold text-xl ">Food Menu</span>
       </div>
       <div class="divided flex w-full  justify-around bg-white p-4 rounded-lg">
         <div class="flex items-center hover:cursor-pointer  hover:text-customPrimary" (click)="navigateToFoodMenu()">
           <div class="paid-amount flex flex-col  items-center">
-            <span class=" text-xl font-bold">{{foodData.total}}</span>
+            <span class=" text-xl font-bold">{{foodMenuData.total}}</span>
             <span class="">Total</span>
           </div>
         </div>
         <div class="flex items-center hover:cursor-pointer  hover:text-customPrimary" (click)="navigateToFoodMenu()">
           <div class="paid-amount flex flex-col items-center">
-            <span class=" text-xl font-bold">{{foodData.today}}</span>
+            <span class=" text-xl font-bold">{{foodMenuData.today}}</span>
             <span class="">Available</span>
           </div>
         </div>
         <div class="flex items-center hover:cursor-pointer hover:text-customPrimary" (click)="navigateToFoodMenu()">
         
           <div class="paid-amount flex flex-col  items-center">
-            <span class=" text-xl font-bold">{{foodData.notToday}}</span>
+            <span class=" text-xl font-bold">{{foodMenuData.notToday}}</span>
             <span class="">Not Available</span>
           </div>
         </div>
@@ -142,7 +142,7 @@
     </div>
 
 
-    <div style="width: 10%;"  *ngIf="(tableDataSubscription$ | async)?.data as tableData">
+    <div style="width: 10%;"  *ngIf="tableData">
       <div class=" text-center">
         <span class="text-[#495057] font-semibold text-xl ">Table</span>
       </div>
@@ -155,7 +155,7 @@
         </div>
       </div>
     </div>
-    <div style="width: 10%;">
+    <div style="width: 10%;" *ngIf="userData">
       <div class=" text-center">
         <span class="text-[#495057] font-semibold text-xl ">Staff</span>
       </div>

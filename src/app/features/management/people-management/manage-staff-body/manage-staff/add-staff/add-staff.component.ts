@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ManageStaffService } from '../manage-staff-service/manage-staff.service';
 import { Subscription } from 'rxjs';
 import { Staff, StaffWithImageData } from '../manage-staff-service/model/staff.model';
@@ -29,7 +29,7 @@ export class AddStaffComponent implements OnInit, OnDestroy {
       id: new FormControl(),
       fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      contactNumber: ['', Validators.required],
+      contactNumber: ['', [Validators.required, this.contactNumberValidator()]],
       profileId: new FormControl()
     });
 
@@ -95,6 +95,14 @@ formVal.userType = 'STAFF';
 
   formValue(name: string) {
     return this.staffForm.get(name);
+  }
+
+   contactNumberValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      const valid = /^9\d{9}$/.test(value);
+      return valid ? null : { invalidContactNumber: true };
+    };
   }
 
 

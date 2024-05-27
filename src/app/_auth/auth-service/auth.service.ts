@@ -7,6 +7,8 @@ import { ChangePassword, ForgotPassword, LoginModel, ValidateToken } from './mod
 import { ResponseData } from 'src/app/constant/data/response-data.model';
 import { ServiceCommonVariable } from '@shared/helper/inherit/common-variable-serivce';
 import { catchError, finalize } from 'rxjs';
+import { SnackbarService } from 'src/app/templates/snackbar/snackbar-service/snackbar.service';
+import { MessageStatus } from 'src/app/templates/snackbar/snackbar.template.component';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class AuthService extends ServiceCommonVariable{
   isGoogleLogin : boolean = false;
 
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private snackService: SnackbarService) {
     super()
    }
 
@@ -73,15 +75,22 @@ export class AuthService extends ServiceCommonVariable{
 
   LoginWithGoogle(credentials: string): Observable<any> {
     this.isGoogleLogin = true
-    const header = new HttpHeaders().set('Content-type', 'application/json');
-    return this.httpClient.post(this.path + "auth/login-with-google", JSON.stringify(credentials), { headers: header, withCredentials: true })
-    .pipe(
-      catchError(error => {
-        this.isGoogleLogin = false;
-        throw error;
-      }),
-      finalize(() => this.isGoogleLogin = false)
-    );
+    return this.httpClient.post(this.path + "auth/login-with-google", JSON.stringify(credentials),)
+    // const header = new HttpHeaders().set('Content-type', 'application/json');
+    // return this.httpClient.post(this.path + "auth/login-with-google", JSON.stringify(credentials), { headers: header, withCredentials: true })
+    // .pipe(
+    //   catchError(error => {
+    //     this.isGoogleLogin = false;
+    //     console.log("here is error" + error)
+    //     this.snackService.showMessage({
+    //       // label : error.error.message,
+    //       label: error.error.message,
+    //       status: MessageStatus.FAIL
+    //   });
+    //     throw error;
+    //   }),
+    //   finalize(() => this.isGoogleLogin = false)
+    // );
   }
 
   

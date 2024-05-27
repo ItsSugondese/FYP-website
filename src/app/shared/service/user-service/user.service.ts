@@ -37,9 +37,18 @@ else "";
     localStorage.setItem("username", username);
   }
 
+  public setUserId(userId : string){
+    localStorage.setItem("userId", userId);
+  }
+
   public getUsername(){
    return localStorage.getItem("username");
   }
+
+  public getUserId(){
+   return localStorage.getItem("userId");
+  }
+
 
 
 

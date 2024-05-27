@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 
     </div>
 
-    <announcement-pop-up-template [visible]="visible" (visibleChange)="visible = false"></announcement-pop-up-template>
+    <announcement-pop-up-template [visible]="visible" (visibleChange)="visible = false" (posted)="posted.emit()"></announcement-pop-up-template>
   `,
   styles: [`
   `
@@ -18,6 +18,8 @@ import { Component } from '@angular/core';
 export class AnnouncementButtonComponent{
 
     visible :boolean = false
+    @Output() posted: EventEmitter<void> = new EventEmitter();
+
     constructor() { }
   
     

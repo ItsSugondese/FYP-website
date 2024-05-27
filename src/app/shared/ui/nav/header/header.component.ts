@@ -17,6 +17,7 @@ import { NotificationPagination } from '@shared/service/notification-service/mod
 import { NotificationModel } from '@shared/service/notification-service/model/notification.model';
 import { PaginatedData } from 'src/app/constant/data/pagination/pagination.model';
 import { ManageStaffService } from 'src/app/features/management/people-management/manage-staff-body/manage-staff/manage-staff-service/manage-staff.service';
+import { SocketService } from '@shared/service/socket-servie/socket.service';
 
 enum HeaderNav {
   HOMEPAGE = "Homepage",
@@ -42,7 +43,9 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
   userSubscription$ !: Subscription
   userPictureSubscription$ !: Subscription
   // userSubscription$ !: Observable<ResponseData<User>>
-  notificationCountSubscription$ !: Observable<ResponseData<number>>
+  notificationCountSubscription$ !: Subscription
+  notificationCountSocketSubscription$ !: Subscription
+  // notificationCountSubscription$ !: Observable<ResponseData<number>>
 
   notificationPaginatedData !: ResponseData<PaginatedData<NotificationModel>>
   notificationPayload !: NotificationPagination
@@ -51,8 +54,7 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
   isOpen = false;
 
   userData !: User
-
-  private totalItems = 100;
+  notificationCount !: number
   notifications: NotificationModel[] = []
   imageMap : string | null = null
  
@@ -90,12 +92,19 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
 
   constructor(private userProfileService: UserProfileService, public userService: UserService,
     public router: Router, public sidenavService: SidenavService, public managementNavbarService: ManageOrdersNavbarService,
-    public notificationService: NotificationService, private staffService: ManageStaffService) {
+    public notificationService: NotificationService, private staffService: ManageStaffService,
+  private socketService: SocketService) {
     super()
   }
 
 
   ngOnInit(): void {
+    this.socketService.connect()
+    this.notificationCountSocketSubscription$ =this.socketService.notificationNumberSubject.subscribe(
+      (res) => {
+        this.notificationCount = res
+      }
+    )
     this.userSubscription$ = this.userProfileService.getUserProfile().subscribe(
       (res) => {
         this.userData = res.data
@@ -122,7 +131,12 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
 
       }
     )
-    this.notificationCountSubscription$ = this.notificationService.getNewNotificationCount();
+    // this.notificationCountSubscription$ = this.notificationService.getNewNotificationCount();
+    this.notificationCountSubscription$ = this.notificationService.getNewNotificationCount().subscribe(
+      (res) => {
+        this.notificationCount = res.data
+      }
+    )
     this.notificationPayload = {
       page: 1,
       row: 6
@@ -151,5 +165,9 @@ export class HeaderComponent extends CommonVariable implements OnInit, OnDestroy
     if (this.notificationsSubscription$) {
       this.notificationsSubscription$.unsubscribe()
     }
+    if(this.notificationCountSocketSubscription$){
+      this.notificationCountSocketSubscription$.unsubscribe()
+    }
+    this.socketService.disconnect()
   }
 }

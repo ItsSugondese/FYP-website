@@ -16,6 +16,7 @@ import { ManagementRouteConstant } from 'src/app/constant/routing/management-rou
 import { ManageFoodsService } from '../../management/manage-food-body/manage-foods/manage-foods-service/manage-foods.service';
 import { ManageUsersService } from '../../management/people-management/manage-user-body/manage-users/manage-users-service/manage-users.service';
 import { TableData, TableDataPayload } from '../dashboard-service/model/table-data.model';
+import { SocketService } from '@shared/service/socket-servie/socket.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -26,12 +27,24 @@ export class AdminDashboardComponent extends CommonVariable implements OnInit, O
 
 
   userData !: UsersData
+  orderData !: OrderData
+  tableData !: TableData
+  revenueData !: RevenueData
+  foodMenuData !: FoodMenuData
   usersDataSubscription$ !: Subscription
   // usersDataSubscription$ !: Observable<ResponseData<UsersData>>
-  orderDataSubscription$ !: Observable<ResponseData<OrderData>>
-  revenueDataSubscription$ !: Observable<ResponseData<RevenueData>>
-  foodMenuDataSubscription$ !: Observable<ResponseData<FoodMenuData>>
-  tableDataSubscription$ !: Observable<ResponseData<TableData>>
+  // orderDataSubscription$ !: Observable<ResponseData<OrderData>>
+  orderDataSubscription$ !: Subscription
+  revenueDataSubscription$ !: Subscription
+  foodMenuDataSubscription$ !: Subscription
+  tableDataSubscription$ !: Subscription
+
+
+  orderSocket$ !: Subscription
+  tableSocket$ !: Subscription
+  revenueSocket$ !: Subscription
+  foodMenuSocket$ !: Subscription
+  userDataSocket$ !: Subscription
 
   userDataPayload : UsersDataPayload = {}
   revenueDataPayload : RevenueDataPayload = {}
@@ -41,12 +54,38 @@ export class AdminDashboardComponent extends CommonVariable implements OnInit, O
   orderDataPayload !: OrderDataPayload
 
   constructor(private dashboardService: DashboardService, public orderService: ManageOrdersNavbarService,
-    private orderNavService: ManageOrdersNavbarService, private router: Router, private userService: ManageUsersService) {
+    private orderNavService: ManageOrdersNavbarService, private router: Router, private userService: ManageUsersService,
+  private socketService: SocketService) {
     super()
   }
 
 
   ngOnInit() {
+    this.orderSocket$ = this.socketService.orderSubject.subscribe(
+      (res) => {
+        this.fetchOrderData()
+      }
+    )
+    this.revenueSocket$ = this.socketService.revenueSubject.subscribe(
+      (res) => {
+        this.revenueData = res
+      }
+    )
+    this.tableSocket$ = this.socketService.tableSubject.subscribe(
+      (res) => {
+        this.tableData = res
+      }
+    )
+    this.foodMenuSocket$ = this.socketService.foodMenuSubject.subscribe(
+      (res) => {
+        this.foodMenuData = res
+      }
+    )
+    this.userDataSocket$ = this.socketService.userDataSubject.subscribe(
+      (res) => {
+        this.userData = res
+      }
+    )
     this.orderDataPayload = {
       timeDifference: this.orderService.timeDifference
     }
@@ -55,15 +94,52 @@ export class AdminDashboardComponent extends CommonVariable implements OnInit, O
   }
 
   getData(){
-    this.orderDataSubscription$ = this.dashboardService.getOrderData(this.orderDataPayload);
-    this.revenueDataSubscription$ = this.dashboardService.getRevenueData(this.revenueDataPayload);
-    this.foodMenuDataSubscription$ = this.dashboardService.getFoodMenuData(this.foodMenuDataPayload);
-    this.tableDataSubscription$ = this.dashboardService.getTableData(this.tableDataPayload)
+    this.fetchOrderData();
+    this.fetchTableData();
+    this.fetchRevenueData();
+    this.fetchFoodMenuData();
+   this.fetchUserData()
+  }
+
+  fetchFoodMenuData(){
+    this.foodMenuDataSubscription$ = this.dashboardService.getFoodMenuData(this.foodMenuDataPayload).subscribe(
+      (res) => {
+        this.foodMenuData = res.data
+      }
+    );
+  }
+
+  fetchUserData(){
     this.usersDataSubscription$ = this.dashboardService.getUsersData(this.userDataPayload).subscribe(
       (res) => {
         this.userData = res.data
       }
     );
+  }
+
+  fetchOrderData(){
+    this.orderDataSubscription$ = this.dashboardService.getOrderData(this.orderDataPayload).subscribe(
+      (res) => {
+        this.orderData = res.data
+      }
+    );
+  }
+
+  fetchTableData(){
+    this.tableDataSubscription$ = this.dashboardService.getTableData(this.tableDataPayload).subscribe(
+      (res) => {
+        this.tableData = res.data
+      }
+    )
+  }
+
+  fetchRevenueData(){
+    this.revenueDataSubscription$ = this.dashboardService.getRevenueData(this.revenueDataPayload).subscribe(
+      (res) => {
+        this.revenueData = res.data
+      }
+    )
+
   }
 
   goToManageOrder(selected : string){
@@ -105,6 +181,37 @@ export class AdminDashboardComponent extends CommonVariable implements OnInit, O
    if(this.usersDataSubscription$){
     this.usersDataSubscription$.unsubscribe()
    }
+   if(this.orderDataSubscription$){
+    this.orderDataSubscription$.unsubscribe()
+   }
+   if(this.tableDataSubscription$){
+    this.tableDataSubscription$.unsubscribe()
+   }
+   if(this.revenueDataSubscription$){
+    this.revenueDataSubscription$.unsubscribe()
+   }
+
+   if(this.foodMenuDataSubscription$){
+    this.foodMenuDataSubscription$.unsubscribe()
+   }
+
+
+
+   if (this.orderSocket$) {
+    this.orderSocket$.unsubscribe();
+  }
+  if (this.tableSocket$) {
+    this.tableSocket$.unsubscribe();
+  }
+  if (this.revenueSocket$) {
+    this.revenueSocket$.unsubscribe();
+  }
+  if (this.foodMenuSocket$) {
+    this.foodMenuSocket$.unsubscribe();
+  }
+  if (this.userDataSocket$) {
+    this.userDataSocket$.unsubscribe();
+  }
   }
 
 }
